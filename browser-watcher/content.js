@@ -16,15 +16,12 @@ window.addEventListener("beforeunload", () => {
 });
 
 function notifyServer(symbol) {
-  if (!isPageActive) return;
-  fetch(`http://localhost:${notifyPort}/notify`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ symbol }),
-  }).catch(err => {
-    console.warn("[Symbol Watcher] Notify server error:", err);
+  chrome.runtime.sendMessage({
+    type: "notifySymbol",
+    symbol
   });
 }
+
 
 function extractSymbolsFromText(text) {
   if (!text) return [];
