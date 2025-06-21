@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Symbol Watcher</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; width: 320px; }
+  .tabs { display: flex; background: #333; }
+  .tab { flex: 1; padding: 10px; color: white; text-align: center; cursor: pointer; user-select: none; }
+  .tab.active { background: #555; font-weight: bold; }
+  .tab-content { display: none; padding: 10px; max-height: 280px; overflow-y: auto; }
+  .tab-content.active { display: block; }
+  #log div, #ignore-list div, #whitelist-list div {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 4px 6px; border-bottom: 1px solid #ccc;
+  }
+  #log div:hover, #ignore-list div:hover, #whitelist-list div:hover { background: #f0f0f0; }
+  .icon-btn {
+    cursor: pointer;
+    color: #888;
+    font-weight: bold;
+    padding: 0 6px;
+  }
+  .icon-btn:hover {
+    color: #e00;
+  }
+  button {
+    margin: 8px 0;
+    padding: 6px 12px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+  }
+  #clear-list {
+    background-color: #d33;
+    color: white;
+  }
+  #clear-list:hover {
+    background-color: #a00;
+  }
+  input[type=number], input[type=text] {
+    width: 60px;
+    padding: 4px;
+    margin-right: 10px;
+  }
+  #whitelist-input {
+    width: 200px;
+  }
+  form > * {
+    margin: 4px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" data-tab="log-tab">Log</div>
+  <div class="tab" data-tab="ignore-tab">Ignore</div>
+  <div class="tab" data-tab="settings-tab">Settings</div>
+  <div class="tab" data-tab="whitelist-tab">Whitelist</div>
+</div>
+
+<div id="log-tab" class="tab-content active">
+  <button id="clear-list">Clear List</button>
+  <div id="log">Loading...</div>
+</div>
+
+<div id="ignore-tab" class="tab-content">
+  <div id="ignore-list">Loading...</div>
+</div>
+
+<div id="settings-tab" class="tab-content">
+  <form id="settings-form">
+    <label>
+      Discord Scan Interval (ms):
+      <input type="number" id="scan-interval" min="500" step="100" />
+    </label>
+    <br />
+    <button type="submit">Save Settings</button>
+    <p id="settings-status"></p>
+  </form>
+</div>
+
+<div id="whitelist-tab" class="tab-content">
+  <form id="whitelist-form">
+    <label>
+      Add Discord Channel URL prefix:
+      <input type="text" id="whitelist-input" placeholder="e.g. https://discord.com/channels/1058604837467607100/" />
+    </label>
+    <button type="submit">Add</button>
+  </form>
+  <div id="whitelist-list">Loading...</div>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>

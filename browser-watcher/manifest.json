@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Symbol Watcher",
+  "version": "1.0",
+  "description": "Detects symbols in Discord and OneOption chats and notifies local server",
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://discord.com/*",
+    "https://app.oneoption.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://discord.com/channels/*",
+        "https://app.oneoption.com/chat*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
