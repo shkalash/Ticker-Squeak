@@ -1,53 +1,74 @@
 // popup.js
 
-const channelInput = document.getElementById("channelInput");
-const addChannelBtn = document.getElementById("addChannelBtn");
-const channelList = document.getElementById("channelList");
-
-function renderChannels(channels) {
-  channelList.innerHTML = "";
-  channels.forEach((ch, i) => {
-    const li = document.createElement("li");
-    li.textContent = ch;
-
-    const btn = document.createElement("button");
-    btn.textContent = "Remove";
-    btn.className = "remove";
-    btn.onclick = () => {
-      channels.splice(i, 1);
-      saveChannels(channels);
-      renderChannels(channels);
-    };
-
-    li.appendChild(btn);
-    channelList.appendChild(li);
+document.querySelectorAll(".tab-buttons button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+    document.getElementById(btn.dataset.tab).classList.add("active");
   });
-}
+});
 
-function saveChannels(channels) {
-  chrome.storage.local.set({ whitelistedChannels: channels });
-}
+const whitelistInput = document.getElementById("whitelist-input");
+const addWhitelistBtn = document.getElementById("add-whitelist");
+const whitelistList = document.getElementById("whitelist-list");
+const portInput = document.getElementById("notify-port");
+const saveSettingsBtn = document.getElementById("save-settings");
 
-function loadChannels() {
-  chrome.storage.local.get("whitelistedChannels", (result) => {
-    const channels = result.whitelistedChannels || [];
-    renderChannels(channels);
-  });
-}
+function loadWhitelist() {
+  chrome.storage.local.get(["whitelistedChannels"], (result) => {
+    whitelistList.innerHTML = "";
+    const list = result.whitelistedChannels || [];
+    list.forEach(url => {
+      const li = document.createElement("li");
+      li.textContent = url;
+      const removeBtn = document.createElement("button");
+      removeBtn.textContent = "✕";
+      removeBtn.style.marginLeft = "5px";
+      removeBtn.onclick = () => {
+        const updated = list.filter(item => item !== url);
+        chrome.storage.local.set({ whitelistedChannels: updated }, loadWhitelist);
+      };
+      li.appendChild(removeBtn);
+      whitelistList.appendChild(li);
+    });
 
-addChannelBtn.onclick = () => {
-  const val = channelInput.value.trim();
-  if (val) {
-    chrome.storage.local.get("whitelistedChannels", (result) => {
-      const channels = result.whitelistedChannels || [];
-      if (!channels.includes(val)) {
-        channels.push(val);
-        saveChannels(channels);
-        renderChannels(channels);
+    // Auto-fill logic
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      const url = tabs[0]?.url || "";
+      if (url.includes("https://discord.com/channels/") && !list.includes(url)) {
+        whitelistInput.value = url;
       }
     });
-    channelInput.value = "";
-  }
-};
+  });
+}
 
-loadChannels();
+addWhitelistBtn.addEventListener("click", () => {
+  const url = whitelistInput.value.trim();
+  if (!url) return;
+  chrome.storage.local.get(["whitelistedChannels"], (result) => {
+    const current = result.whitelistedChannels || [];
+    if (!current.includes(url)) {
+      current.push(url);
+      chrome.storage.local.set({ whitelistedChannels: current }, () => {
+        whitelistInput.value = "";
+        loadWhitelist();
+      });
+    }
+  });
+});
+
+saveSettingsBtn.addEventListener("click", () => {
+  const port = portInput.value;
+  if (!port || isNaN(port) || port < 1 || port > 65535) {
+    alert("Please enter a valid port.");
+    return;
+  }
+  chrome.storage.local.set({ notifyPort: port }, () => {
+    alert("Port saved.");
+  });
+});
+
+chrome.storage.local.get(["notifyPort"], (result) => {
+  portInput.value = result.notifyPort || "4113";
+});
+
+loadWhitelist();
