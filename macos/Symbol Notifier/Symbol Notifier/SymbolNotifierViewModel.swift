@@ -22,7 +22,8 @@ class SymbolNotifierViewModel: ObservableObject {
     private let server = HttpServer()
     private var receivedSymbols = Set<String>()
     private var audioPlayer: AVAudioPlayer?
-
+    private(set) var serverStarted = false
+    
     @Published var symbolList: [SymbolItem] = []
     @Published var ignoreList: [String] = []
     @Published var showHighlightedOnly = false
@@ -36,8 +37,10 @@ class SymbolNotifierViewModel: ObservableObject {
     init() {
         loadPersistence()
     }
-
+    
     func startServer() {
+        guard !serverStarted else { return }
+        serverStarted = true
         server["/notify"] = { request in
             let bodyData = Data(request.body)
 
