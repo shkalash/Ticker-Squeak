@@ -1,130 +1,116 @@
 // content.js
-
 console.log("[Symbol Watcher] content.js loaded");
 
-let discordScanIntervalMs = 2000;
-let ignoreSet = new Set([
-  "EMA", "SMA", "PA", "HOD", "LOD", "VWAP",
-  "SPY", "QQQ", "PCS", "BPS", "CDS", "CCS",
-  "IC", "I", "EOD", "ATH", "WR", "BO", "CPI",
-  "PPI", "JOLTS"
-]);
-
 let whitelist = [];
-let scannerStarted = false;
-let intervalId = null;
 let isPageActive = true;
 
-// Clean up on tab unload
+// Cleanup on unload
 window.addEventListener("beforeunload", () => {
   isPageActive = false;
-  clearInterval(intervalId);
 });
 
-// --- Utility ---
+function notifyServer(symbol) {
+  if (!isPageActive) return;
+  fetch("http://localhost:4113/notify", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ symbol }),
+  }).catch(err => {
+    console.warn("[Symbol Watcher] Notify server error:", err);
+  });
+}
 
 function extractSymbolsFromText(text) {
-  const matches = [...text.matchAll(/\b\$?[A-Z]{1,6}\b/g)];
-  return matches
-    .map(m => m[0].replace(/^\$/, ""))
-    .filter(sym => !ignoreSet.has(sym));
+  if (!text) return [];
+  // Updated regex to find symbols with an optional trailing '!'
+  const matches = [...text.matchAll(/(?:\$|)[A-Z]{1,5}\b!?/g)];
+  // Clean up the matched string by removing the optional prefix and suffix
+  return matches.map(m => m[0].replace(/^\$/, "").replace(/!$/, ""));
 }
 
-function logSymbols(symbols) {
-  const unique = Array.from(symbols).filter(sym =>
-    typeof sym === "string" && sym.trim() !== ""
-  );
-  if (unique.length === 0 || !isPageActive || !chrome?.runtime?.id) return;
+function startDiscordObserver() {
+  function observe(container) {
+    console.log("[Symbol Watcher] Discord container found, starting observer.");
 
-  try {
-    chrome.runtime.sendMessage({ action: "logSymbols", symbols: unique });
-  } catch (err) {
-    console.warn("Symbol log failed, extension context might be gone:", err);
-  }
-}
+    const observer = new MutationObserver(mutations => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach(node => {
+          if (!(node instanceof HTMLElement)) return;
 
-// --- Message handler ---
+          // More specific selector for individual messages
+          if (node.matches && node.matches("li[id^='chat-messages-']")) {
+            const messageContent = node.querySelector('[id^="message-content-"]');
+            if (messageContent) {
+                const text = messageContent.innerText || messageContent.textContent;
+                if (!text) return;
 
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.action === "updateScanInterval") {
-    discordScanIntervalMs = parseInt(msg.value, 10) || 2000;
-    if (intervalId) {
-      clearInterval(intervalId);
-      startScanner();
-    }
-    sendResponse({ status: "updated" });
-  }
-});
-
-// --- Main Scanner Setup ---
-
-function startScanner() {
-  if (scannerStarted || !isPageActive) return;
-  scannerStarted = true;
-
-  const isDiscord = location.hostname.includes("discord.com");
-  const isOneOption = location.hostname.includes("oneoption.com");
-
-  if (isOneOption) {
-    const container = document.querySelector("#public > div > div.messages.main-chat.fixed-top");
-    if (!container) return;
-
-    const observer = new MutationObserver(() => {
-      const symbols = [];
-      container.querySelectorAll("a[data-symbol]").forEach(el => {
-        const sym = el.getAttribute("data-symbol");
-        if (sym && /^[A-Z]{1,6}$/.test(sym) && !ignoreSet.has(sym)) {
-          symbols.push(sym);
-        }
-      });
-      logSymbols(symbols);
+                const symbols = extractSymbolsFromText(text);
+                symbols.forEach(sym => notifyServer(sym));
+            }
+          }
+        });
+      }
     });
 
     observer.observe(container, { childList: true, subtree: true });
-    console.log("[Symbol Watcher] OneOption scanner activated.");
   }
 
-  if (isDiscord) {
-    console.log(`[Symbol Watcher] Starting Discord symbol scanner every ${discordScanIntervalMs}ms`);
-
-    intervalId = setInterval(() => {
-      const messages = document.querySelectorAll('[id^="chat-messages"] .contents_c19a55');
-      const symbols = [];
-
-      messages.forEach(msg => {
-        if (msg?.innerText) {
-          const found = extractSymbolsFromText(msg.innerText);
-          symbols.push(...found);
-        }
-      });
-
-      logSymbols(symbols);
-    }, discordScanIntervalMs);
+  function waitForMessagesContainer(retries = 40, delay = 500) {
+    // FINAL SELECTOR: Using the stable data-list-id attribute you found.
+    const container = document.querySelector('[data-list-id="chat-messages"]');
+    if (container) {
+      observe(container);
+    } else if (retries > 0) {
+      setTimeout(() => waitForMessagesContainer(retries - 1, delay), delay);
+    } else {
+      console.warn("[Symbol Watcher] Could not find Discord messages container with the latest selector. The site structure may have changed again.");
+    }
   }
+
+  waitForMessagesContainer();
 }
 
-// --- Load Ignore List + Whitelist ---
+function startOneOptionObserver() {
+  console.log("[Symbol Watcher] Starting OneOption MutationObserver");
 
-try {
-  if (chrome?.storage?.local) {
-    chrome.storage.local.get(["userIgnoreList", "whitelistedChannels", "discordScanInterval"], result => {
-      ignoreSet = new Set(result.userIgnoreList || []);
+  const container = document.querySelector("#public > div > div.messages.main-chat.fixed-top");
+  if (!container) {
+    console.warn("[Symbol Watcher] OneOption messages container not found.");
+    return;
+  }
+
+  const observer = new MutationObserver(() => {
+    container.querySelectorAll("a[data-symbol]").forEach(el => {
+      const sym = el.getAttribute("data-symbol");
+      if (sym && /^[A-Z]{1,6}$/.test(sym)) {
+        notifyServer(sym);
+      }
+    });
+  });
+
+  observer.observe(container, { childList: true, subtree: true });
+}
+
+function init() {
+  try {
+    chrome.storage.local.get(["whitelistedChannels"], (result) => {
       whitelist = result.whitelistedChannels || [];
-      discordScanIntervalMs = result.discordScanInterval || 2000;
 
-      const currentUrl = location.href;
-
-      if (
-        location.hostname.includes("discord.com") &&
-        !whitelist.some(prefix => currentUrl.startsWith(prefix))
-      ) {
-        console.log("[Symbol Watcher] Discord channel not whitelisted, skipping.");
-        return;
+      if (location.hostname.includes("discord.com")) {
+        if (!whitelist.some(prefix => location.href.startsWith(prefix))) {
+          console.log("[Symbol Watcher] Discord channel not whitelisted, skipping scan.");
+          return;
+        }
+        startDiscordObserver();
       }
 
-      startScanner();
+      if (location.hostname.includes("oneoption.com")) {
+        startOneOptionObserver();
+      }
     });
+  } catch (err) {
+    console.warn("[Symbol Watcher] Storage load failed:", err);
   }
-} catch (err) {
-  console.warn("[Symbol Watcher] Unable to load storage or extension context invalidated:", err);
 }
+
+init();
