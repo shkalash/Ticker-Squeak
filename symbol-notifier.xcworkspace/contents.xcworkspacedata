@@ -11,6 +11,10 @@
    <Group
       location = "container:browser-watcher"
       name = "browser-watcher">
+      <FileSystemSynchronizedGroup
+         location = "group:icons"
+         name = "icons">
+      </FileSystemSynchronizedGroup>
       <FileRef
          location = "group:config.js">
       </FileRef>

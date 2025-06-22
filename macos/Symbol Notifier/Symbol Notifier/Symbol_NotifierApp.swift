@@ -10,6 +10,7 @@ import UserNotifications
 
 @main
 struct Symbol_NotifierApp: App {
+    static let DEFAULT_SERVER_PORT = 4113
     @StateObject private var viewModel = SymbolNotifierViewModel()
     let windowName = "io.shkalash.SymbolNotifier"
     var body: some Scene {

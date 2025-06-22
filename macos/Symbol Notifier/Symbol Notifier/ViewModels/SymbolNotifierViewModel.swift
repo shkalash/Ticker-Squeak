@@ -8,34 +8,41 @@
 import Foundation
 import Swifter
 import UserNotifications
-import AVFoundation
 import AppKit
 
-struct SymbolItem: Identifiable, Codable, Equatable {
-    let id = UUID()
-    let symbol: String
-    let receivedAt: Date
-    var isHighlighted: Bool = true
-}
-
 class SymbolNotifierViewModel: ObservableObject {
+    
+    
     private let server = HttpServer()
     private var receivedSymbols = Set<String>()
-    private var audioPlayer: AVAudioPlayer?
-    private(set) var serverStarted = false
+    private var serverStarted = false
+    public private(set) var serverPort: Int = Symbol_NotifierApp.DEFAULT_SERVER_PORT
     
+    @Published var toastSound: String = NSSound.systemSoundNames.first ?? ""{
+        didSet {
+            UserDefaults.standard.set(toastSound, forKey: toastSoundKey)
+        }
+    }
     @Published var symbolList: [SymbolItem] = []
     @Published var ignoreList: [String] = []
     @Published var showHighlightedOnly = false
-    @Published var toastMessage: String?
-
+    @Published var toastMessage: Toast? = Toast(style: .info, message: "Ticker Alert Test" , duration: 2.0, width: 350.0 , sound: "")
     // Persistence keys
     private let symbolsKey = "SavedSymbols"
     private let ignoreKey = "SavedIgnoreList"
     private let showHighlightedKey = "ShowHighlightedOnly"
-
+    private let serverPortKey = "ServerPort"
+    private let toastSoundKey = "ToastSound"
+    
     init() {
         loadPersistence()
+    }
+    
+    func setServerPort(_ port: Int) {
+        saveServerPort(port)
+        server.stop()
+        serverStarted = false
+        startServer()
     }
     
     func startServer() {
@@ -57,8 +64,8 @@ class SymbolNotifierViewModel: ObservableObject {
         }
 
         do {
-            try server.start(4113, forceIPv4: true)
-            print("[Symbol Notifier] Server running on port 4113")
+            try server.start(in_port_t(serverPort), forceIPv4: true)
+            print("[Symbol Notifier] Server running on port \(serverPort)")
         } catch {
             print("[Symbol Notifier] Failed to start server:", error)
         }
@@ -90,14 +97,13 @@ class SymbolNotifierViewModel: ObservableObject {
     func showNotification(for symbol: String) {
         if isAppActive {
             // Foreground: play sound and show toast
-            playCustomNotificationSound()
             showToast(for: symbol)
         } else {
             // Background: show system notification with custom sound
             let content = UNMutableNotificationContent()
-            content.title = "New Symbol Detected"
+            content.title = "Ticker Alert"
             content.body = symbol
-            content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "notification.wav"))
+            content.sound = .default
 
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
             UNUserNotificationCenter.current().add(request)
@@ -108,24 +114,8 @@ class SymbolNotifierViewModel: ObservableObject {
         NSApplication.shared.isActive
     }
 
-    func playCustomNotificationSound() {
-        guard let url = Bundle.main.url(forResource: "notification", withExtension: "wav") else {
-            print("Custom notification sound file not found")
-            return
-        }
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer?.play()
-        } catch {
-            print("Failed to play custom notification sound:", error)
-        }
-    }
-
     func showToast(for symbol: String) {
-        toastMessage = "New Symbol: \(symbol)"
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.toastMessage = nil
-        }
+        toastMessage = Toast(style: .info, message: "Ticker Alert \(symbol)" , duration: 2.0, width: 350.0 , sound: toastSound)
     }
 
     func clearSymbols() {
@@ -178,6 +168,21 @@ class SymbolNotifierViewModel: ObservableObject {
         }
 
         showHighlightedOnly = UserDefaults.standard.bool(forKey: showHighlightedKey)
+        
+        let userPort = UserDefaults.standard.integer(forKey: serverPortKey)
+        if userPort > 0 {
+            serverPort = userPort
+        }
+        if let sound = UserDefaults.standard.string(forKey: toastSoundKey){
+            toastSound = sound
+        }
+       
+    }
+    
+    
+    private func saveServerPort(_ port: Int) {
+        serverPort = port
+        UserDefaults.standard.set(port, forKey: serverPortKey)
     }
 
     private func saveIgnoreList() {
