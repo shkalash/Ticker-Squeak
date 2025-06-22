@@ -11,4 +11,6 @@
 *.xccheckout
 xcuserdata/
 
-swiftpm/Package.resolved
+Package.resolved
+
+node_modules

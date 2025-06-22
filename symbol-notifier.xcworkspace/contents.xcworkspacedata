@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:Config"
+      name = "Config">
+      <FileRef
+         location = "container:.gitignore">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:browser-watcher"
+      name = "browser-watcher">
+      <FileRef
+         location = "group:background.js">
+      </FileRef>
+      <FileRef
+         location = "group:content.js">
+      </FileRef>
+      <FileRef
+         location = "group:manifest.json">
+      </FileRef>
+      <FileRef
+         location = "group:popup.html">
+      </FileRef>
+      <FileRef
+         location = "group:popup.js">
+      </FileRef>
+   </Group>
+   <FileRef
+      location = "group:macos/Symbol Notifier/Symbol Notifier.xcodeproj">
+   </FileRef>
+</Workspace>
