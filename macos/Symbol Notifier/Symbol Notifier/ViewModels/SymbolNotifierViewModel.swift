@@ -60,14 +60,16 @@ class SymbolNotifierViewModel: ObservableObject {
         server["/notify"] = { request in
             let bodyData = Data(request.body)
 
-            if let json = try? JSONSerialization.jsonObject(with: bodyData, options: []) as? [String: String],
-               let symbolRaw = json["symbol"] {
+            if let json = try? JSONSerialization.jsonObject(with: bodyData, options: []) as? [String: Any],
+               let symbolRaw = json["symbol"] as? String {
                 let symbol = symbolRaw.uppercased()
+                let highPriority = (json["highPriority"] as? Bool) ?? false
 
                 DispatchQueue.main.async {
-                    self.handleSymbol(symbol)
+                    self.handleSymbol(symbol, highPriority: highPriority)
                 }
             }
+
 
             return .ok(.text("OK"))
         }
@@ -89,31 +91,34 @@ class SymbolNotifierViewModel: ObservableObject {
         }
     }
 
-    private func handleSymbol(_ symbol: String) {
+    private func handleSymbol(_ symbol: String , highPriority: Bool) {
         // Ignore symbols in ignore list
         if ignoreList.contains(symbol) {
             return
         }
         if receivedSymbols.contains(symbol) {
+            // Still notify for high priority
+            if (highPriority){
+                showNotification(for: symbol, highPriority: true)
+            }
             return
         }
         receivedSymbols.insert(symbol)
         let newItem = SymbolItem(symbol: symbol, receivedAt: Date())
         symbolList.insert(newItem, at: 0)
         saveSymbols()
-        showNotification(for: symbol)
+        showNotification(for: symbol , highPriority: highPriority)
     }
-
-    func showNotification(for symbol: String) {
+    //TODO: I want to make the sound selection better
+    func showNotification(for symbol: String, highPriority: Bool) {
         if isAppActive {
-            // Foreground: play sound and show toast
-            showToast(for: symbol)
+            showToast(for: symbol , highPriority: highPriority)
         } else {
             // Background: show system notification with custom sound
             let content = UNMutableNotificationContent()
             content.title = "Ticker Alert"
             content.body = symbol
-            content.sound = .default
+            content.sound = highPriority ? .defaultCritical : .default
 
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
             UNUserNotificationCenter.current().add(request)
@@ -124,8 +129,8 @@ class SymbolNotifierViewModel: ObservableObject {
         NSApplication.shared.isActive
     }
 
-    func showToast(for symbol: String) {
-        toastMessage = Toast(style: .info, message: "Ticker Alert \(symbol)" , duration: 2.0, width: 350.0 , sound: toastSound)
+    func showToast(for symbol: String , highPriority: Bool = false) {
+        toastMessage = Toast(style: highPriority ? .warning : .info, message: "Ticker Alert \(symbol)" , duration: 2.0, width: 350.0 , sound: toastSound)
     }
 
     func clearSymbols() {
