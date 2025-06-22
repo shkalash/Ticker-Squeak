@@ -1,4 +1,3 @@
-// content.js
 console.log("[Symbol Watcher] content.js loaded");
 
 let whitelist = [];
@@ -8,18 +7,32 @@ window.addEventListener("beforeunload", () => {
   isPageActive = false;
 });
 
-function notifyServer(symbol) {
+function notifyServer(symbol, highPriority = false) {
   chrome.runtime.sendMessage({
     type: "notifySymbol",
-    symbol
+    symbol,
+    highPriority
   });
 }
 
-
-function extractSymbolsFromText(text) {
+function parseSymbols(text) {
   if (!text) return [];
-  const matches = [...text.matchAll(/(?:\$|)[A-Z]{1,5}\b!?/g)];
-  return matches.map(m => m[0].replace(/^\$/, "").replace(/!$/, ""));
+
+  const matches = [...text.matchAll(/(?:\$)?[A-Z]{1,10}\b!?/g)];
+
+  return matches
+    .map(m => m[0])
+    .filter(raw => {
+      const clean = raw.replace(/!$/, "");
+      const hasDollar = clean.startsWith("$");
+      const symbol = clean.replace(/^\$/, "");
+      return hasDollar || symbol.length <= 5;
+    })
+    .map(raw => {
+      const highPriority = raw.endsWith("!");
+      const symbol = raw.replace(/^\$/, "").replace(/!$/, "");
+      return { symbol, highPriority };
+    });
 }
 
 function startDiscordObserver() {
@@ -34,8 +47,8 @@ function startDiscordObserver() {
             if (messageContent) {
               const text = messageContent.innerText || messageContent.textContent;
               if (!text) return;
-              const symbols = extractSymbolsFromText(text);
-              symbols.forEach(sym => notifyServer(sym));
+              const symbols = parseSymbols(text);
+              symbols.forEach(({ symbol, highPriority }) => notifyServer(symbol, highPriority));
             }
           }
         });

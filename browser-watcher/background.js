@@ -7,7 +7,7 @@ let cachedPort; // Will store the port after the first load
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "notifySymbol") {
-    const { symbol } = message;
+    const { symbol, highPriority = false } = message;
 
     // Function to send the notification
     const sendNotification = (port) => {
@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ symbol }),
+        body: JSON.stringify({ symbol, highPriority }), // include flag here
       }).catch(err => {
         console.warn("[Symbol Watcher] Background notify error:", err);
       });
@@ -31,6 +31,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
   }
 });
+
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === "local" && changes.notifyPort) {
