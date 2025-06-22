@@ -10,7 +10,7 @@ import AppKit
 import Carbon.HIToolbox
 
 
-class TVSettingsViewModel: ObservableObject {
+class TVViewModel: ObservableObject {
     @Published var settings: TVSettingsData {
         didSet {
             save()

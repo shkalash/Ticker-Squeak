@@ -12,7 +12,7 @@ import AppKit
 struct Symbol_NotifierApp: App {
     static let DEFAULT_SERVER_PORT = 4113
     @StateObject private var viewModel = SymbolNotifierViewModel()
-    @StateObject var tvSettingsViewModel = TVSettingsViewModel()
+    @StateObject var tvSettingsViewModel = TVViewModel()
     let windowName = "io.shkalash.SymbolNotifier"
     // TODO: alerts with !
     // TODO: errors.

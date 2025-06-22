@@ -18,22 +18,73 @@ struct SymbolListView: View {
     }
     
     var filteredSymbols: [SymbolItem] {
-        viewModel.showHighlightedOnly
-            ? viewModel.symbolList.filter { $0.isHighlighted }
-            : viewModel.symbolList
+        viewModel.symbolList.filter { item in
+            // Highlight filter
+            if viewModel.showHighlightedOnly && !item.isHighlighted {
+                return false
+            }
+
+            // Direction filters
+            switch item.direction {
+            case .bullish where !viewModel.showBullish:
+                return false
+            case .bearish where !viewModel.showBearish:
+                return false
+            default:
+                return true
+            }
+        }
     }
+
 
     var body: some View {
         VStack {
             HStack {
-                Toggle("Only Highlighted", isOn: Binding(
-                    get: { viewModel.showHighlightedOnly },
-                    set: { viewModel.setShowHighlightedOnly($0) }
-                ))
-                Spacer()
-                Button("Clear") {
-                    viewModel.clearSymbols()
+                Button(action: {
+                    viewModel.showHighlightedOnly.toggle()
+                }) {
+                    Image(systemName: viewModel.showHighlightedOnly ? "bell.fill" : "bell.slash.fill")
+                        .foregroundColor(viewModel.showHighlightedOnly ? .yellow : .gray)
                 }
+                .buttonStyle(.bordered)
+                Button(action: {
+                    viewModel.showBullish.toggle()
+                }) {
+                    Image(systemName: "chart.line.uptrend.xyaxis")
+                        .foregroundColor(viewModel.showBullish ? .green : .gray)
+                }
+                .buttonStyle(.bordered)
+                Button(action: {
+                    viewModel.showBearish.toggle()
+                }) {
+                    Image(systemName: "chart.line.downtrend.xyaxis")
+                        .foregroundColor(viewModel.showBearish ? .red : .gray)
+                }
+                .buttonStyle(.bordered)
+                Button(action: {
+                    if (!viewModel.showBullish && !viewModel.showBearish){
+                        viewModel.showBullish = true
+                        viewModel.showBearish = true
+                    }
+                    else{
+                        viewModel.showBullish = false
+                        viewModel.showBearish = false
+                    }
+                    
+                }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chart.line.uptrend.xyaxis")
+                        Image(systemName: "chart.line.downtrend.xyaxis")
+                    }
+                }
+                .buttonStyle(.bordered)
+                .foregroundColor(.primary)
+                Spacer()
+                Button(action : {
+                    viewModel.clearSymbols()
+                }, label: {
+                    Image(systemName: "trash")
+                })
             }
             .padding([.leading, .trailing, .top])
 
@@ -46,23 +97,24 @@ struct SymbolListView: View {
                             .foregroundColor(item.isHighlighted ? .yellow : .gray)
                     }
                     .buttonStyle(BorderlessButtonStyle())
-
+                    DirectionButton(item: Binding(
+                        get: { item },
+                        set: { viewModel.updateItem($0) } // You’ll need to implement updateItem(_:) in your view model
+                    ))
                     Button(action: {
                         self.onClick(item.symbol)
-                        //copySymbol(item.symbol)
-                        //viewModel.toggleHighlight(item)
                     }) {
                         HStack {
                             Text(item.symbol)
                                 .font(.system(.body, design: .monospaced))
                                 .foregroundColor(item.isHighlighted ? .primary : .gray)
-                            Spacer()
-                            Text((item.receivedAt.formatted(date: .omitted, time: .shortened)))
                         }
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(PlainButtonStyle())
-
+                    Spacer()
+                    
+                    Text((item.receivedAt.formatted(date: .omitted, time: .shortened)))
                     Button(action: {
                         viewModel.addToIgnore(item.symbol)
                     }) {
@@ -76,6 +128,9 @@ struct SymbolListView: View {
             }
         }
     }
+    
+    
+
 
     func copySymbol(_ symbol: String) {
         #if os(macOS)
@@ -84,4 +139,7 @@ struct SymbolListView: View {
         pasteboard.setString(symbol, forType: .string)
         #endif
     }
+}
+#Preview {
+    SymbolListView(viewModel: SymbolNotifierViewModel(), onSymobolClicked: { _ in })
 }

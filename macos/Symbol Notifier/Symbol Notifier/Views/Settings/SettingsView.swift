@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject var viewModel: SymbolNotifierViewModel
-    @ObservedObject var tvSettingsViewModel: TVSettingsViewModel
+    @ObservedObject var tvSettingsViewModel: TVViewModel
 
     @AppStorage("settingsTabIndex") private var selectedTab: Int = 0
 
@@ -46,5 +46,5 @@ struct SettingsView: View {
     }
 }
 #Preview {
-    SettingsView(viewModel: SymbolNotifierViewModel(), tvSettingsViewModel: TVSettingsViewModel())
+    SettingsView(viewModel: SymbolNotifierViewModel(), tvSettingsViewModel: TVViewModel())
 }

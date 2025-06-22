@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TVSettingsView: View {
-    @ObservedObject var viewModel: TVSettingsViewModel
+    @ObservedObject var viewModel: TVViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -84,5 +84,5 @@ struct TVSettingsView: View {
 }
 
 #Preview {
-    TVSettingsView(viewModel: TVSettingsViewModel())
+    TVSettingsView(viewModel: TVViewModel())
 }

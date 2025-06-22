@@ -16,13 +16,19 @@ struct IgnoreListView: View {
     var body: some View {
         VStack {
             HStack {
-                Button("Add Symbols") {
+               
+                Button(action : {
                     showIgnoreInput = true
-                }
+                }, label: {
+                    Image(systemName: "plus.square.on.square")
+                })
+                
                 Spacer()
-                Button("Clear Ignore List") {
+                Button(action : {
                     viewModel.clearIgnoreList()
-                }
+                }, label: {
+                    Image(systemName: "trash")
+                })
             }
             .padding([.leading, .trailing, .top])
 
@@ -44,4 +50,7 @@ struct IgnoreListView: View {
             }
         }
     }
+}
+#Preview {
+    IgnoreListView(viewModel: SymbolNotifierViewModel(), showIgnoreInput: .constant(false), ignoreInputText: .constant(""))
 }

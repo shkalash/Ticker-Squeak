@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var viewModel: SymbolNotifierViewModel
-    @ObservedObject var tvSettingsViewModel: TVSettingsViewModel
+    @ObservedObject var tvSettingsViewModel: TVViewModel
     @State private var selectedTab = 0
     @State private var showIgnoreInput = false
     @State private var ignoreInputText = ""
@@ -51,5 +51,5 @@ struct ContentView: View {
     }
 }
 #Preview {
-    ContentView(viewModel: SymbolNotifierViewModel(), tvSettingsViewModel: TVSettingsViewModel())
+    ContentView(viewModel: SymbolNotifierViewModel(), tvSettingsViewModel: TVViewModel())
 }

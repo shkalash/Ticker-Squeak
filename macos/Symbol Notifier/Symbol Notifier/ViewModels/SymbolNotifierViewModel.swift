@@ -21,12 +21,15 @@ class SymbolNotifierViewModel: ObservableObject {
     @Published var symbolList: [SymbolItem] = []
     @Published var ignoreList: [String] = []
     @Published var showHighlightedOnly = false
+    @Published var showBullish = true
+    @Published var showBearish = true
     @Published var toastMessage: Toast?
     @Published var toastSound: String = NSSound.systemSoundNames.first ?? ""{
         didSet {
             UserDefaults.standard.set(toastSound, forKey: toastSoundKey)
         }
     }
+    
     
     // Persistence keys
     private let symbolsKey = "SavedSymbols"
@@ -134,6 +137,13 @@ class SymbolNotifierViewModel: ObservableObject {
     func toggleHighlight(_ item: SymbolItem) {
         if let idx = symbolList.firstIndex(of: item) {
             symbolList[idx].isHighlighted.toggle()
+            saveSymbols()
+        }
+    }
+    
+    func updateItem(_ updated: SymbolItem) {
+        if let index = symbolList.firstIndex(where: { $0.id == updated.id }) {
+            symbolList[index] = updated
             saveSymbols()
         }
     }
