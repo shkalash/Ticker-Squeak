@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var viewModel: SymbolNotifierViewModel
+    @ObservedObject var tvSettingsViewModel: TVSettingsViewModel
     @State private var selectedTab = 0
     @State private var showIgnoreInput = false
     @State private var ignoreInputText = ""
@@ -12,12 +13,14 @@ struct ContentView: View {
                 IconTabPicker(selection: $selectedTab, options: [
                     ("Symbols", "chart.bar", 0),
                     ("Ignore", "eye.slash", 1),
-                    ("Settings", "gearshape", 2)
+                    ("Settings", "gearshape", 2),
                 ])
             }.padding(.vertical)
             switch selectedTab {
                 case 0:
-                    SymbolListView(viewModel: viewModel)
+                    SymbolListView(viewModel: viewModel){ symbol in
+                        tvSettingsViewModel.showSymbolInTradingView(symbol)
+                    }
                 case 1:
                     IgnoreListView(
                         viewModel: viewModel,
@@ -25,12 +28,7 @@ struct ContentView: View {
                         ignoreInputText: $ignoreInputText
                     )
                 case 2:
-                    ServerPortView(viewModel: viewModel)
-                    Divider().padding(.vertical, 8)
-                    ToastSoundPickerView(viewModel: viewModel)
-                    Divider().padding(.vertical, 8)
-                    ServerStatusView(viewModel: viewModel)
-                    Spacer()
+                    SettingsView(viewModel: viewModel, tvSettingsViewModel: tvSettingsViewModel)
                 default:
                     Text("Unknown")
             }
@@ -53,5 +51,5 @@ struct ContentView: View {
     }
 }
 #Preview {
-    ContentView(viewModel: SymbolNotifierViewModel())
+    ContentView(viewModel: SymbolNotifierViewModel(), tvSettingsViewModel: TVSettingsViewModel())
 }

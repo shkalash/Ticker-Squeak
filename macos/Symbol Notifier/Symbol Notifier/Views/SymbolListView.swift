@@ -10,7 +10,13 @@ import SwiftUI
 
 struct SymbolListView: View {
     @ObservedObject var viewModel: SymbolNotifierViewModel
+    private let onClick: (String) -> Void
 
+    init(viewModel: SymbolNotifierViewModel , onSymobolClicked: @escaping (String) -> Void) {
+        self.onClick = onSymobolClicked
+        self.viewModel = viewModel
+    }
+    
     var filteredSymbols: [SymbolItem] {
         viewModel.showHighlightedOnly
             ? viewModel.symbolList.filter { $0.isHighlighted }
@@ -42,14 +48,16 @@ struct SymbolListView: View {
                     .buttonStyle(BorderlessButtonStyle())
 
                     Button(action: {
-                        copySymbol(item.symbol)
-                        viewModel.toggleHighlight(item)
+                        self.onClick(item.symbol)
+                        //copySymbol(item.symbol)
+                        //viewModel.toggleHighlight(item)
                     }) {
                         HStack {
                             Text(item.symbol)
                                 .font(.system(.body, design: .monospaced))
                                 .foregroundColor(item.isHighlighted ? .primary : .gray)
                             Spacer()
+                            Text((item.receivedAt.formatted(date: .omitted, time: .shortened)))
                         }
                         .contentShape(Rectangle())
                     }

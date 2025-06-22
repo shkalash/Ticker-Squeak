@@ -7,15 +7,19 @@
 
 import SwiftUI
 import UserNotifications
-
+import AppKit
 @main
 struct Symbol_NotifierApp: App {
     static let DEFAULT_SERVER_PORT = 4113
     @StateObject private var viewModel = SymbolNotifierViewModel()
+    @StateObject var tvSettingsViewModel = TVSettingsViewModel()
     let windowName = "io.shkalash.SymbolNotifier"
+    // TODO: alerts with !
+    // TODO: errors.
+    // TODO: figure if we can kill the server or if this is just a debug issue
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: viewModel)
+            ContentView(viewModel: viewModel , tvSettingsViewModel: tvSettingsViewModel)
                 .background(WindowAccessor { window in
                     // Load saved frame
                     if let frameString = UserDefaults.standard.string(forKey: windowName) {
@@ -36,6 +40,7 @@ struct Symbol_NotifierApp: App {
 
                 .frame(minWidth: 300, minHeight: 400)
                 .onAppear {
+                    tvSettingsViewModel.requestAccess()
                     viewModel.requestNotificationPermission()
                     viewModel.startServer()
                 }
