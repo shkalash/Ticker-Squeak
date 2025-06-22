@@ -12,6 +12,9 @@
       location = "container:browser-watcher"
       name = "browser-watcher">
       <FileRef
+         location = "group:config.js">
+      </FileRef>
+      <FileRef
          location = "group:background.js">
       </FileRef>
       <FileRef

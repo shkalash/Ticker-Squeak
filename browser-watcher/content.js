@@ -3,13 +3,6 @@ console.log("[Symbol Watcher] content.js loaded");
 
 let whitelist = [];
 let isPageActive = true;
-let notifyPort = "4113"; // Default
-
-chrome.storage.local.get(["notifyPort"], (result) => {
-  if (result.notifyPort) {
-    notifyPort = result.notifyPort;
-  }
-});
 
 window.addEventListener("beforeunload", () => {
   isPageActive = false;

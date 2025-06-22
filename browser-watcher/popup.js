@@ -67,8 +67,11 @@ saveSettingsBtn.addEventListener("click", () => {
   });
 });
 
+const DEFAULT_NOTIFY_PORT = window.SymbolNotifierConfig.DEFAULT_NOTIFY_PORT;
+
 chrome.storage.local.get(["notifyPort"], (result) => {
-  portInput.value = result.notifyPort || "4113";
+  portInput.value = result.notifyPort || DEFAULT_NOTIFY_PORT;
 });
+
 
 loadWhitelist();
