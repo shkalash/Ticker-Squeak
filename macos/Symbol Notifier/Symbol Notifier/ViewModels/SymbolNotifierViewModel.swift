@@ -26,7 +26,7 @@ class SymbolNotifierViewModel: ObservableObject {
     @Published var symbolList: [SymbolItem] = []
     @Published var ignoreList: [String] = []
     @Published var showHighlightedOnly = false
-    @Published var toastMessage: Toast? = Toast(style: .info, message: "Ticker Alert Test" , duration: 2.0, width: 350.0 , sound: "")
+    @Published var toastMessage: Toast?
     // Persistence keys
     private let symbolsKey = "SavedSymbols"
     private let ignoreKey = "SavedIgnoreList"
