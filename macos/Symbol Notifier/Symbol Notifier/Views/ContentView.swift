@@ -28,7 +28,8 @@ struct ContentView: View {
                     ServerPortView(viewModel: viewModel)
                     Divider().padding(.vertical, 8)
                     ToastSoundPickerView(viewModel: viewModel)
-                    //TODO: ADD server status
+                    Divider().padding(.vertical, 8)
+                    ServerStatusView(viewModel: viewModel)
                     Spacer()
                 default:
                     Text("Unknown")

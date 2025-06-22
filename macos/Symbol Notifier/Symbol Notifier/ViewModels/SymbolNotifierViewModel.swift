@@ -14,19 +14,20 @@ class SymbolNotifierViewModel: ObservableObject {
     
     
     private let server = HttpServer()
-    private var receivedSymbols = Set<String>()
-    private var serverStarted = false
     public private(set) var serverPort: Int = Symbol_NotifierApp.DEFAULT_SERVER_PORT
-    
+    private var receivedSymbols = Set<String>()
+
+    @Published private(set) var isServerRunning = false
+    @Published var symbolList: [SymbolItem] = []
+    @Published var ignoreList: [String] = []
+    @Published var showHighlightedOnly = false
+    @Published var toastMessage: Toast?
     @Published var toastSound: String = NSSound.systemSoundNames.first ?? ""{
         didSet {
             UserDefaults.standard.set(toastSound, forKey: toastSoundKey)
         }
     }
-    @Published var symbolList: [SymbolItem] = []
-    @Published var ignoreList: [String] = []
-    @Published var showHighlightedOnly = false
-    @Published var toastMessage: Toast?
+    
     // Persistence keys
     private let symbolsKey = "SavedSymbols"
     private let ignoreKey = "SavedIgnoreList"
@@ -40,14 +41,19 @@ class SymbolNotifierViewModel: ObservableObject {
     
     func setServerPort(_ port: Int) {
         saveServerPort(port)
-        server.stop()
-        serverStarted = false
+        stopServer()
         startServer()
     }
     
+    func stopServer() {
+        guard isServerRunning else { return }
+        server.stop()
+        isServerRunning = false
+    }
+    
     func startServer() {
-        guard !serverStarted else { return }
-        serverStarted = true
+        guard !isServerRunning else { return }
+        isServerRunning = true
         server["/notify"] = { request in
             let bodyData = Data(request.body)
 
@@ -67,6 +73,7 @@ class SymbolNotifierViewModel: ObservableObject {
             try server.start(in_port_t(serverPort), forceIPv4: true)
             print("[Symbol Notifier] Server running on port \(serverPort)")
         } catch {
+            isServerRunning = false
             print("[Symbol Notifier] Failed to start server:", error)
         }
     }
