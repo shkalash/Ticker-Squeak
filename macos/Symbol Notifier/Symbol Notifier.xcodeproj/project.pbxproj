@@ -10,13 +10,54 @@
 		F698C2EA2E0700F6000CA939 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = F698C2E92E0700F6000CA939 /* Swifter */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		F63D48842E09562D00C78781 /* Copy Audio */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/Sounds;
+			dstSubfolderSpec = 1;
+			files = (
+			);
+			name = "Copy Audio";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		F698C2D92E06FFAE000CA939 /* Symbol Notifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Symbol Notifier.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		F648B5942E09606600D5600A /* Exceptions for "Symbol Notifier" folder in "Copy Audio" phase from "Symbol Notifier" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = F63D48842E09562D00C78781 /* Copy Audio */;
+			membershipExceptions = (
+				Audio/sound01.aiff,
+				Audio/sound02.aiff,
+				Audio/sound03.aiff,
+				Audio/sound04.aiff,
+				Audio/sound05.aiff,
+				Audio/sound06.aiff,
+				Audio/sound07.aiff,
+				Audio/sound08.aiff,
+				Audio/sound09.aiff,
+				Audio/sound10.aiff,
+				Audio/sound11.aiff,
+				Audio/sound12.aiff,
+				Audio/sound13.aiff,
+				Audio/sound14.aiff,
+				Audio/sound15.aiff,
+				Audio/sound16.aiff,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		F698C2DB2E06FFAE000CA939 /* Symbol Notifier */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				F648B5942E09606600D5600A /* Exceptions for "Symbol Notifier" folder in "Copy Audio" phase from "Symbol Notifier" target */,
+			);
 			path = "Symbol Notifier";
 			sourceTree = "<group>";
 		};
@@ -60,6 +101,7 @@
 				F698C2D52E06FFAE000CA939 /* Sources */,
 				F698C2D62E06FFAE000CA939 /* Frameworks */,
 				F698C2D72E06FFAE000CA939 /* Resources */,
+				F63D48842E09562D00C78781 /* Copy Audio */,
 			);
 			buildRules = (
 			);
@@ -260,7 +302,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Symbol Notifier/Symbol_Notifier.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -288,7 +330,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Symbol Notifier/Symbol_Notifier.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;

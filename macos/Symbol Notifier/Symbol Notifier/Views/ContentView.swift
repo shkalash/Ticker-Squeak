@@ -11,9 +11,9 @@ struct ContentView: View {
         VStack {
             VStack{
                 IconTabPicker(selection: $selectedTab, options: [
-                    ("Symbols", "chart.bar", 0),
-                    ("Ignore", "eye.slash", 1),
-                    ("Settings", "gearshape", 2),
+                    PickerOption(label: "Symbols", imageName: "chart.bar", tag: 0),
+                    PickerOption(label: "Ignore", imageName: "eye.slash", tag: 1),
+                    PickerOption(label: "Settings", imageName: "gearshape", tag: 2),
                 ])
             }.padding(.vertical)
             switch selectedTab {

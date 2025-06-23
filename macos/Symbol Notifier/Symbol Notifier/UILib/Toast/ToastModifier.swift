@@ -47,8 +47,9 @@ struct ToastModifier: ViewModifier {
         
         if toast.duration > 0 {
             if workItem == nil{
-                // meaning this is the first popped toast
-                NSSound(named: toast.sound)?.play()
+                Task{
+                    await SoundManager.shared.playSoundForNotification(named: toast.sound, cooldown: 2)
+                }
             }
             workItem?.cancel()
             

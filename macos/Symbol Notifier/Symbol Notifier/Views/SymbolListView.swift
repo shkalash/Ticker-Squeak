@@ -79,6 +79,7 @@ struct SymbolListView: View {
                 }
                 .buttonStyle(.bordered)
                 .foregroundColor(.primary)
+                
                 Spacer()
                 Button(action : {
                     viewModel.clearSymbols()

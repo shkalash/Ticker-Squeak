@@ -15,7 +15,6 @@ struct Symbol_NotifierApp: App {
     @StateObject var tvSettingsViewModel = TVViewModel()
     let windowName = "io.shkalash.SymbolNotifier"
     // TODO: errors.
-    // TODO: figure if we can kill the server or if this is just a debug issue
     var body: some Scene {
         WindowGroup {
             ContentView(viewModel: viewModel , tvSettingsViewModel: tvSettingsViewModel)

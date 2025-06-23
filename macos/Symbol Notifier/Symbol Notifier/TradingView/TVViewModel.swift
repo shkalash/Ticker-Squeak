@@ -37,6 +37,12 @@ class TVViewModel: ObservableObject {
     }
     
     func requestAccess(){
+        #if DEBUG
+        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+            hasAccessToAccessibilityAPI = true
+            return
+        }
+        #endif
         let options = [kAXTrustedCheckOptionPrompt.takeRetainedValue() as String: true] as CFDictionary
         hasAccessToAccessibilityAPI = AXIsProcessTrustedWithOptions(options)
     }

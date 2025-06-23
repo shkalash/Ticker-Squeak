@@ -18,12 +18,13 @@ struct SettingsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             IconTabPicker(selection: $selectedTab, options: [
-                ("Server", "dot.radiowaves.left.and.right", 0),
-                ("Audio", "speaker.wave.2.fill", 1),
-                ("TradingView", "chart.line.uptrend.xyaxis", 2),
+                PickerOption(label: "Server", imageName: "dot.radiowaves.left.and.right", tag: 0),
+                PickerOption(label: "Audio", imageName: "speaker.wave.2.fill", tag: 1),
+                PickerOption(label: "TradingView", imageName: "tradingview", tag: 2, imageType: .asset),
+                PickerOption(label: "OneOption", imageName: "oneoption", tag: 3 , imageType: .asset),
             ])
             .padding(.bottom, 8)
-
+            
             Divider()
 
             ScrollView {
@@ -33,7 +34,7 @@ struct SettingsView: View {
                         ServerPortView(viewModel: viewModel)
                         ServerStatusView(viewModel: viewModel)
                     case 1:
-                        ToastSoundPickerView(viewModel: viewModel)
+                        AlertMessageSettingsView(viewModel: viewModel)
                     case 2:
                         TVSettingsView(viewModel: tvSettingsViewModel)
                     default:

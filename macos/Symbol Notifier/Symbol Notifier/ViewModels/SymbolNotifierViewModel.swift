@@ -24,9 +24,14 @@ class SymbolNotifierViewModel: ObservableObject {
     @Published var showBullish = true
     @Published var showBearish = true
     @Published var toastMessage: Toast?
-    @Published var toastSound: String = NSSound.systemSoundNames.first ?? ""{
+    @Published var alertSound: String = "" {
         didSet {
-            UserDefaults.standard.set(toastSound, forKey: toastSoundKey)
+            UserDefaults.standard.set(alertSound, forKey: alertSoundFile)
+        }
+    }
+    @Published var highPriorityAlertSound: String = ""{
+        didSet {
+            UserDefaults.standard.set(highPriorityAlertSound, forKey: highPriorityAlertSoundFile)
         }
     }
     
@@ -36,7 +41,8 @@ class SymbolNotifierViewModel: ObservableObject {
     private let ignoreKey = "SavedIgnoreList"
     private let showHighlightedKey = "ShowHighlightedOnly"
     private let serverPortKey = "ServerPort"
-    private let toastSoundKey = "ToastSound"
+    private let alertSoundFile = "alertSound"
+    private let highPriorityAlertSoundFile = "highPriorityAlertSound"
     
     init() {
         loadPersistence()
@@ -50,6 +56,12 @@ class SymbolNotifierViewModel: ObservableObject {
     
     func stopServer() {
         guard isServerRunning else { return }
+        #if DEBUG
+        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+            isServerRunning = false
+            return
+        }
+        #endif
         server.stop()
         isServerRunning = false
     }
@@ -57,6 +69,11 @@ class SymbolNotifierViewModel: ObservableObject {
     func startServer() {
         guard !isServerRunning else { return }
         isServerRunning = true
+        #if DEBUG
+        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+            return
+        }
+        #endif
         server["/notify"] = { request in
             let bodyData = Data(request.body)
 
@@ -109,20 +126,24 @@ class SymbolNotifierViewModel: ObservableObject {
         saveSymbols()
         showNotification(for: symbol , highPriority: highPriority)
     }
-    //TODO: I want to make the sound selection better
     func showNotification(for symbol: String, highPriority: Bool) {
         if isAppActive {
             showToast(for: symbol , highPriority: highPriority)
         } else {
             // Background: show system notification with custom sound
             let content = UNMutableNotificationContent()
-            content.title = "Ticker Alert"
+            content.title = highPriority ? "‼️ Ticker Alert ‼️" : "Ticker Alert"
             content.body = symbol
-            content.sound = highPriority ? .defaultCritical : .default
-
+            content.sound = nil
+            let sound = highPriority ? highPriorityAlertSound : alertSound
+            
             let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
             UNUserNotificationCenter.current().add(request)
+            Task{
+                await SoundManager.shared.playSoundForNotification(named: sound, cooldown: 2)
+            }
         }
+        
     }
 
     private var isAppActive: Bool {
@@ -130,7 +151,8 @@ class SymbolNotifierViewModel: ObservableObject {
     }
 
     func showToast(for symbol: String , highPriority: Bool = false) {
-        toastMessage = Toast(style: highPriority ? .warning : .info, message: "Ticker Alert \(symbol)" , duration: 2.0, width: 350.0 , sound: toastSound)
+        toastMessage = Toast(style: highPriority ? .warning : .info, message: "Ticker Alert \(symbol)" ,
+                             duration: 2.0, width: 350.0 , sound: highPriority ? highPriorityAlertSound : alertSound)
     }
 
     func clearSymbols() {
@@ -195,10 +217,10 @@ class SymbolNotifierViewModel: ObservableObject {
         if userPort > 0 {
             serverPort = userPort
         }
-        if let sound = UserDefaults.standard.string(forKey: toastSoundKey){
-            toastSound = sound
-        }
-       
+        
+        let audioFiles = NSSound.bundledSoundNames
+        alertSound = UserDefaults.standard.string(forKey: alertSoundFile) ?? audioFiles[0]
+        highPriorityAlertSound = UserDefaults.standard.string(forKey: highPriorityAlertSoundFile) ?? audioFiles[1]
     }
     
     
