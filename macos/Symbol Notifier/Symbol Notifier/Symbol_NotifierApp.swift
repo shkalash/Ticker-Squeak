@@ -16,7 +16,6 @@ struct Symbol_NotifierApp: App {
     @StateObject var oneOptionViewModel = OneOptionViewModel()
     let windowName = "io.shkalash.SymbolNotifier"
     // TODO: errors.
-    // TODO: add a remove for X time
     var body: some Scene {
         WindowGroup {
             ContentView(viewModel: viewModel , tvSettingsViewModel: tvSettingsViewModel , oneOptionViewModel: oneOptionViewModel)

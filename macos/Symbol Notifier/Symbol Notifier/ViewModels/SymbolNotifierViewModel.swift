@@ -5,7 +5,6 @@ import AppKit
 
 class SymbolNotifierViewModel: ObservableObject {
     
-    
     private let server = HttpServer()
     public private(set) var serverPort: Int = Symbol_NotifierApp.DEFAULT_SERVER_PORT
     private var receivedSymbols = Set<String>()
@@ -14,13 +13,27 @@ class SymbolNotifierViewModel: ObservableObject {
     private var pendingRemovals: [String: DispatchWorkItem] = [:]
 
     @Published private(set) var isServerRunning = false
-    @Published var symbolList: [SymbolItem] = []
-    @Published var ignoreList: [String] = []
-    @Published var showHighlightedOnly = false {
-        didSet{
-            UserDefaults.standard.set(showHighlightedOnly, forKey: showHighlightedKey)
+    @Published var symbolList: [SymbolItem] = [] {
+        didSet {
+            // Recalculate unread count whenever the list changes.
+            updateUnreadCount()
         }
     }
+    @Published var ignoreList: [String] = []
+    
+    // --- Renamed and New Filter Properties ---
+    @Published var showStarredOnly = false {
+        didSet{
+            UserDefaults.standard.set(showStarredOnly, forKey: showStarredKey)
+        }
+    }
+    @Published var showUnreadOnly = false {
+        didSet {
+            UserDefaults.standard.set(showUnreadOnly, forKey: showUnreadKey)
+        }
+    }
+    @Published private(set) var unreadCount: Int = 0
+    
     @Published var showBullish = true
     @Published var showBearish = true
     @Published var toastMessage: Toast?
@@ -42,9 +55,7 @@ class SymbolNotifierViewModel: ObservableObject {
         }
     }
     
-    /// The delay in seconds before a hidden symbol is fully removed from memory.
-    /// This is now a published property and will be saved to UserDefaults.
-    @Published var removalDelay: TimeInterval = 300 { // Default to 5 minutes
+    @Published var removalDelay: TimeInterval = 300 {
         didSet {
             UserDefaults.standard.set(removalDelay, forKey: removalDelayKey)
         }
@@ -53,15 +64,18 @@ class SymbolNotifierViewModel: ObservableObject {
     // Persistence keys
     private let symbolsKey = "SavedSymbols"
     private let ignoreKey = "SavedIgnoreList"
-    private let showHighlightedKey = "ShowHighlightedOnly"
+    private let showStarredKey = "ShowStarredOnly"
+    private let showUnreadKey = "ShowUnreadOnly"
     private let serverPortKey = "ServerPort"
     private let alertSoundFile = "alertSound"
     private let highPriorityAlertSoundFile = "highPriorityAlertSound"
-    private let removalDelayKey = "RemovalDelay" // Key for the new setting
+    private let removalDelayKey = "RemovalDelay"
     
     init() {
         loadPersistence()
     }
+    
+    // --- Server and Notification Logic ---
     
     func setServerPort(_ port: Int) {
         saveServerPort(port)
@@ -71,10 +85,12 @@ class SymbolNotifierViewModel: ObservableObject {
     
     func stopServer() {
         guard isServerRunning else { return }
+        #if DEBUG
         if DesignMode.isRunning {
             isServerRunning = false
             return
         }
+        #endif
         server.stop()
         isServerRunning = false
     }
@@ -82,9 +98,11 @@ class SymbolNotifierViewModel: ObservableObject {
     func startServer() {
         guard !isServerRunning else { return }
         isServerRunning = true
+        #if DEBUG
         if DesignMode.isRunning {
             return
         }
+        #endif
         server["/notify"] = { request in
             let bodyData = Data(request.body)
 
@@ -118,7 +136,7 @@ class SymbolNotifierViewModel: ObservableObject {
             }
         }
     }
-
+    
     private func handleSymbol(_ symbol: String , highPriority: Bool) {
         if ignoreList.contains(symbol) { return }
 
@@ -129,7 +147,6 @@ class SymbolNotifierViewModel: ObservableObject {
         }
         
         if receivedSymbols.contains(symbol) {
-            
             guard highPriority else {
                 print("Ignoring non-high-priority alert for recent symbol: \(symbol)")
                 return
@@ -137,13 +154,14 @@ class SymbolNotifierViewModel: ObservableObject {
             
             print("Received high-priority alert for recent symbol: \(symbol)")
             
-            if !symbolList.contains(where: { $0.symbol == symbol }) {
-                print("Re-activating hidden symbol: \(symbol)")
-                let newItem = SymbolItem(symbol: symbol, receivedAt: Date())
+            if let index = symbolList.firstIndex(where: { $0.symbol == symbol }) {
+                 symbolList[index].isUnread = true
+            } else {
+                let newItem = SymbolItem(symbol: symbol, receivedAt: Date(), isUnread: true)
                 symbolList.insert(newItem, at: 0)
-                saveSymbols()
             }
             
+            saveSymbols()
             showNotification(for: symbol, highPriority: true)
             return
         }
@@ -156,7 +174,6 @@ class SymbolNotifierViewModel: ObservableObject {
         showNotification(for: symbol , highPriority: highPriority)
     }
     
-    /// Removes a symbol from the visible list and schedules its full removal from memory after a delay.
     func hideSymbol(_ item: SymbolItem) {
         symbolList.removeAll { $0.id == item.id }
         saveSymbols()
@@ -175,7 +192,7 @@ class SymbolNotifierViewModel: ObservableObject {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + removalDelay, execute: workItem)
     }
-
+    
     func showNotification(for symbol: String, highPriority: Bool) {
         if isAppActive {
             showToast(for: symbol , highPriority: highPriority)
@@ -193,7 +210,7 @@ class SymbolNotifierViewModel: ObservableObject {
             }
         }
     }
-
+    
     private var isAppActive: Bool {
         NSApplication.shared.isActive
     }
@@ -203,15 +220,30 @@ class SymbolNotifierViewModel: ObservableObject {
                              duration: 2.0, width: 350.0 , sound: highPriority ? highPriorityAlertSound : alertSound)
     }
 
+    // --- List Management ---
+
     func clearSymbols() {
+        for (_, task) in pendingRemovals {
+            task.cancel()
+        }
+        pendingRemovals.removeAll()
+        print("Cancelled all pending symbol removals.")
+        
         receivedSymbols.removeAll()
         symbolList.removeAll()
         saveSymbols()
     }
+    
+    func markAsRead(_ item: SymbolItem) {
+        if let index = symbolList.firstIndex(of: item) {
+            symbolList[index].isUnread = false
+            saveSymbols()
+        }
+    }
 
-    func toggleHighlight(_ item: SymbolItem) {
+    func toggleStarred(_ item: SymbolItem) {
         if let idx = symbolList.firstIndex(of: item) {
-            symbolList[idx].isHighlighted.toggle()
+            symbolList[idx].isStarred.toggle()
             saveSymbols()
         }
     }
@@ -223,7 +255,7 @@ class SymbolNotifierViewModel: ObservableObject {
         }
     }
 
-    // Ignore List Management
+    // --- Ignore List Management ---
     func addToIgnore(_ symbol: String) {
         let upperSymbol = symbol.uppercased()
         if !ignoreList.contains(upperSymbol) {
@@ -239,8 +271,18 @@ class SymbolNotifierViewModel: ObservableObject {
         ignoreList.removeAll(where: { $0 == symbol })
         saveIgnoreList()
     }
+    
+    func clearIgnoreList() {
+        ignoreList.removeAll()
+        saveIgnoreList()
+    }
+    
+    // --- Unread Count ---
+    private func updateUnreadCount() {
+        unreadCount = symbolList.filter { $0.isUnread }.count
+    }
 
-    // Persistence
+    // --- Persistence ---
     private func saveSymbols() {
         if let data = try? JSONEncoder().encode(symbolList) {
             UserDefaults.standard.set(data, forKey: symbolsKey)
@@ -257,26 +299,23 @@ class SymbolNotifierViewModel: ObservableObject {
         if let ignoreData = UserDefaults.standard.array(forKey: ignoreKey) as? [String] {
             ignoreList = ignoreData
         }
-
-        showHighlightedOnly = UserDefaults.standard.bool(forKey: showHighlightedKey)
+        
+        showStarredOnly = UserDefaults.standard.bool(forKey: showStarredKey)
+        showUnreadOnly = UserDefaults.standard.bool(forKey: showUnreadKey)
         
         let userPort = UserDefaults.standard.integer(forKey: serverPortKey)
-        if userPort > 0 {
-            serverPort = userPort
-        }
+        if userPort > 0 { serverPort = userPort }
         
-        // --- Load the removal delay ---
-        let savedDelay = UserDefaults.standard.double(forKey: removalDelayKey)
-        // Only set if a value has been previously saved. Otherwise, use the default.
         if UserDefaults.standard.object(forKey: removalDelayKey) != nil {
-             removalDelay = savedDelay
+             removalDelay = UserDefaults.standard.double(forKey: removalDelayKey)
         }
         
         let audioFiles = NSSound.bundledSoundNames
         alertSound = UserDefaults.standard.string(forKey: alertSoundFile) ?? (audioFiles.count > 0 ? audioFiles[0] : "")
         highPriorityAlertSound = UserDefaults.standard.string(forKey: highPriorityAlertSoundFile) ?? (audioFiles.count > 1 ? audioFiles[1] : "")
+        
+        updateUnreadCount()
     }
-    
     
     private func saveServerPort(_ port: Int) {
         serverPort = port
@@ -286,16 +325,5 @@ class SymbolNotifierViewModel: ObservableObject {
     private func saveIgnoreList() {
         UserDefaults.standard.set(ignoreList, forKey: ignoreKey)
     }
-
-    func clearIgnoreList() {
-        ignoreList.removeAll()
-        saveIgnoreList()
-    }
 }
 
-// Helper struct for preview mode detection
-fileprivate struct DesignMode {
-    static var isRunning: Bool {
-        ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
-    }
-}
