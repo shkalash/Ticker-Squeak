@@ -13,11 +13,13 @@ struct Symbol_NotifierApp: App {
     static let DEFAULT_SERVER_PORT = 4113
     @StateObject private var viewModel = SymbolNotifierViewModel()
     @StateObject var tvSettingsViewModel = TVViewModel()
+    @StateObject var oneOptionViewModel = OneOptionViewModel()
     let windowName = "io.shkalash.SymbolNotifier"
     // TODO: errors.
+    // TODO: add a remove for X time
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: viewModel , tvSettingsViewModel: tvSettingsViewModel)
+            ContentView(viewModel: viewModel , tvSettingsViewModel: tvSettingsViewModel , oneOptionViewModel: oneOptionViewModel)
                 .background(WindowAccessor { window in
                     // Load saved frame
                     if let frameString = UserDefaults.standard.string(forKey: windowName) {

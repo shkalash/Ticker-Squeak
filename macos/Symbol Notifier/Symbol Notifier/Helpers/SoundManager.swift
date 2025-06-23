@@ -15,13 +15,21 @@ actor SoundManager {
 
     // This property is protected by the actor.
     private var lastPlayedTime: Date?
+    
+    func setMuted(_ muted: Bool) {
+        self.muted = muted
+    }
+    
+    private var muted: Bool = false
 
     /// Plays a sound by name, but only if the cooldown period has passed.
     /// - Parameters:
     ///   - soundName: The name of the sound file (e.g., "sound01").
     ///   - cooldown: The minimum time that must pass before playing the sound again, in seconds.
     func playSoundForNotification(named soundName: String, cooldown: TimeInterval) {
-        
+        if (muted){
+            return
+        }
         guard soundName.isEmpty == false else {
             print("Empty sound requested. Ignoring.")
             return

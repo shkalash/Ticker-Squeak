@@ -11,17 +11,17 @@ import SwiftUI
 struct SettingsView: View {
     @ObservedObject var viewModel: SymbolNotifierViewModel
     @ObservedObject var tvSettingsViewModel: TVViewModel
-
+    @ObservedObject var oneOptionViewModel : OneOptionViewModel
     @AppStorage("settingsTabIndex") private var selectedTab: Int = 0
 
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             IconTabPicker(selection: $selectedTab, options: [
-                PickerOption(label: "Server", imageName: "dot.radiowaves.left.and.right", tag: 0),
-                PickerOption(label: "Audio", imageName: "speaker.wave.2.fill", tag: 1),
-                PickerOption(label: "TradingView", imageName: "tradingview", tag: 2, imageType: .asset),
-                PickerOption(label: "OneOption", imageName: "oneoption", tag: 3 , imageType: .asset),
+                PickerOption(label: "", imageName: "dot.radiowaves.left.and.right", tag: 0),
+                PickerOption(label: "", imageName: "speaker.wave.2.fill", tag: 1),
+                PickerOption(label: "", imageName: "tradingview", tag: 2, imageType: .asset),
+                PickerOption(label: "", imageName: "oneoption", tag: 3 , imageType: .asset),
             ])
             .padding(.bottom, 8)
             
@@ -33,10 +33,14 @@ struct SettingsView: View {
                     case 0:
                         ServerPortView(viewModel: viewModel)
                         ServerStatusView(viewModel: viewModel)
+                        Divider()
+                            RemovalDelayEditorView(removalDelay: $viewModel.removalDelay)
                     case 1:
                         AlertMessageSettingsView(viewModel: viewModel)
                     case 2:
                         TVSettingsView(viewModel: tvSettingsViewModel)
+                    case 3:
+                        OneOptionSettingsView(viewModel: oneOptionViewModel)
                     default:
                         EmptyView()
                     }
@@ -47,5 +51,5 @@ struct SettingsView: View {
     }
 }
 #Preview {
-    SettingsView(viewModel: SymbolNotifierViewModel(), tvSettingsViewModel: TVViewModel())
+    SettingsView(viewModel: SymbolNotifierViewModel(), tvSettingsViewModel: TVViewModel() , oneOptionViewModel: OneOptionViewModel())
 }

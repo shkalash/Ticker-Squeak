@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var viewModel: SymbolNotifierViewModel
     @ObservedObject var tvSettingsViewModel: TVViewModel
+    @ObservedObject var oneOptionViewModel: OneOptionViewModel
     @State private var selectedTab = 0
     @State private var showIgnoreInput = false
     @State private var ignoreInputText = ""
@@ -19,6 +20,7 @@ struct ContentView: View {
             switch selectedTab {
                 case 0:
                     SymbolListView(viewModel: viewModel){ symbol in
+                        oneOptionViewModel.openChartInOneOptionApp(symbol: symbol)
                         tvSettingsViewModel.showSymbolInTradingView(symbol)
                     }
                 case 1:
@@ -28,14 +30,13 @@ struct ContentView: View {
                         ignoreInputText: $ignoreInputText
                     )
                 case 2:
-                    SettingsView(viewModel: viewModel, tvSettingsViewModel: tvSettingsViewModel)
+                    SettingsView(viewModel: viewModel, tvSettingsViewModel: tvSettingsViewModel, oneOptionViewModel: oneOptionViewModel)
                 default:
                     Text("Unknown")
             }
 
             
         }
-        .frame(width: 350, height: 450)
         .toastView(toast: $viewModel.toastMessage)
         .sheet(isPresented: $showIgnoreInput) {
             IgnoreInputSheet(
@@ -51,5 +52,5 @@ struct ContentView: View {
     }
 }
 #Preview {
-    ContentView(viewModel: SymbolNotifierViewModel(), tvSettingsViewModel: TVViewModel())
+    ContentView(viewModel: SymbolNotifierViewModel(), tvSettingsViewModel: TVViewModel() , oneOptionViewModel: OneOptionViewModel())
 }

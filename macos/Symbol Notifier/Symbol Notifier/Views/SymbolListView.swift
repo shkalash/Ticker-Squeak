@@ -43,7 +43,7 @@ struct SymbolListView: View {
                 Button(action: {
                     viewModel.showHighlightedOnly.toggle()
                 }) {
-                    Image(systemName: viewModel.showHighlightedOnly ? "bell.fill" : "bell.slash.fill")
+                    Image(systemName: viewModel.showHighlightedOnly ? "star.fill" : "star.slash.fill")
                         .foregroundColor(viewModel.showHighlightedOnly ? .yellow : .gray)
                 }
                 .buttonStyle(.bordered)
@@ -79,7 +79,15 @@ struct SymbolListView: View {
                 }
                 .buttonStyle(.bordered)
                 .foregroundColor(.primary)
-                
+                Button(action: {
+                    viewModel.muteNotifications.toggle()
+                }) {
+                    Image(systemName: viewModel.muteNotifications ?
+                          "speaker.slash" : "speaker.wave.3"
+                          )
+                }
+                .buttonStyle(.bordered)
+                .padding(.horizontal)
                 Spacer()
                 Button(action : {
                     viewModel.clearSymbols()
@@ -94,13 +102,13 @@ struct SymbolListView: View {
                     Button(action: {
                         viewModel.toggleHighlight(item)
                     }) {
-                        Image(systemName: item.isHighlighted ? "bell.fill" : "bell.slash.fill")
+                        Image(systemName: item.isHighlighted ? "star.fill" : "star.slash.fill")
                             .foregroundColor(item.isHighlighted ? .yellow : .gray)
                     }
                     .buttonStyle(BorderlessButtonStyle())
                     DirectionButton(item: Binding(
                         get: { item },
-                        set: { viewModel.updateItem($0) } // You’ll need to implement updateItem(_:) in your view model
+                        set: { viewModel.updateItem($0) }
                     ))
                     Button(action: {
                         self.onClick(item.symbol)
@@ -114,6 +122,13 @@ struct SymbolListView: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                     Spacer()
+                    Button(action: {
+                        viewModel.hideSymbol(item)
+                    }) {
+                        Image(systemName: "timer")
+                            .foregroundColor(.blue)
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
                     
                     Text((item.receivedAt.formatted(date: .omitted, time: .shortened)))
                     Button(action: {
