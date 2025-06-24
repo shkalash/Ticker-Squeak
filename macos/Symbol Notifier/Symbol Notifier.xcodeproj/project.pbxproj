@@ -43,11 +43,6 @@
 				Audio/sound09.aiff,
 				Audio/sound10.aiff,
 				Audio/sound11.aiff,
-				Audio/sound12.aiff,
-				Audio/sound13.aiff,
-				Audio/sound14.aiff,
-				Audio/sound15.aiff,
-				Audio/sound16.aiff,
 			);
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
