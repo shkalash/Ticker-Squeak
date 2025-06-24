@@ -28,21 +28,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		F648B5942E09606600D5600A /* Exceptions for "Symbol Notifier" folder in "Copy Audio" phase from "Symbol Notifier" target */ = {
+		F6B5088D2E0AC14D00F73D63 /* Exceptions for "Symbol Notifier" folder in "Copy Audio" phase from "Symbol Notifier" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = F63D48842E09562D00C78781 /* Copy Audio */;
 			membershipExceptions = (
-				Audio/sound01.aiff,
-				Audio/sound02.aiff,
-				Audio/sound03.aiff,
-				Audio/sound04.aiff,
-				Audio/sound05.aiff,
-				Audio/sound06.aiff,
-				Audio/sound07.aiff,
-				Audio/sound08.aiff,
-				Audio/sound09.aiff,
-				Audio/sound10.aiff,
-				Audio/sound11.aiff,
+				Audio/4Notes.aiff,
+				Audio/Awaken.aiff,
+				Audio/Bowl.aiff,
+				Audio/Deepen.aiff,
+				Audio/Dot.aiff,
+				Audio/Droplet.aiff,
+				Audio/Glass.aiff,
+				Audio/Gling.aiff,
+				Audio/Sonar.aiff,
+				Audio/Spring.aiff,
+				Audio/Tada.aiff,
 			);
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
@@ -51,7 +51,7 @@
 		F698C2DB2E06FFAE000CA939 /* Symbol Notifier */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				F648B5942E09606600D5600A /* Exceptions for "Symbol Notifier" folder in "Copy Audio" phase from "Symbol Notifier" target */,
+				F6B5088D2E0AC14D00F73D63 /* Exceptions for "Symbol Notifier" folder in "Copy Audio" phase from "Symbol Notifier" target */,
 			);
 			path = "Symbol Notifier";
 			sourceTree = "<group>";
