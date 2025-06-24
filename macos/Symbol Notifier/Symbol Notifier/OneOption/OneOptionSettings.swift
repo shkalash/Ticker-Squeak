@@ -28,7 +28,7 @@ enum TimeFrame: String, CaseIterable, Codable {
 
     /// A user-friendly name for display in the UI.
     var displayName: String {
-        return self.rawValue
+        return self == .none ? "Chart" : self.rawValue
     }
 
     /// The string value to be used in the URL query. Returns `nil` for `.none`.
