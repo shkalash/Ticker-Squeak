@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticker Squeak</title>
+    
+    <link rel="stylesheet" href="popup.css">
+    
+    <script src="config.js"></script>
+    <script src="popup.js" defer></script>
+</head>
+<body>
+    <!-- Main Popup Content -->
+    <div class="container">
+        <header>
+            <h1>Ticker Squeak</h1>
+        </header>
+
+        <section>
+            <h3>Discord Channel Whitelist</h3>
+            <div id="whitelist-container">
+                <ul id="whitelist-list"></ul>
+            </div>
+            <!-- This button is now more general -->
+            <button id="show-add-modal-btn">Add Channel</button>
+        </section>
+
+        <section>
+            <h3>Settings</h3>
+            <div class="setting-item">
+                <label for="notify-port">Notification Port:</label>
+                <input type="number" id="notify-port" min="1" max="65535" value="4113">
+            </div>
+            <button id="save-settings" class="save-btn">Save Settings</button>
+        </section>
+    </div>
+
+    <!-- Custom Modal for Entering Channel Name -->
+    <div id="modal-container" class="modal-hidden">
+        <div class="modal-content">
+            <h4>Add Whitelisted Channel</h4>
+            
+            <!-- This section is for manually entering a URL. It will be hidden if a URL is detected automatically. -->
+            <div id="modal-url-wrapper" class="modal-hidden">
+                <label for="modal-channel-url">Channel URL</label>
+                <input type="text" id="modal-channel-url" placeholder="https://discord.com/channels/...">
+            </div>
+
+            <div>
+                <label for="modal-channel-name">Friendly Name</label>
+                <input type="text" id="modal-channel-name" placeholder="e.g., #day-trades">
+            </div>
+
+            <div class="modal-buttons">
+                <button id="modal-cancel-btn">Cancel</button>
+                <button id="modal-save-btn">Save</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

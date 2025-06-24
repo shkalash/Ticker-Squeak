@@ -1,0 +1,682 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F698C2EA2E0700F6000CA939 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = F698C2E92E0700F6000CA939 /* Swifter */; };
+		F6CE02222E0ACFDD0068E717 /* 4Notes.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E42E0ACCAE00E46FE6 /* 4Notes.aiff */; };
+		F6CE02232E0ACFDD0068E717 /* Awaken.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E52E0ACCAE00E46FE6 /* Awaken.aiff */; };
+		F6CE02242E0ACFDD0068E717 /* Bowl.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E62E0ACCAE00E46FE6 /* Bowl.aiff */; };
+		F6CE02252E0ACFDD0068E717 /* Deepen.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E72E0ACCAE00E46FE6 /* Deepen.aiff */; };
+		F6CE02262E0ACFDD0068E717 /* Dot.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E82E0ACCAE00E46FE6 /* Dot.aiff */; };
+		F6CE02272E0ACFDD0068E717 /* Droplet.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E92E0ACCAE00E46FE6 /* Droplet.aiff */; };
+		F6CE02282E0ACFDD0068E717 /* Glass.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8EA2E0ACCAE00E46FE6 /* Glass.aiff */; };
+		F6CE02292E0ACFDD0068E717 /* Gling.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8EB2E0ACCAE00E46FE6 /* Gling.aiff */; };
+		F6CE022A2E0ACFDD0068E717 /* Sonar.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8EC2E0ACCAE00E46FE6 /* Sonar.aiff */; };
+		F6CE022B2E0ACFDD0068E717 /* Spring.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8ED2E0ACCAE00E46FE6 /* Spring.aiff */; };
+		F6CE022C2E0ACFDD0068E717 /* Tada.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8EE2E0ACCAE00E46FE6 /* Tada.aiff */; };
+		F6EEE9222E0ACCAE00E46FE6 /* TVSettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9062E0ACCAE00E46FE6 /* TVSettingsData.swift */; };
+		F6EEE9232E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9112E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift */; };
+		F6EEE9242E0ACCAE00E46FE6 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90A2E0ACCAE00E46FE6 /* Toast.swift */; };
+		F6EEE9252E0ACCAE00E46FE6 /* ServerPortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9162E0ACCAE00E46FE6 /* ServerPortView.swift */; };
+		F6EEE9262E0ACCAE00E46FE6 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8FD2E0ACCAE00E46FE6 /* SoundManager.swift */; };
+		F6EEE9272E0ACCAE00E46FE6 /* TickerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE91C2E0ACCAE00E46FE6 /* TickerListView.swift */; };
+		F6EEE9282E0ACCAE00E46FE6 /* WindowAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8FE2E0ACCAE00E46FE6 /* WindowAccessor.swift */; };
+		F6EEE9292E0ACCAE00E46FE6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE91A2E0ACCAE00E46FE6 /* ContentView.swift */; };
+		F6EEE92A2E0ACCAE00E46FE6 /* TVViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9082E0ACCAE00E46FE6 /* TVViewModel.swift */; };
+		F6EEE92B2E0ACCAE00E46FE6 /* AlertMessageSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9152E0ACCAE00E46FE6 /* AlertMessageSettingsView.swift */; };
+		F6EEE92C2E0ACCAE00E46FE6 /* TVSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9072E0ACCAE00E46FE6 /* TVSettingsView.swift */; };
+		F6EEE92D2E0ACCAE00E46FE6 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8F52E0ACCAE00E46FE6 /* AppError.swift */; };
+		F6EEE92E2E0ACCAE00E46FE6 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90D2E0ACCAE00E46FE6 /* ToastView.swift */; };
+		F6EEE92F2E0ACCAE00E46FE6 /* OneOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9022E0ACCAE00E46FE6 /* OneOptionViewModel.swift */; };
+		F6EEE9302E0ACCAE00E46FE6 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9182E0ACCAE00E46FE6 /* SettingsView.swift */; };
+		F6EEE9312E0ACCAE00E46FE6 /* TickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8F32E0ACCAE00E46FE6 /* TickerItem.swift */; };
+		F6EEE9322E0ACCAE00E46FE6 /* IconTabPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9102E0ACCAE00E46FE6 /* IconTabPicker.swift */; };
+		F6EEE9332E0ACCAE00E46FE6 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8FA2E0ACCAE00E46FE6 /* View.swift */; };
+		F6EEE9342E0ACCAE00E46FE6 /* NSSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8F92E0ACCAE00E46FE6 /* NSSound.swift */; };
+		F6EEE9352E0ACCAE00E46FE6 /* Symbol_NotifierApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9202E0ACCAE00E46FE6 /* Symbol_NotifierApp.swift */; };
+		F6EEE9362E0ACCAE00E46FE6 /* OneOptionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9012E0ACCAE00E46FE6 /* OneOptionSettingsView.swift */; };
+		F6EEE9372E0ACCAE00E46FE6 /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90B2E0ACCAE00E46FE6 /* ToastModifier.swift */; };
+		F6EEE9382E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9132E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift */; };
+		F6EEE9392E0ACCAE00E46FE6 /* IgnoreInputSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9042E0ACCAE00E46FE6 /* IgnoreInputSheet.swift */; };
+		F6EEE93A2E0ACCAE00E46FE6 /* IgnoreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE91B2E0ACCAE00E46FE6 /* IgnoreListView.swift */; };
+		F6EEE93B2E0ACCAE00E46FE6 /* DirectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90F2E0ACCAE00E46FE6 /* DirectionButton.swift */; };
+		F6EEE93C2E0ACCAE00E46FE6 /* DesignMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8FC2E0ACCAE00E46FE6 /* DesignMode.swift */; };
+		F6EEE93D2E0ACCAE00E46FE6 /* ToastStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90C2E0ACCAE00E46FE6 /* ToastStyle.swift */; };
+		F6EEE93E2E0ACCAE00E46FE6 /* ErrorDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8F62E0ACCAE00E46FE6 /* ErrorDialogView.swift */; };
+		F6EEE93F2E0ACCAE00E46FE6 /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8F72E0ACCAE00E46FE6 /* ErrorManager.swift */; };
+		F6EEE9402E0ACCAE00E46FE6 /* OneOptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9002E0ACCAE00E46FE6 /* OneOptionSettings.swift */; };
+		F6EEE9412E0ACCAE00E46FE6 /* ServerStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9172E0ACCAE00E46FE6 /* ServerStatusView.swift */; };
+		F6EEE9422E0ACCAE00E46FE6 /* Sonar.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8EC2E0ACCAE00E46FE6 /* Sonar.aiff */; };
+		F6EEE9432E0ACCAE00E46FE6 /* Gling.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8EB2E0ACCAE00E46FE6 /* Gling.aiff */; };
+		F6EEE9442E0ACCAE00E46FE6 /* Droplet.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8E92E0ACCAE00E46FE6 /* Droplet.aiff */; };
+		F6EEE9452E0ACCAE00E46FE6 /* Tada.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8EE2E0ACCAE00E46FE6 /* Tada.aiff */; };
+		F6EEE9472E0ACCAE00E46FE6 /* 4Notes.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8E42E0ACCAE00E46FE6 /* 4Notes.aiff */; };
+		F6EEE9482E0ACCAE00E46FE6 /* Dot.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8E82E0ACCAE00E46FE6 /* Dot.aiff */; };
+		F6EEE9492E0ACCAE00E46FE6 /* Spring.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8ED2E0ACCAE00E46FE6 /* Spring.aiff */; };
+		F6EEE94A2E0ACCAE00E46FE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE91E2E0ACCAE00E46FE6 /* Assets.xcassets */; };
+		F6EEE94B2E0ACCAE00E46FE6 /* Bowl.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8E62E0ACCAE00E46FE6 /* Bowl.aiff */; };
+		F6EEE94C2E0ACCAE00E46FE6 /* Awaken.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8E52E0ACCAE00E46FE6 /* Awaken.aiff */; };
+		F6EEE94D2E0ACCAE00E46FE6 /* Deepen.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8E72E0ACCAE00E46FE6 /* Deepen.aiff */; };
+		F6EEE94E2E0ACCAE00E46FE6 /* Glass.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8EA2E0ACCAE00E46FE6 /* Glass.aiff */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F63D48842E09562D00C78781 /* Copy Audio */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/Sounds;
+			dstSubfolderSpec = 1;
+			files = (
+				F6CE02222E0ACFDD0068E717 /* 4Notes.aiff in Copy Audio */,
+				F6CE02232E0ACFDD0068E717 /* Awaken.aiff in Copy Audio */,
+				F6CE02242E0ACFDD0068E717 /* Bowl.aiff in Copy Audio */,
+				F6CE02252E0ACFDD0068E717 /* Deepen.aiff in Copy Audio */,
+				F6CE02262E0ACFDD0068E717 /* Dot.aiff in Copy Audio */,
+				F6CE02272E0ACFDD0068E717 /* Droplet.aiff in Copy Audio */,
+				F6CE02282E0ACFDD0068E717 /* Glass.aiff in Copy Audio */,
+				F6CE02292E0ACFDD0068E717 /* Gling.aiff in Copy Audio */,
+				F6CE022A2E0ACFDD0068E717 /* Sonar.aiff in Copy Audio */,
+				F6CE022B2E0ACFDD0068E717 /* Spring.aiff in Copy Audio */,
+				F6CE022C2E0ACFDD0068E717 /* Tada.aiff in Copy Audio */,
+			);
+			name = "Copy Audio";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F698C2D92E06FFAE000CA939 /* TickerSqueak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TickerSqueak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6EEE8E42E0ACCAE00E46FE6 /* 4Notes.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = 4Notes.aiff; sourceTree = "<group>"; };
+		F6EEE8E52E0ACCAE00E46FE6 /* Awaken.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Awaken.aiff; sourceTree = "<group>"; };
+		F6EEE8E62E0ACCAE00E46FE6 /* Bowl.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Bowl.aiff; sourceTree = "<group>"; };
+		F6EEE8E72E0ACCAE00E46FE6 /* Deepen.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Deepen.aiff; sourceTree = "<group>"; };
+		F6EEE8E82E0ACCAE00E46FE6 /* Dot.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Dot.aiff; sourceTree = "<group>"; };
+		F6EEE8E92E0ACCAE00E46FE6 /* Droplet.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Droplet.aiff; sourceTree = "<group>"; };
+		F6EEE8EA2E0ACCAE00E46FE6 /* Glass.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Glass.aiff; sourceTree = "<group>"; };
+		F6EEE8EB2E0ACCAE00E46FE6 /* Gling.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Gling.aiff; sourceTree = "<group>"; };
+		F6EEE8EC2E0ACCAE00E46FE6 /* Sonar.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Sonar.aiff; sourceTree = "<group>"; };
+		F6EEE8ED2E0ACCAE00E46FE6 /* Spring.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Spring.aiff; sourceTree = "<group>"; };
+		F6EEE8EE2E0ACCAE00E46FE6 /* Tada.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Tada.aiff; sourceTree = "<group>"; };
+		F6EEE8F32E0ACCAE00E46FE6 /* TickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerItem.swift; sourceTree = "<group>"; };
+		F6EEE8F52E0ACCAE00E46FE6 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
+		F6EEE8F62E0ACCAE00E46FE6 /* ErrorDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDialogView.swift; sourceTree = "<group>"; };
+		F6EEE8F72E0ACCAE00E46FE6 /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
+		F6EEE8F92E0ACCAE00E46FE6 /* NSSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSSound.swift; sourceTree = "<group>"; };
+		F6EEE8FA2E0ACCAE00E46FE6 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		F6EEE8FC2E0ACCAE00E46FE6 /* DesignMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignMode.swift; sourceTree = "<group>"; };
+		F6EEE8FD2E0ACCAE00E46FE6 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
+		F6EEE8FE2E0ACCAE00E46FE6 /* WindowAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowAccessor.swift; sourceTree = "<group>"; };
+		F6EEE9002E0ACCAE00E46FE6 /* OneOptionSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneOptionSettings.swift; sourceTree = "<group>"; };
+		F6EEE9012E0ACCAE00E46FE6 /* OneOptionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneOptionSettingsView.swift; sourceTree = "<group>"; };
+		F6EEE9022E0ACCAE00E46FE6 /* OneOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneOptionViewModel.swift; sourceTree = "<group>"; };
+		F6EEE9042E0ACCAE00E46FE6 /* IgnoreInputSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreInputSheet.swift; sourceTree = "<group>"; };
+		F6EEE9062E0ACCAE00E46FE6 /* TVSettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVSettingsData.swift; sourceTree = "<group>"; };
+		F6EEE9072E0ACCAE00E46FE6 /* TVSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVSettingsView.swift; sourceTree = "<group>"; };
+		F6EEE9082E0ACCAE00E46FE6 /* TVViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVViewModel.swift; sourceTree = "<group>"; };
+		F6EEE90A2E0ACCAE00E46FE6 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		F6EEE90B2E0ACCAE00E46FE6 /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
+		F6EEE90C2E0ACCAE00E46FE6 /* ToastStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastStyle.swift; sourceTree = "<group>"; };
+		F6EEE90D2E0ACCAE00E46FE6 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		F6EEE90F2E0ACCAE00E46FE6 /* DirectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionButton.swift; sourceTree = "<group>"; };
+		F6EEE9102E0ACCAE00E46FE6 /* IconTabPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTabPicker.swift; sourceTree = "<group>"; };
+		F6EEE9112E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemovalDelayEditorView.swift; sourceTree = "<group>"; };
+		F6EEE9132E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerSqueakViewModel.swift; sourceTree = "<group>"; };
+		F6EEE9152E0ACCAE00E46FE6 /* AlertMessageSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageSettingsView.swift; sourceTree = "<group>"; };
+		F6EEE9162E0ACCAE00E46FE6 /* ServerPortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerPortView.swift; sourceTree = "<group>"; };
+		F6EEE9172E0ACCAE00E46FE6 /* ServerStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerStatusView.swift; sourceTree = "<group>"; };
+		F6EEE9182E0ACCAE00E46FE6 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F6EEE91A2E0ACCAE00E46FE6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F6EEE91B2E0ACCAE00E46FE6 /* IgnoreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreListView.swift; sourceTree = "<group>"; };
+		F6EEE91C2E0ACCAE00E46FE6 /* TickerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerListView.swift; sourceTree = "<group>"; };
+		F6EEE91E2E0ACCAE00E46FE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F6EEE91F2E0ACCAE00E46FE6 /* TickerSqueak.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TickerSqueak.entitlements; sourceTree = "<group>"; };
+		F6EEE9202E0ACCAE00E46FE6 /* Symbol_NotifierApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbol_NotifierApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F698C2D62E06FFAE000CA939 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F698C2EA2E0700F6000CA939 /* Swifter in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F698C2D02E06FFAE000CA939 = {
+			isa = PBXGroup;
+			children = (
+				F6EEE9212E0ACCAE00E46FE6 /* TickerSqueak */,
+				F698C2DA2E06FFAE000CA939 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F698C2DA2E06FFAE000CA939 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F698C2D92E06FFAE000CA939 /* TickerSqueak.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F6EEE8EF2E0ACCAE00E46FE6 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE8E42E0ACCAE00E46FE6 /* 4Notes.aiff */,
+				F6EEE8E52E0ACCAE00E46FE6 /* Awaken.aiff */,
+				F6EEE8E62E0ACCAE00E46FE6 /* Bowl.aiff */,
+				F6EEE8E72E0ACCAE00E46FE6 /* Deepen.aiff */,
+				F6EEE8E82E0ACCAE00E46FE6 /* Dot.aiff */,
+				F6EEE8E92E0ACCAE00E46FE6 /* Droplet.aiff */,
+				F6EEE8EA2E0ACCAE00E46FE6 /* Glass.aiff */,
+				F6EEE8EB2E0ACCAE00E46FE6 /* Gling.aiff */,
+				F6EEE8EC2E0ACCAE00E46FE6 /* Sonar.aiff */,
+				F6EEE8ED2E0ACCAE00E46FE6 /* Spring.aiff */,
+				F6EEE8EE2E0ACCAE00E46FE6 /* Tada.aiff */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		F6EEE8F22E0ACCAE00E46FE6 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Build;
+			sourceTree = "<group>";
+		};
+		F6EEE8F42E0ACCAE00E46FE6 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE8F32E0ACCAE00E46FE6 /* TickerItem.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		F6EEE8F82E0ACCAE00E46FE6 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE8F52E0ACCAE00E46FE6 /* AppError.swift */,
+				F6EEE8F62E0ACCAE00E46FE6 /* ErrorDialogView.swift */,
+				F6EEE8F72E0ACCAE00E46FE6 /* ErrorManager.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		F6EEE8FB2E0ACCAE00E46FE6 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE8F92E0ACCAE00E46FE6 /* NSSound.swift */,
+				F6EEE8FA2E0ACCAE00E46FE6 /* View.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F6EEE8FF2E0ACCAE00E46FE6 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE8FC2E0ACCAE00E46FE6 /* DesignMode.swift */,
+				F6EEE8FD2E0ACCAE00E46FE6 /* SoundManager.swift */,
+				F6EEE8FE2E0ACCAE00E46FE6 /* WindowAccessor.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		F6EEE9032E0ACCAE00E46FE6 /* OneOption */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE9002E0ACCAE00E46FE6 /* OneOptionSettings.swift */,
+				F6EEE9012E0ACCAE00E46FE6 /* OneOptionSettingsView.swift */,
+				F6EEE9022E0ACCAE00E46FE6 /* OneOptionViewModel.swift */,
+			);
+			path = OneOption;
+			sourceTree = "<group>";
+		};
+		F6EEE9052E0ACCAE00E46FE6 /* Sheets */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE9042E0ACCAE00E46FE6 /* IgnoreInputSheet.swift */,
+			);
+			path = Sheets;
+			sourceTree = "<group>";
+		};
+		F6EEE9092E0ACCAE00E46FE6 /* TradingView */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE9062E0ACCAE00E46FE6 /* TVSettingsData.swift */,
+				F6EEE9072E0ACCAE00E46FE6 /* TVSettingsView.swift */,
+				F6EEE9082E0ACCAE00E46FE6 /* TVViewModel.swift */,
+			);
+			path = TradingView;
+			sourceTree = "<group>";
+		};
+		F6EEE90E2E0ACCAE00E46FE6 /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE90A2E0ACCAE00E46FE6 /* Toast.swift */,
+				F6EEE90B2E0ACCAE00E46FE6 /* ToastModifier.swift */,
+				F6EEE90C2E0ACCAE00E46FE6 /* ToastStyle.swift */,
+				F6EEE90D2E0ACCAE00E46FE6 /* ToastView.swift */,
+			);
+			path = Toast;
+			sourceTree = "<group>";
+		};
+		F6EEE9122E0ACCAE00E46FE6 /* UILib */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE90E2E0ACCAE00E46FE6 /* Toast */,
+				F6EEE90F2E0ACCAE00E46FE6 /* DirectionButton.swift */,
+				F6EEE9102E0ACCAE00E46FE6 /* IconTabPicker.swift */,
+				F6EEE9112E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift */,
+			);
+			path = UILib;
+			sourceTree = "<group>";
+		};
+		F6EEE9142E0ACCAE00E46FE6 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE9132E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		F6EEE9192E0ACCAE00E46FE6 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE9152E0ACCAE00E46FE6 /* AlertMessageSettingsView.swift */,
+				F6EEE9162E0ACCAE00E46FE6 /* ServerPortView.swift */,
+				F6EEE9172E0ACCAE00E46FE6 /* ServerStatusView.swift */,
+				F6EEE9182E0ACCAE00E46FE6 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		F6EEE91D2E0ACCAE00E46FE6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE9192E0ACCAE00E46FE6 /* Settings */,
+				F6EEE91A2E0ACCAE00E46FE6 /* ContentView.swift */,
+				F6EEE91B2E0ACCAE00E46FE6 /* IgnoreListView.swift */,
+				F6EEE91C2E0ACCAE00E46FE6 /* TickerListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F6EEE9212E0ACCAE00E46FE6 /* TickerSqueak */ = {
+			isa = PBXGroup;
+			children = (
+				F6EEE8EF2E0ACCAE00E46FE6 /* Audio */,
+				F6EEE8F22E0ACCAE00E46FE6 /* Build */,
+				F6EEE8F42E0ACCAE00E46FE6 /* Data */,
+				F6EEE8F82E0ACCAE00E46FE6 /* Errors */,
+				F6EEE8FB2E0ACCAE00E46FE6 /* Extensions */,
+				F6EEE8FF2E0ACCAE00E46FE6 /* Helpers */,
+				F6EEE9032E0ACCAE00E46FE6 /* OneOption */,
+				F6EEE9052E0ACCAE00E46FE6 /* Sheets */,
+				F6EEE9092E0ACCAE00E46FE6 /* TradingView */,
+				F6EEE9122E0ACCAE00E46FE6 /* UILib */,
+				F6EEE9142E0ACCAE00E46FE6 /* ViewModels */,
+				F6EEE91D2E0ACCAE00E46FE6 /* Views */,
+				F6EEE91E2E0ACCAE00E46FE6 /* Assets.xcassets */,
+				F6EEE91F2E0ACCAE00E46FE6 /* TickerSqueak.entitlements */,
+				F6EEE9202E0ACCAE00E46FE6 /* Symbol_NotifierApp.swift */,
+			);
+			path = TickerSqueak;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F698C2D82E06FFAE000CA939 /* TickerSqueak */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F698C2E52E06FFAF000CA939 /* Build configuration list for PBXNativeTarget "TickerSqueak" */;
+			buildPhases = (
+				F698C2D52E06FFAE000CA939 /* Sources */,
+				F698C2D62E06FFAE000CA939 /* Frameworks */,
+				F698C2D72E06FFAE000CA939 /* Resources */,
+				F63D48842E09562D00C78781 /* Copy Audio */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TickerSqueak;
+			packageProductDependencies = (
+				F698C2E92E0700F6000CA939 /* Swifter */,
+			);
+			productName = "Symbol Notifier";
+			productReference = F698C2D92E06FFAE000CA939 /* TickerSqueak.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F698C2D12E06FFAE000CA939 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1630;
+				LastUpgradeCheck = 1630;
+				TargetAttributes = {
+					F698C2D82E06FFAE000CA939 = {
+						CreatedOnToolsVersion = 16.3;
+					};
+				};
+			};
+			buildConfigurationList = F698C2D42E06FFAE000CA939 /* Build configuration list for PBXProject "TickerSqueak" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F698C2D02E06FFAE000CA939;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F698C2E82E0700F6000CA939 /* XCRemoteSwiftPackageReference "swifter" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F698C2DA2E06FFAE000CA939 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F698C2D82E06FFAE000CA939 /* TickerSqueak */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F698C2D72E06FFAE000CA939 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6EEE9422E0ACCAE00E46FE6 /* Sonar.aiff in Resources */,
+				F6EEE9432E0ACCAE00E46FE6 /* Gling.aiff in Resources */,
+				F6EEE9442E0ACCAE00E46FE6 /* Droplet.aiff in Resources */,
+				F6EEE9452E0ACCAE00E46FE6 /* Tada.aiff in Resources */,
+				F6EEE9472E0ACCAE00E46FE6 /* 4Notes.aiff in Resources */,
+				F6EEE9482E0ACCAE00E46FE6 /* Dot.aiff in Resources */,
+				F6EEE9492E0ACCAE00E46FE6 /* Spring.aiff in Resources */,
+				F6EEE94A2E0ACCAE00E46FE6 /* Assets.xcassets in Resources */,
+				F6EEE94B2E0ACCAE00E46FE6 /* Bowl.aiff in Resources */,
+				F6EEE94C2E0ACCAE00E46FE6 /* Awaken.aiff in Resources */,
+				F6EEE94D2E0ACCAE00E46FE6 /* Deepen.aiff in Resources */,
+				F6EEE94E2E0ACCAE00E46FE6 /* Glass.aiff in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F698C2D52E06FFAE000CA939 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F6EEE9222E0ACCAE00E46FE6 /* TVSettingsData.swift in Sources */,
+				F6EEE9232E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift in Sources */,
+				F6EEE9242E0ACCAE00E46FE6 /* Toast.swift in Sources */,
+				F6EEE9252E0ACCAE00E46FE6 /* ServerPortView.swift in Sources */,
+				F6EEE9262E0ACCAE00E46FE6 /* SoundManager.swift in Sources */,
+				F6EEE9272E0ACCAE00E46FE6 /* TickerListView.swift in Sources */,
+				F6EEE9282E0ACCAE00E46FE6 /* WindowAccessor.swift in Sources */,
+				F6EEE9292E0ACCAE00E46FE6 /* ContentView.swift in Sources */,
+				F6EEE92A2E0ACCAE00E46FE6 /* TVViewModel.swift in Sources */,
+				F6EEE92B2E0ACCAE00E46FE6 /* AlertMessageSettingsView.swift in Sources */,
+				F6EEE92C2E0ACCAE00E46FE6 /* TVSettingsView.swift in Sources */,
+				F6EEE92D2E0ACCAE00E46FE6 /* AppError.swift in Sources */,
+				F6EEE92E2E0ACCAE00E46FE6 /* ToastView.swift in Sources */,
+				F6EEE92F2E0ACCAE00E46FE6 /* OneOptionViewModel.swift in Sources */,
+				F6EEE9302E0ACCAE00E46FE6 /* SettingsView.swift in Sources */,
+				F6EEE9312E0ACCAE00E46FE6 /* TickerItem.swift in Sources */,
+				F6EEE9322E0ACCAE00E46FE6 /* IconTabPicker.swift in Sources */,
+				F6EEE9332E0ACCAE00E46FE6 /* View.swift in Sources */,
+				F6EEE9342E0ACCAE00E46FE6 /* NSSound.swift in Sources */,
+				F6EEE9352E0ACCAE00E46FE6 /* Symbol_NotifierApp.swift in Sources */,
+				F6EEE9362E0ACCAE00E46FE6 /* OneOptionSettingsView.swift in Sources */,
+				F6EEE9372E0ACCAE00E46FE6 /* ToastModifier.swift in Sources */,
+				F6EEE9382E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift in Sources */,
+				F6EEE9392E0ACCAE00E46FE6 /* IgnoreInputSheet.swift in Sources */,
+				F6EEE93A2E0ACCAE00E46FE6 /* IgnoreListView.swift in Sources */,
+				F6EEE93B2E0ACCAE00E46FE6 /* DirectionButton.swift in Sources */,
+				F6EEE93C2E0ACCAE00E46FE6 /* DesignMode.swift in Sources */,
+				F6EEE93D2E0ACCAE00E46FE6 /* ToastStyle.swift in Sources */,
+				F6EEE93E2E0ACCAE00E46FE6 /* ErrorDialogView.swift in Sources */,
+				F6EEE93F2E0ACCAE00E46FE6 /* ErrorManager.swift in Sources */,
+				F6EEE9402E0ACCAE00E46FE6 /* OneOptionSettings.swift in Sources */,
+				F6EEE9412E0ACCAE00E46FE6 /* ServerStatusView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F698C2E32E06FFAF000CA939 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = SH94AY676V;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F698C2E42E06FFAF000CA939 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = SH94AY676V;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		F698C2E62E06FFAF000CA939 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = TickerSqueak/TickerSqueak.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C7F8MT3522;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ticker Squeak";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.shkalash.TickerSqueak;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F698C2E72E06FFAF000CA939 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = TickerSqueak/TickerSqueak.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C7F8MT3522;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ticker Squeak";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.shkalash.TickerSqueak;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F698C2D42E06FFAE000CA939 /* Build configuration list for PBXProject "TickerSqueak" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F698C2E32E06FFAF000CA939 /* Debug */,
+				F698C2E42E06FFAF000CA939 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F698C2E52E06FFAF000CA939 /* Build configuration list for PBXNativeTarget "TickerSqueak" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F698C2E62E06FFAF000CA939 /* Debug */,
+				F698C2E72E06FFAF000CA939 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F698C2E82E0700F6000CA939 /* XCRemoteSwiftPackageReference "swifter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/httpswift/swifter.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F698C2E92E0700F6000CA939 /* Swifter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F698C2E82E0700F6000CA939 /* XCRemoteSwiftPackageReference "swifter" */;
+			productName = Swifter;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F698C2D12E06FFAE000CA939 /* Project object */;
+}

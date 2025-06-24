@@ -27,7 +27,7 @@ app.post("/notify", async (req, res) => {
 
   const cleanSymbol = symbol.trim().toUpperCase();
 
-  console.log(`[Symbol Notifier] Received: ${cleanSymbol}`);
+  console.log(`[TickerSqueak] Received: ${cleanSymbol}`);
 
   notifier.notify({
     title: `New Symbol: ${cleanSymbol}`,
@@ -40,5 +40,5 @@ app.post("/notify", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`[Symbol Notifier] Listening on http://localhost:${PORT}`);
+  console.log(`[TickerSqueak] Listening on http://localhost:${PORT}`);
 });
