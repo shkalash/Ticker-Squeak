@@ -16,7 +16,7 @@ enum AppError: LocalizedError {
     case serverError(code: Int)
     case generalError(description:String)
     case unknownError(underlyingError: Error?)
-
+    case developementError(description: String)
     /// Provides a human-readable description for each error case.
     var errorDescription: String? {
         switch self {
@@ -25,6 +25,8 @@ enum AppError: LocalizedError {
         case .fileAccessError(let path):
             return "Could not access a required file at path: \(path)."
         case .generalError(description: let description):
+                fallthrough
+        case .developementError(description: let description):
                 fallthrough
         case .chartUrlError(let description):
             return description

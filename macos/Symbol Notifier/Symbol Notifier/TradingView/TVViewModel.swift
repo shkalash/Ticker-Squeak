@@ -1,14 +1,6 @@
-//
-//  TVSettingsViewModel.swift
-//  Symbol Notifier
-//
-//  Created by Shai Kalev on 6/22/25.
-//
-
 import Foundation
 import AppKit
 import Carbon.HIToolbox
-
 
 class TVViewModel: ObservableObject {
     @Published var settings: TVSettingsData {
@@ -18,7 +10,6 @@ class TVViewModel: ObservableObject {
     }
     
     @Published var hasAccessToAccessibilityAPI: Bool = false
-
     private let key = "TVSettingsData"
 
     init() {
@@ -28,6 +19,7 @@ class TVViewModel: ObservableObject {
         } else {
             settings = .default
         }
+        requestAccess()
     }
 
     private func save() {
@@ -36,7 +28,7 @@ class TVViewModel: ObservableObject {
         }
     }
     
-    func requestAccess(){
+    func requestAccess() {
         #if DEBUG
         if DesignMode.isRunning {
             hasAccessToAccessibilityAPI = true
@@ -46,87 +38,113 @@ class TVViewModel: ObservableObject {
         let options = [kAXTrustedCheckOptionPrompt.takeRetainedValue() as String: true] as CFDictionary
         hasAccessToAccessibilityAPI = AXIsProcessTrustedWithOptions(options)
     }
+          
+
+    func showSymbolInTradingView(_ symbol: String) {
+        guard settings.useTradingView else { return }
         
-    func showSymbolInTradingView(_ symbol:String){
-        guard settings.useTradingView else {
+        let bundleID = "com.tradingview.tradingviewapp.desktop"
+        
+        // 1. Find the running TradingView application
+        guard let app = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID).first else {
+            ErrorManager.shared.report(AppError.generalError(description: "TradingView is not running."))
             return
         }
-        activateTradingView()
-        sendSymbolToTradingView(symbol)
-    }
-    
-    private func activateTradingView() {
-        let bundleID = "com.tradingview.tradingviewapp.desktop"
-        let apps = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID)
         
-        if let app = apps.first {
-            app.activate(options: [.activateAllWindows])
-            NSWorkspace.shared.frontmostApplication?.unhide()
-        } else {
-            ErrorManager.shared.report(AppError.generalError(description: "TradingView is not running."))
-        }
-    }
-    
-    private func sendSymbolToTradingView(_ symbol: String) {
-        focusTradingViewAndSendTabSwitch { [self] in
-            DispatchQueue.main.asyncAfter(deadline: .now() + settings.delayBeforeTyping) { [self] in
-                // Ensure no modifiers are stuck
-                CGEvent(keyboardEventSource: nil, virtualKey: 0, keyDown: true)?.post(tap: .cghidEventTap)
-
-                for (index, char) in symbol.uppercased().enumerated() {
-                    if let key = keyCodeForChar(char) {
-                        let delay = settings.delayBetweenCharacters * Double(index)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [self] in
-                            //print("Typing: \(char) [keyCode \(key)]")
-                            sendKeyPress(key: key)
-                        }
-                    }
-                }
-
-                let totalTypingDelay = settings.delayBetweenCharacters * Double(symbol.count + 1)
-                DispatchQueue.main.asyncAfter(deadline: .now() + totalTypingDelay) { [self] in
-                    sendKeyPress(key: CGKeyCode(kVK_Return))
-                }
+        // 2. Activate the app and wait for it to be focused
+        app.activate(options: [.activateAllWindows])
+        
+        waitForAppToFocus(app) { [self] in
+            // 3. Once focused, optionally send the tab switch command
+            sendTabSwitchIfNeeded { [self] in
+                // 4. After the tab switch, begin typing the symbol sequentially
+                typeSequentially(symbol: symbol.uppercased(), index: 0)
             }
         }
     }
 
-    
-    func focusTradingViewAndSendTabSwitch(completion: @escaping () -> Void) {
-        if let app = NSWorkspace.shared.runningApplications.first(where: { $0.localizedName == "TradingView" }) {
-            app.activate(options: [.activateAllWindows])
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + settings.delayBeforeTab) {
-                guard self.settings.changeTab else {
-                    completion()
-                    return
-                }
-
-                let source = CGEventSource(stateID: .hidSystemState)
-                let key = CGKeyCode(self.keyCodeForNumber(self.settings.tabNumber))
-
-                let modifierFlags = self.modifierToCGEventFlag(self.settings.tabModifier)
-
-                let keyDown = CGEvent(keyboardEventSource: source, virtualKey: key, keyDown: true)
-                keyDown?.flags = modifierFlags
-
-                let keyUp = CGEvent(keyboardEventSource: source, virtualKey: key, keyDown: false)
-                keyUp?.flags = modifierFlags
-
-                keyDown?.post(tap: .cghidEventTap)
-                keyUp?.post(tap: .cghidEventTap)
-
+    /// Polls every 0.1s to check if the target app is frontmost.
+    private func waitForAppToFocus(_ app: NSRunningApplication, completion: @escaping () -> Void) {
+        var retries = 0
+        let maxRetries = 50 // Wait up to 5 seconds
+        
+        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+            if app.isActive {
+                timer.invalidate()
                 completion()
+            } else {
+                retries += 1
+                if retries >= maxRetries {
+                    timer.invalidate()
+                    ErrorManager.shared.report(AppError.generalError(description: "Failed to focus TradingView."))
+                }
             }
-        } else {
-            ErrorManager.shared.report(AppError.generalError(description: "TradingView is not running."))
         }
     }
 
+    /// Sends the configured tab-switching shortcut after a delay.
+    private func sendTabSwitchIfNeeded(completion: @escaping () -> Void) {
+        guard settings.changeTab else {
+            completion()
+            return
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + settings.delayBeforeTab) { [self] in
+            let key = CGKeyCode(keyCodeForNumber(settings.tabNumber))
+            let modifierFlags = modifierToCGEventFlag(settings.tabModifier)
+            
+            let source = CGEventSource(stateID: .hidSystemState)
+            let keyDown = CGEvent(keyboardEventSource: source, virtualKey: key, keyDown: true)
+            keyDown?.flags = modifierFlags
+            keyDown?.post(tap: .cghidEventTap)
+            
+            let keyUp = CGEvent(keyboardEventSource: source, virtualKey: key, keyDown: false)
+            keyUp?.flags = modifierFlags
+            keyUp?.post(tap: .cghidEventTap)
+            
+            completion()
+        }
+    }
+
+    ///  Types the symbol one character at a time.
+    private func typeSequentially(symbol: String, index: Int) {
+        // Base case: If we've typed all characters, press Return and finish.
+        guard index < symbol.count else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + settings.delayBetweenCharacters) { [self] in
+                sendKeyPress(key: CGKeyCode(kVK_Return))
+            }
+            return
+        }
+        
+        // The first character should wait for `delayBeforeTyping`
+        let initialDelay = (index == 0) ? settings.delayBeforeTyping : 0
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + initialDelay) { [self] in
+            let charIndex = symbol.index(symbol.startIndex, offsetBy: index)
+            let char = symbol[charIndex]
+            
+            if let key = keyCodeForChar(char) {
+                sendKeyPress(key: key)
+                
+                // Recursive step: Schedule the next character to be typed.
+                DispatchQueue.main.asyncAfter(deadline: .now() + settings.delayBetweenCharacters) { [self] in
+                    typeSequentially(symbol: symbol, index: index + 1)
+                }
+            } else {
+                // If a character isn't supported, skip it and continue.
+                typeSequentially(symbol: symbol, index: index + 1)
+                ErrorManager.shared.report(AppError.developementError(description: "Couldn't find key code for \(char)"))
+            }
+        }
+    }
+    
+    // --- HELPER FUNCTIONS ---
+    
     private func sendKeyPress(key: CGKeyCode) {
         let source = CGEventSource(stateID: .hidSystemState)
         let keyDown = CGEvent(keyboardEventSource: source, virtualKey: key, keyDown: true)
         let keyUp = CGEvent(keyboardEventSource: source, virtualKey: key, keyDown: false)
+        // Clearing flags is important to prevent "sticky" modifiers.
         keyDown?.flags = []
         keyUp?.flags = []
         keyDown?.post(tap: .cghidEventTap)
@@ -150,19 +168,16 @@ class TVViewModel: ObservableObject {
             "J": 38, "K": 40, "L": 37, "M": 46, "N": 45, "O": 31, "P": 35, "Q": 12,
             "R": 15, "S": 1, "T": 17, "U": 32, "V": 9, "W": 13, "X": 7, "Y": 16,
             "Z": 6, "0": 29, "1": 18, "2": 19, "3": 20, "4": 21, "5": 23, "6": 22,
-            "7": 26, "8": 28, "9": 25, " ": 49, ",": 43, ".": 47, "!": 18 // '!' uses Shift+1
+            "7": 26, "8": 28, "9": 25, " ": 49, ",": 43, ".": 47, "!": 18
         ]
         return map[upper.first!]
     }
-
     
     private func keyCodeForNumber(_ number: Int) -> Int {
-        // ANSI 1 = 18, 2 = 19, ..., 0 = 29
         switch number {
         case 1...9: return 17 + number
         case 0: return 29
-        default: return 0 // fallback, maybe Escape or A
+        default: return 0
         }
     }
-
 }

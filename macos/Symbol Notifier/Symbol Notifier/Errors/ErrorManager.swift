@@ -42,6 +42,13 @@ class ErrorManager: ObservableObject {
             print("  Line: \(line)")
             print("  Error: \(error.localizedDescription)")
             print("--------------------------")
+            
+            if let appError = error as? AppError {
+                switch appError {
+                    case .developementError: return
+                    default: break
+                }
+            }
             #endif
             
             // Add the new error to the queue.
