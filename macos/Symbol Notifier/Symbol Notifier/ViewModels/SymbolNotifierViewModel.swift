@@ -125,14 +125,14 @@ class SymbolNotifierViewModel: ObservableObject {
             print("[Symbol Notifier] Server running on port \(serverPort)")
         } catch {
             isServerRunning = false
-            print("[Symbol Notifier] Failed to start server:", error)
+            ErrorManager.shared.report(AppError.networkError(description: "Failed to start server: \(error.localizedDescription)"))
         }
     }
     
     func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, _ in
             if !granted {
-                print("[Symbol Notifier] Notifications not allowed")
+                ErrorManager.shared.report(AppError.generalError(description: "Notifications not allowed"))
             }
         }
     }
@@ -143,16 +143,12 @@ class SymbolNotifierViewModel: ObservableObject {
         if let pendingRemovalTask = pendingRemovals[symbol] {
             pendingRemovalTask.cancel()
             pendingRemovals.removeValue(forKey: symbol)
-            print("Cancelled pending removal for \(symbol).")
         }
         
         if receivedSymbols.contains(symbol) {
             guard highPriority else {
-                print("Ignoring non-high-priority alert for recent symbol: \(symbol)")
                 return
             }
-            
-            print("Received high-priority alert for recent symbol: \(symbol)")
             
             if let index = symbolList.firstIndex(where: { $0.symbol == symbol }) {
                  symbolList[index].isUnread = true
@@ -166,7 +162,6 @@ class SymbolNotifierViewModel: ObservableObject {
             return
         }
         
-        print("Received new symbol: \(symbol)")
         receivedSymbols.insert(symbol)
         let newItem = SymbolItem(symbol: symbol, receivedAt: Date())
         symbolList.insert(newItem, at: 0)
@@ -179,11 +174,9 @@ class SymbolNotifierViewModel: ObservableObject {
         saveSymbols()
 
         let symbol = item.symbol
-        print("Hiding \(symbol). It will be fully removed in \(removalDelay) seconds.")
 
         let workItem = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
-            print("Permanently removing \(symbol) from receivedSymbols set after delay.")
             self.receivedSymbols.remove(symbol)
             self.pendingRemovals.removeValue(forKey: symbol)
         }
@@ -227,8 +220,6 @@ class SymbolNotifierViewModel: ObservableObject {
             task.cancel()
         }
         pendingRemovals.removeAll()
-        print("Cancelled all pending symbol removals.")
-        
         receivedSymbols.removeAll()
         symbolList.removeAll()
         saveSymbols()

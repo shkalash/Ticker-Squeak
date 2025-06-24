@@ -51,7 +51,7 @@ public extension NSSound {
             .sorted() // Sort the names alphabetically.
 
         } catch {
-            print("Error reading contents of Sounds directory: \(error.localizedDescription)")
+            ErrorManager.shared.report(AppError.fileAccessError(path: "Error reading contents of Sounds directory: \(error.localizedDescription)"))
             return []
         }
     }

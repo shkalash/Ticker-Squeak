@@ -49,7 +49,6 @@ class TVViewModel: ObservableObject {
         
     func showSymbolInTradingView(_ symbol:String){
         guard settings.useTradingView else {
-            //print("TradingView automation disabled.")
             return
         }
         activateTradingView()
@@ -61,14 +60,10 @@ class TVViewModel: ObservableObject {
         let apps = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID)
         
         if let app = apps.first {
-           // print("Found TradingView. Activating...")
-            
             app.activate(options: [.activateAllWindows])
-            
-            // Optional: explicitly bring app to front (fallback)
             NSWorkspace.shared.frontmostApplication?.unhide()
         } else {
-            print("TradingView is not running.")
+            ErrorManager.shared.report(AppError.generalError(description: "TradingView is not running."))
         }
     }
     
@@ -124,7 +119,7 @@ class TVViewModel: ObservableObject {
                 completion()
             }
         } else {
-            print("TradingView not running.")
+            ErrorManager.shared.report(AppError.generalError(description: "TradingView is not running."))
         }
     }
 

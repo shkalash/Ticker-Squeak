@@ -14,35 +14,52 @@ struct Symbol_NotifierApp: App {
     @StateObject private var viewModel = SymbolNotifierViewModel()
     @StateObject var tvSettingsViewModel = TVViewModel()
     @StateObject var oneOptionViewModel = OneOptionViewModel()
+    @StateObject private var errorManager = ErrorManager.shared
     let windowName = "io.shkalash.SymbolNotifier"
-    // TODO: errors.
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: viewModel , tvSettingsViewModel: tvSettingsViewModel , oneOptionViewModel: oneOptionViewModel)
-                .background(WindowAccessor { window in
-                    // Load saved frame
-                    if let frameString = UserDefaults.standard.string(forKey: windowName) {
-                        let frame = NSRectFromString(frameString)
-                        window.setFrame(frame, display: true)
-                    } else {
-                        window.setContentSize(NSSize(width: 400, height: 500))
+            ZStack {
+                ContentView(viewModel: viewModel , tvSettingsViewModel: tvSettingsViewModel , oneOptionViewModel: oneOptionViewModel)
+                    .background(WindowAccessor { window in
+                        // Load saved frame
+                        if let frameString = UserDefaults.standard.string(forKey: windowName) {
+                            let frame = NSRectFromString(frameString)
+                            window.setFrame(frame, display: true)
+                        } else {
+                            window.setContentSize(NSSize(width: 400, height: 500))
+                        }
+                        
+                        // Save frame on move/resize
+                        NotificationCenter.default.addObserver(forName: NSWindow.didMoveNotification, object: window, queue: .main) { _ in
+                            UserDefaults.standard.set(NSStringFromRect(window.frame), forKey: windowName)
+                        }
+                        NotificationCenter.default.addObserver(forName: NSWindow.didEndLiveResizeNotification, object: window, queue: .main) { _ in
+                            UserDefaults.standard.set(NSStringFromRect(window.frame), forKey: windowName)
+                        }
+                    })
+                
+                    .frame(minWidth: 300, minHeight: 400)
+                    .onAppear {
+                        tvSettingsViewModel.requestAccess()
+                        viewModel.requestNotificationPermission()
+                        viewModel.startServer()
                     }
-
-                    // Save frame on move/resize
-                    NotificationCenter.default.addObserver(forName: NSWindow.didMoveNotification, object: window, queue: .main) { _ in
-                        UserDefaults.standard.set(NSStringFromRect(window.frame), forKey: windowName)
+                
+                // --- Error Dialog Overlay ---
+                // This part overlays the error dialog on top of your main content.
+                if let currentError = errorManager.currentError {
+                    // A semi-transparent background to dim the main content.
+                    Color.black.opacity(0.4).ignoresSafeArea()
+                    
+                    // The error dialog view itself.
+                    ErrorDialogView(error: currentError) {
+                        // The action to perform when the dialog is dismissed.
+                        errorManager.dismissCurrentError()
                     }
-                    NotificationCenter.default.addObserver(forName: NSWindow.didEndLiveResizeNotification, object: window, queue: .main) { _ in
-                        UserDefaults.standard.set(NSStringFromRect(window.frame), forKey: windowName)
-                    }
-                })
-
-                .frame(minWidth: 300, minHeight: 400)
-                .onAppear {
-                    tvSettingsViewModel.requestAccess()
-                    viewModel.requestNotificationPermission()
-                    viewModel.startServer()
+                    .transition(.opacity.combined(with: .scale(scale: 0.8)))
                 }
+            }
+            .animation(.spring(), value: errorManager.currentError != nil)
         }
     }
 }

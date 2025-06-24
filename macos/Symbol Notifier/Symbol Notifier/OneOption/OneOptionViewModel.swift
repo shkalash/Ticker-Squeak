@@ -33,7 +33,6 @@ class OneOptionViewModel: ObservableObject {
     private func save() {
         if let encodedData = try? JSONEncoder().encode(settings) {
             UserDefaults.standard.set(encodedData, forKey: Self.settingsKey)
-            print("OneOption settings saved.")
         }
     }
 
@@ -41,10 +40,8 @@ class OneOptionViewModel: ObservableObject {
     private static func load() -> OneOptionSettings {
         guard let data = UserDefaults.standard.data(forKey: settingsKey),
               let decodedSettings = try? JSONDecoder().decode(OneOptionSettings.self, from: data) else {
-            print("No saved settings found. Using default OneOption settings.")
             return .default
         }
-        print("Successfully loaded OneOption settings.")
         return decodedSettings
     }
 
@@ -57,7 +54,6 @@ class OneOptionViewModel: ObservableObject {
     /// - Parameter symbol: The stock symbol to open.
     func openChartInOneOptionApp(symbol: String) {
         guard settings.enableOneOptionAutomation else {
-            print("OneOption automation is disabled. Aborting.")
             return
         }
 
@@ -84,11 +80,9 @@ class OneOptionViewModel: ObservableObject {
         components.queryItems = queryItems
 
         guard let url = components.url else {
-            print("Error: Could not create a valid URL for OneOption.")
+            ErrorManager.shared.report(AppError.chartUrlError(data: "Could not create a valid URL for $\(symbol)."))
             return
         }
-        
-        print("Opening OneOption URL: \(url.absoluteString)")
         NSWorkspace.shared.open(url)
     }
 }

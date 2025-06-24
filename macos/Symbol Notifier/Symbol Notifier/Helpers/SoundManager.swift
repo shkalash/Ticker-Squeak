@@ -31,7 +31,6 @@ actor SoundManager {
             return
         }
         guard soundName.isEmpty == false else {
-            print("Empty sound requested. Ignoring.")
             return
         }
         
@@ -41,7 +40,6 @@ actor SoundManager {
         if let lastPlayed = lastPlayedTime {
             if now.timeIntervalSince(lastPlayed) < cooldown {
                 // Not enough time has passed, so we ignore this request.
-                print("Cooldown active. Ignoring sound request.")
                 return
             }
         }
