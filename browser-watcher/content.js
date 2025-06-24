@@ -1,11 +1,53 @@
 console.log("[Symbol Watcher] content.js loaded");
 
+// This Set will store symbols that have already been sent on the current page.
+const sentSymbols = new Set();
 let whitelist = [];
 let isPageActive = true;
 
 window.addEventListener("beforeunload", () => {
   isPageActive = false;
 });
+
+// --- MODIFIED: Listener for requests from the popup ---
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  // Check if the message is a request for the current channel's info.
+  if (request.type === "getChannelInfo") {
+    console.log("[Symbol Watcher] Received request for channel info.");
+    try {
+      let channelName = document.title;
+      
+      // Clean up the title to get a friendlier name.
+      // Removes prefixes like "• Discord | " or "Discord | "
+      const prefixesToRemove = ["• Discord | ", "Discord | "];
+      for (const prefix of prefixesToRemove) {
+          if (channelName.startsWith(prefix)) {
+              channelName = channelName.substring(prefix.length);
+              break;
+          }
+      }
+      // Removes the server name part, like " - My Server"
+      const serverSeparatorIndex = channelName.lastIndexOf(' - ');
+      if (serverSeparatorIndex > -1) {
+          channelName = channelName.substring(0, serverSeparatorIndex);
+      }
+      
+      const response = {
+        url: location.href, // The full URL for matching
+        name: channelName || "Unknown Channel" // The display name
+      };
+
+      console.log("[Symbol Watcher] Sending channel info back to popup:", response);
+      sendResponse(response);
+    } catch (e) {
+      console.error("[Symbol Watcher] Error getting channel info:", e);
+      sendResponse({ error: "Could not retrieve channel info." });
+    }
+    // Return true to indicate that we will send a response asynchronously.
+    return true;
+  }
+});
+
 
 function notifyServer(symbol, highPriority = false) {
   chrome.runtime.sendMessage({
@@ -15,30 +57,11 @@ function notifyServer(symbol, highPriority = false) {
   });
 }
 
-/**
- * Parses text to find stock symbols based on strict word boundaries.
- * A symbol is a word of 1-5 capital letters, optionally prefixed with '$'
- * and/or postfixed with '!', surrounded by spaces or string boundaries.
- * @param {string} text The text to parse.
- * @returns {Array<{symbol: string, highPriority: boolean}>} An array of found symbols.
- */
 function parseSymbols(text) {
-    if (!text) return [];
-
-    // Regex Explanation:
-    // (?:^|\s)     - Start of string or a whitespace (ensures it's a whole word). Non-capturing.
-    // (             - Start of the main capturing group for the symbol string itself (e.g., "$AAPL!").
-    //   \$?         - An optional literal dollar sign prefix.
-    //   [A-Z]{1,5}  - 1 to 5 uppercase letters. This enforces the "no other characters" rule.
-    //   !?          - An optional literal exclamation mark postfix.
-    // )             - End of the main capturing group.
-    // (?=\s|$)     - A positive lookahead asserting the symbol is followed by a
-    //               whitespace or the end of the string (without including it in the match).
+    if (!text) return [];
     const symbolRegex = /(?:^|\s)(\$?[A-Z]{1,5}!?)(?=\s|$)/g;
-
     const matches = [...text.matchAll(symbolRegex)];
 
-    // The full string we care about (e.g., "$AAPL!") is in the first captured group.
     return matches.map(match => {
         const rawMatch = match[1];
         const highPriority = rawMatch.endsWith("!");
@@ -46,7 +69,6 @@ function parseSymbols(text) {
         return { symbol, highPriority };
     });
 }
-
 
 function startDiscordObserver() {
   function observe(container) {
@@ -61,7 +83,17 @@ function startDiscordObserver() {
               const text = messageContent.innerText || messageContent.textContent;
               if (!text) return;
               const symbols = parseSymbols(text);
-              symbols.forEach(({ symbol, highPriority }) => notifyServer(symbol, highPriority));
+              
+                  symbols.forEach(({ symbol, highPriority }) => {
+                    if (sentSymbols.has(symbol)) {
+                        if (highPriority) {
+                            notifyServer(symbol, highPriority);
+                        }
+                    } else {
+                        notifyServer(symbol, highPriority);
+                        sentSymbols.add(symbol);
+                    }
+                  });
             }
           }
         });
@@ -96,7 +128,10 @@ function startOneOptionObserver() {
     container.querySelectorAll("a[data-symbol]").forEach(el => {
       const sym = el.getAttribute("data-symbol");
       if (sym && /^[A-Z]{1,6}$/.test(sym)) {
-        notifyServer(sym);
+        if (!sentSymbols.has(sym)) {
+            notifyServer(sym);
+            sentSymbols.add(sym);
+        }
       }
     });
   });
@@ -106,11 +141,12 @@ function startOneOptionObserver() {
 
 function init() {
   try {
+    // Note: The whitelist now stores objects: {url: string, name: string}
     chrome.storage.local.get(["whitelistedChannels"], (result) => {
       whitelist = result.whitelistedChannels || [];
 
       if (location.hostname.includes("discord.com")) {
-        if (!whitelist.some(prefix => location.href.startsWith(prefix))) {
+        if (!whitelist.some(channel => location.href.startsWith(channel.url))) {
           console.log("[Symbol Watcher] Discord channel not whitelisted, skipping scan.");
           return;
         }

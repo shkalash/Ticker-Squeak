@@ -31,6 +31,9 @@
          location = "group:popup.html">
       </FileRef>
       <FileRef
+         location = "group:popup.css">
+      </FileRef>
+      <FileRef
          location = "group:popup.js">
       </FileRef>
    </Group>

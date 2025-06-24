@@ -11,7 +11,9 @@
     "http://localhost:4113/*",
     "http://127.0.0.1:*/*"
   ],
-
+  "content_security_policy": {
+     "extension_pages": "script-src 'self'; object-src 'self';"
+   },
   "action": {
   "default_icon": {
         "16": "icons/icon16.png",
