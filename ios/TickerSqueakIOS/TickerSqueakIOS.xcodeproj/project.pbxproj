@@ -6,82 +6,41 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		F698C2EA2E0700F6000CA939 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = F698C2E92E0700F6000CA939 /* Swifter */; };
-/* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		F63D48842E09562D00C78781 /* Copy Audio */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = Contents/Library/Sounds;
-			dstSubfolderSpec = 1;
-			files = (
-			);
-			name = "Copy Audio";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		F698C2D92E06FFAE000CA939 /* Symbol Notifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Symbol Notifier.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6B508972E0AC4E300F73D63 /* TickerSqueakIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TickerSqueakIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		F6B5088D2E0AC14D00F73D63 /* Exceptions for "Symbol Notifier" folder in "Copy Audio" phase from "Symbol Notifier" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = F63D48842E09562D00C78781 /* Copy Audio */;
-			membershipExceptions = (
-				Audio/4Notes.aiff,
-				Audio/Awaken.aiff,
-				Audio/Bowl.aiff,
-				Audio/Deepen.aiff,
-				Audio/Dot.aiff,
-				Audio/Droplet.aiff,
-				Audio/Glass.aiff,
-				Audio/Gling.aiff,
-				Audio/Sonar.aiff,
-				Audio/Spring.aiff,
-				Audio/Tada.aiff,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F698C2DB2E06FFAE000CA939 /* Symbol Notifier */ = {
+		F6B508992E0AC4E300F73D63 /* TickerSqueakIOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				F6B5088D2E0AC14D00F73D63 /* Exceptions for "Symbol Notifier" folder in "Copy Audio" phase from "Symbol Notifier" target */,
-			);
-			path = "Symbol Notifier";
+			path = TickerSqueakIOS;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		F698C2D62E06FFAE000CA939 /* Frameworks */ = {
+		F6B508942E0AC4E300F73D63 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F698C2EA2E0700F6000CA939 /* Swifter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		F698C2D02E06FFAE000CA939 = {
+		F6B5088E2E0AC4E300F73D63 = {
 			isa = PBXGroup;
 			children = (
-				F698C2DB2E06FFAE000CA939 /* Symbol Notifier */,
-				F698C2DA2E06FFAE000CA939 /* Products */,
+				F6B508992E0AC4E300F73D63 /* TickerSqueakIOS */,
+				F6B508982E0AC4E300F73D63 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		F698C2DA2E06FFAE000CA939 /* Products */ = {
+		F6B508982E0AC4E300F73D63 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F698C2D92E06FFAE000CA939 /* Symbol Notifier.app */,
+				F6B508972E0AC4E300F73D63 /* TickerSqueakIOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,69 +48,64 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F698C2D82E06FFAE000CA939 /* Symbol Notifier */ = {
+		F6B508962E0AC4E300F73D63 /* TickerSqueakIOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F698C2E52E06FFAF000CA939 /* Build configuration list for PBXNativeTarget "Symbol Notifier" */;
+			buildConfigurationList = F6B508A22E0AC4E500F73D63 /* Build configuration list for PBXNativeTarget "TickerSqueakIOS" */;
 			buildPhases = (
-				F698C2D52E06FFAE000CA939 /* Sources */,
-				F698C2D62E06FFAE000CA939 /* Frameworks */,
-				F698C2D72E06FFAE000CA939 /* Resources */,
-				F63D48842E09562D00C78781 /* Copy Audio */,
+				F6B508932E0AC4E300F73D63 /* Sources */,
+				F6B508942E0AC4E300F73D63 /* Frameworks */,
+				F6B508952E0AC4E300F73D63 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				F698C2DB2E06FFAE000CA939 /* Symbol Notifier */,
+				F6B508992E0AC4E300F73D63 /* TickerSqueakIOS */,
 			);
-			name = "Symbol Notifier";
+			name = TickerSqueakIOS;
 			packageProductDependencies = (
-				F698C2E92E0700F6000CA939 /* Swifter */,
 			);
-			productName = "Symbol Notifier";
-			productReference = F698C2D92E06FFAE000CA939 /* Symbol Notifier.app */;
+			productName = TickerSqueakIOS;
+			productReference = F6B508972E0AC4E300F73D63 /* TickerSqueakIOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		F698C2D12E06FFAE000CA939 /* Project object */ = {
+		F6B5088F2E0AC4E300F73D63 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
-					F698C2D82E06FFAE000CA939 = {
+					F6B508962E0AC4E300F73D63 = {
 						CreatedOnToolsVersion = 16.3;
 					};
 				};
 			};
-			buildConfigurationList = F698C2D42E06FFAE000CA939 /* Build configuration list for PBXProject "Symbol Notifier" */;
+			buildConfigurationList = F6B508922E0AC4E300F73D63 /* Build configuration list for PBXProject "TickerSqueakIOS" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = F698C2D02E06FFAE000CA939;
+			mainGroup = F6B5088E2E0AC4E300F73D63;
 			minimizedProjectReferenceProxies = 1;
-			packageReferences = (
-				F698C2E82E0700F6000CA939 /* XCRemoteSwiftPackageReference "swifter" */,
-			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = F698C2DA2E06FFAE000CA939 /* Products */;
+			productRefGroup = F6B508982E0AC4E300F73D63 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F698C2D82E06FFAE000CA939 /* Symbol Notifier */,
+				F6B508962E0AC4E300F73D63 /* TickerSqueakIOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		F698C2D72E06FFAE000CA939 /* Resources */ = {
+		F6B508952E0AC4E300F73D63 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -161,7 +115,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		F698C2D52E06FFAE000CA939 /* Sources */ = {
+		F6B508932E0AC4E300F73D63 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -171,7 +125,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		F698C2E32E06FFAF000CA939 /* Debug */ = {
+		F6B508A02E0AC4E500F73D63 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -224,18 +178,18 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		F698C2E42E06FFAF000CA939 /* Release */ = {
+		F6B508A12E0AC4E500F73D63 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -282,112 +236,94 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		F698C2E62E06FFAF000CA939 /* Debug */ = {
+		F6B508A32E0AC4E500F73D63 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Symbol Notifier/Symbol_Notifier.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C7F8MT3522;
-				ENABLE_HARDENED_RUNTIME = YES;
+				DEVELOPMENT_TEAM = SH94AY676V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/../Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "io.shkalash.Symbol-Notifier";
+				PRODUCT_BUNDLE_IDENTIFIER = io.shkalash.TickerSqueakIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		F698C2E72E06FFAF000CA939 /* Release */ = {
+		F6B508A42E0AC4E500F73D63 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Symbol Notifier/Symbol_Notifier.entitlements";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C7F8MT3522;
-				ENABLE_HARDENED_RUNTIME = YES;
+				DEVELOPMENT_TEAM = SH94AY676V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
-					"@executable_path/../Frameworks",
+					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "io.shkalash.Symbol-Notifier";
+				PRODUCT_BUNDLE_IDENTIFIER = io.shkalash.TickerSqueakIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F698C2D42E06FFAE000CA939 /* Build configuration list for PBXProject "Symbol Notifier" */ = {
+		F6B508922E0AC4E300F73D63 /* Build configuration list for PBXProject "TickerSqueakIOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F698C2E32E06FFAF000CA939 /* Debug */,
-				F698C2E42E06FFAF000CA939 /* Release */,
+				F6B508A02E0AC4E500F73D63 /* Debug */,
+				F6B508A12E0AC4E500F73D63 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F698C2E52E06FFAF000CA939 /* Build configuration list for PBXNativeTarget "Symbol Notifier" */ = {
+		F6B508A22E0AC4E500F73D63 /* Build configuration list for PBXNativeTarget "TickerSqueakIOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F698C2E62E06FFAF000CA939 /* Debug */,
-				F698C2E72E06FFAF000CA939 /* Release */,
+				F6B508A32E0AC4E500F73D63 /* Debug */,
+				F6B508A42E0AC4E500F73D63 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		F698C2E82E0700F6000CA939 /* XCRemoteSwiftPackageReference "swifter" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/httpswift/swifter.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		F698C2E92E0700F6000CA939 /* Swifter */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F698C2E82E0700F6000CA939 /* XCRemoteSwiftPackageReference "swifter" */;
-			productName = Swifter;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = F698C2D12E06FFAE000CA939 /* Project object */;
+	rootObject = F6B5088F2E0AC4E300F73D63 /* Project object */;
 }
