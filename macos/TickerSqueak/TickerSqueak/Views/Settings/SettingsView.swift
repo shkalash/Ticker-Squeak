@@ -35,6 +35,7 @@ struct SettingsView: View {
                         ServerStatusView(viewModel: viewModel)
                         Divider()
                             RemovalDelayEditorView(removalDelay: $viewModel.removalDelay)
+                            SnoozeTimeEditorView(snoozeClearTime: $viewModel.snoozeClearTime)
                     case 1:
                         AlertMessageSettingsView(viewModel: viewModel)
                     case 2:

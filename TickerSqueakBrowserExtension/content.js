@@ -1,7 +1,6 @@
 console.log("[Ticker Squeak] content.js loaded");
 
-// This Set will store tickers that have already been sent on the current page.
-const sentTickers = new Set();
+// The sentTickers Set has been removed.
 let whitelist = [];
 let isPageActive = true;
 
@@ -11,41 +10,41 @@ window.addEventListener("beforeunload", () => {
 
 // --- MODIFIED: Listener for requests from the popup ---
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  // Check if the message is a request for the current channel's info.
-  if (request.type === "getChannelInfo") {
-    console.log("[Ticker Squeak] Received request for channel info.");
-    try {
-      let channelName = document.title;
-      
-      // Clean up the title to get a friendlier name.
-      // Removes prefixes like "• Discord | " or "Discord | "
-      const prefixesToRemove = ["• Discord | ", "Discord | "];
-      for (const prefix of prefixesToRemove) {
-          if (channelName.startsWith(prefix)) {
-              channelName = channelName.substring(prefix.length);
-              break;
-          }
-      }
-      // Removes the server name part, like " - My Server"
-      const serverSeparatorIndex = channelName.lastIndexOf(' - ');
-      if (serverSeparatorIndex > -1) {
-          channelName = channelName.substring(0, serverSeparatorIndex);
-      }
-      
-      const response = {
-        url: location.href, // The full URL for matching
-        name: channelName || "Unknown Channel" // The display name
-      };
+  // Check if the message is a request for the current channel's info.
+  if (request.type === "getChannelInfo") {
+    console.log("[Ticker Squeak] Received request for channel info.");
+    try {
+      let channelName = document.title;
+      
+      // Clean up the title to get a friendlier name.
+      // Removes prefixes like "• Discord | " or "Discord | "
+      const prefixesToRemove = ["• Discord | ", "Discord | "];
+      for (const prefix of prefixesToRemove) {
+          if (channelName.startsWith(prefix)) {
+              channelName = channelName.substring(prefix.length);
+              break;
+          }
+      }
+      // Removes the server name part, like " - My Server"
+      const serverSeparatorIndex = channelName.lastIndexOf(' - ');
+      if (serverSeparatorIndex > -1) {
+          channelName = channelName.substring(0, serverSeparatorIndex);
+      }
+      
+      const response = {
+        url: location.href, // The full URL for matching
+        name: channelName || "Unknown Channel" // The display name
+      };
 
-      console.log("[Ticker Squeak] Sending channel info back to popup:", response);
-      sendResponse(response);
-    } catch (e) {
-      console.error("[Ticker Squeak] Error getting channel info:", e);
-      sendResponse({ error: "Could not retrieve channel info." });
-    }
-    // Return true to indicate that we will send a response asynchronously.
-    return true;
-  }
+      console.log("[Ticker Squeak] Sending channel info back to popup:", response);
+      sendResponse(response);
+    } catch (e) {
+      console.error("[Ticker Squeak] Error getting channel info:", e);
+      sendResponse({ error: "Could not retrieve channel info." });
+    }
+    // Return true to indicate that we will send a response asynchronously.
+    return true;
+  }
 });
 
 
@@ -59,15 +58,15 @@ function notifyServer(ticker, highPriority = false) {
 
 function parseTickers(text) {
     if (!text) return [];
-    const tickerRegex = /(?:^|\s)(\$?[A-Z]{1,5}!?)(?=\s|$)/g;
-    const matches = [...text.matchAll(tickerRegex)];
+    const tickerRegex = /(?:^|\s)(\$?[A-Z]{1,5}!?)(?=\s|$)/g;
+    const matches = [...text.matchAll(tickerRegex)];
 
-    return matches.map(match => {
-        const rawMatch = match[1];
-        const highPriority = rawMatch.endsWith("!");
-        const ticker = rawMatch.replace(/^\$/, "").replace(/!$/, "");
-        return { ticker, highPriority };
-    });
+    return matches.map(match => {
+        const rawMatch = match[1];
+        const highPriority = rawMatch.endsWith("!");
+        const ticker = rawMatch.replace(/^\$/, "").replace(/!$/, "");
+        return { ticker, highPriority };
+    });
 }
 
 function startDiscordObserver() {
@@ -83,17 +82,12 @@ function startDiscordObserver() {
               const text = messageContent.innerText || messageContent.textContent;
               if (!text) return;
               const tickers = parseTickers(text);
-              
-                  tickers.forEach(({ ticker, highPriority }) => {
-                    if (sentTickers.has(ticker)) {
-                        if (highPriority) {
-                            notifyServer(ticker, highPriority);
-                        }
-                    } else {
-                        notifyServer(ticker, highPriority);
-                        sentTickers.add(ticker);
-                    }
-                  });
+              
+                  // --- MODIFIED: Caching logic removed ---
+                  tickers.forEach(({ ticker, highPriority }) => {
+                      // Always notify the server for every ticker found.
+                        notifyServer(ticker, highPriority);
+                  });
             }
           }
         });
@@ -128,10 +122,9 @@ function startOneOptionObserver() {
     container.querySelectorAll("a[data-symbol]").forEach(el => {
       const sym = el.getAttribute("data-symbol");
       if (sym && /^[A-Z]{1,6}$/.test(sym)) {
-        if (!sentTickers.has(sym)) {
-            notifyServer(sym);
-            sentTickers.add(sym);
-        }
+          // --- MODIFIED: Caching logic removed ---
+          // Always notify the server.
+          notifyServer(sym);
       }
     });
   });
@@ -141,7 +134,7 @@ function startOneOptionObserver() {
 
 function init() {
   try {
-    // Note: The whitelist now stores objects: {url: string, name: string}
+    // Note: The whitelist now stores objects: {url: string, name: string}
     chrome.storage.local.get(["whitelistedChannels"], (result) => {
       whitelist = result.whitelistedChannels || [];
 

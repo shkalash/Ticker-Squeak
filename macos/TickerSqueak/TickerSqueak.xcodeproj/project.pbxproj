@@ -19,6 +19,7 @@
 		F6CE022A2E0ACFDD0068E717 /* Sonar.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8EC2E0ACCAE00E46FE6 /* Sonar.aiff */; };
 		F6CE022B2E0ACFDD0068E717 /* Spring.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8ED2E0ACCAE00E46FE6 /* Spring.aiff */; };
 		F6CE022C2E0ACFDD0068E717 /* Tada.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8EE2E0ACCAE00E46FE6 /* Tada.aiff */; };
+		F6DB08AB2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DB08AA2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift */; };
 		F6EEE9222E0ACCAE00E46FE6 /* TVSettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9062E0ACCAE00E46FE6 /* TVSettingsData.swift */; };
 		F6EEE9232E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9112E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift */; };
 		F6EEE9242E0ACCAE00E46FE6 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90A2E0ACCAE00E46FE6 /* Toast.swift */; };
@@ -91,6 +92,7 @@
 
 /* Begin PBXFileReference section */
 		F698C2D92E06FFAE000CA939 /* TickerSqueak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TickerSqueak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6DB08AA2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeTimeEditorView.swift; sourceTree = "<group>"; };
 		F6EEE8E42E0ACCAE00E46FE6 /* 4Notes.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = 4Notes.aiff; sourceTree = "<group>"; };
 		F6EEE8E52E0ACCAE00E46FE6 /* Awaken.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Awaken.aiff; sourceTree = "<group>"; };
 		F6EEE8E62E0ACCAE00E46FE6 /* Bowl.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Bowl.aiff; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				F6EEE90F2E0ACCAE00E46FE6 /* DirectionButton.swift */,
 				F6EEE9102E0ACCAE00E46FE6 /* IconTabPicker.swift */,
 				F6EEE9112E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift */,
+				F6DB08AA2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift */,
 			);
 			path = UILib;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 				F6EEE9392E0ACCAE00E46FE6 /* IgnoreInputSheet.swift in Sources */,
 				F6EEE93A2E0ACCAE00E46FE6 /* IgnoreListView.swift in Sources */,
 				F6EEE93B2E0ACCAE00E46FE6 /* DirectionButton.swift in Sources */,
+				F6DB08AB2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift in Sources */,
 				F6EEE93C2E0ACCAE00E46FE6 /* DesignMode.swift in Sources */,
 				F6EEE93D2E0ACCAE00E46FE6 /* ToastStyle.swift in Sources */,
 				F6EEE93E2E0ACCAE00E46FE6 /* ErrorDialogView.swift in Sources */,
