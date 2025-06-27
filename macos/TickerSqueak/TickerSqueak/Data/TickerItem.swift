@@ -7,7 +7,9 @@ struct TickerItem: Identifiable, Codable, Equatable {
         case bearish
     }
 
-    let id = UUID()
+    /// The ticker symbol itself is the unique identifier for this item.
+    var id: String { ticker }
+
     let ticker: String
     let receivedAt: Date
     

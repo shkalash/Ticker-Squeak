@@ -1,56 +1,86 @@
 //
-//  SettingsView.swift
+//  SettingsView 2.swift
 //  TickerSqueak
 //
-//  Created by Shai Kalev on 6/22/25.
+//  Created by Shai Kalev on 6/26/25.
 //
 
 
 import SwiftUI
 
-struct SettingsView: View {
-    @ObservedObject var viewModel: TickerSqueakViewModel
-    @ObservedObject var tvSettingsViewModel: TVViewModel
-    @ObservedObject var oneOptionViewModel : OneOptionViewModel
-    @AppStorage("settingsTabIndex") private var selectedTab: Int = 0
-
-
+// This is the internal content view that contains the actual layout.
+struct SettingsView_Content: View {
+    
+    @StateObject private var viewModel = SettingsViewModel()
+    // It accepts any object conforming to AppDependencies, making it flexible.
+    private let dependencies: any AppDependencies
+    
+    init(dependencies: any AppDependencies) {
+        self.dependencies = dependencies
+    }
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            IconTabPicker(selection: $selectedTab, options: [
-                PickerOption(label: "", imageName: "dot.radiowaves.left.and.right", tag: 0),
-                PickerOption(label: "", imageName: "speaker.wave.2.fill", tag: 1),
-                PickerOption(label: "", imageName: "tradingview", tag: 2, imageType: .asset),
-                PickerOption(label: "", imageName: "oneoption", tag: 3 , imageType: .asset),
+            // The custom tab picker for navigation
+            IconTabPicker(selection: $viewModel.selectedTab, options: [
+                PickerOption(label: "General", imageName: "gearshape.fill", tag: 0),
+                PickerOption(label: "Server", imageName: "dot.radiowaves.left.and.right", tag: 1),
             ])
+            .padding([.horizontal, .top])
             .padding(.bottom, 8)
             
             Divider()
-
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    switch selectedTab {
-                    case 0:
-                        ServerPortView(viewModel: viewModel)
-                        ServerStatusView(viewModel: viewModel)
-                        Divider()
-                            RemovalDelayEditorView(removalDelay: $viewModel.removalDelay)
-                            SnoozeTimeEditorView(snoozeClearTime: $viewModel.snoozeClearTime)
-                    case 1:
-                        AlertMessageSettingsView(viewModel: viewModel)
-                    case 2:
-                        TVSettingsView(viewModel: tvSettingsViewModel)
-                    case 3:
-                        OneOptionSettingsView(viewModel: oneOptionViewModel)
-                    default:
-                        EmptyView()
+            
+            // The switch statement now passes the dependencies down to the
+            // specific content view for each tab.
+            switch viewModel.selectedTab {
+                case 0:
+                    // MARK: - General Settings Tab
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 24) {
+                            ListSettingsView_Content(dependencies: dependencies)
+                            Divider()
+                            NotificationSettingsView_Content(dependencies: dependencies)
+                            Divider()
+                            NotificationAudioSettingsView_Content(dependencies: dependencies)
+                        }
+                        .padding()
                     }
-                }
-                .padding()
+                    
+                case 1:
+                    // MARK: - Server Settings Tab
+                    ScrollView {
+                        ServerSettingsView_Content(dependencies: dependencies)
+                            .padding()
+                    }
+                    
+                default:
+                    EmptyView()
             }
         }
     }
 }
+
+
+
+/// The public-facing "loader" view for the settings screen.
+struct SettingsView: View {
+    // It reads the REAL DependencyContainer from the environment.
+    @EnvironmentObject private var dependencies: DependencyContainer
+
+    var body: some View {
+        // It then passes those dependencies into the content view.
+        SettingsView_Content(dependencies: dependencies)
+    }
+}
+
 #Preview {
-    SettingsView(viewModel: TickerSqueakViewModel(), tvSettingsViewModel: TVViewModel() , oneOptionViewModel: OneOptionViewModel())
+    // 1. Create the mock dependency container for the preview.
+    let previewDependencies = PreviewDependencyContainer()
+    
+    // 2. Directly create the `SettingsView_Content` and pass the mock dependencies
+    //    into its initializer. This is the key to making the preview work.
+    return SettingsView_Content(dependencies: previewDependencies)
+        // 3. Still provide the environmentObject for any potential grandchild views.
+        .environmentObject(previewDependencies)
+        .frame(width: 500, height: 550)
 }
