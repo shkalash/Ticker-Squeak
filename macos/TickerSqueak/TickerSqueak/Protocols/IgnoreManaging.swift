@@ -15,4 +15,5 @@ protocol IgnoreManaging {
     func addToIgnoreList(_ ticker: String)
     func removeFromIgnoreList(_ ticker: String)
     func clearIgnoreList()
+    func isIgnored(ticker: String) -> Bool
 }

@@ -35,9 +35,6 @@ class TickerManager: TickerStoreManaging {
     /// A dictionary to hold cancellation tasks for tickers that have been temporarily hidden.
     private var pendingRemovals: [String: DispatchWorkItem] = [:]
     
-    /// A local copy of the ignore list, kept in sync with the IgnoreManager.
-    private var currentIgnoreList: [String] = []
-    
     // MARK: - Dependencies
     
     private let tickerReceiver: TickerProviding
@@ -92,6 +89,14 @@ class TickerManager: TickerStoreManaging {
             .sink { [weak self] ignoredTickers in
                 let ignoredSet = Set(ignoredTickers)
                 self?.tickerList.removeAll { ignoredSet.contains($0.ticker) }
+                self?.receivedTickers = self?.receivedTickers.subtracting(ignoredSet) ?? Set<String>()
+            }
+            .store(in: &cancellables)
+        
+        snoozeManager.snoozedTickers
+            .sink{ [weak self] snoozedTickers in
+                self?.tickerList.removeAll { snoozedTickers.contains($0.ticker) }
+                self?.receivedTickers = self?.receivedTickers.subtracting(snoozedTickers) ?? Set<String>()
             }
             .store(in: &cancellables)
     }
@@ -108,7 +113,7 @@ class TickerManager: TickerStoreManaging {
         let ticker = payload.ticker // Already uppercased by the payload's decoder
         
         // Rule 1: Never show an ignored ticker
-        if currentIgnoreList.contains(ticker) { return }
+        if ignoreManager.isIgnored(ticker: ticker) { return }
         
         // Rule 2: If snoozed, only show if high priority
         if snoozeManager.isSnoozed(ticker: ticker) && !payload.isHighPriority { return }
@@ -184,6 +189,7 @@ class TickerManager: TickerStoreManaging {
     func revealTicker(_ ticker: String) {
         pendingRemovals[ticker]?.cancel()
         pendingRemovals.removeValue(forKey: ticker)
+        receivedTickers.remove(ticker)
         hiddenList.removeAll(){ $0 == ticker   }
     }
 

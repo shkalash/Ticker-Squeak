@@ -40,6 +40,10 @@ class StandardIgnoreManager: IgnoreManaging {
             .store(in: &cancellables)
     }
 
+    func isIgnored(ticker: String) -> Bool {
+        internalIgnoreList.contains(ticker)
+    }
+    
     func addToIgnoreList(_ ticker: String) {
         if !internalIgnoreList.contains(ticker) {
             internalIgnoreList.append(ticker)

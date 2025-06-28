@@ -23,6 +23,7 @@ struct TickerSqueakApp: App {
                     // Server must be started on app run
                     dependencies.tickerProvider.start()
                 }
+                .frame(minWidth: 600)
             #if DEBUG
                 .withDebugOverlay()
                 .environmentObject(dependencies)
@@ -30,8 +31,6 @@ struct TickerSqueakApp: App {
         }
     }
 }
-// TODO: Putting a ticker into the hidden, removing, getting same notification fails. Same with ignore, same with snooze
-// TODO: View doesn't correctly adjust to window size
 // TODO: Make tabs drop the description and show only image if too small
 // TODO: maybe replace the icon picker tab to a sidebar or something else in settings
 // TODO: Ticker Image?

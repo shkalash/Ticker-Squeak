@@ -140,7 +140,6 @@ private struct SelectionToolbar: View {
     @ObservedObject var viewModel: TickerListViewModel
     var body: some View {
         HStack {
-            Text("\(viewModel.selection.count) selected").font(.headline).padding(.horizontal)
             ActionButton(systemImage: "envelope.open", color: .white, help: "Toggle Read") { viewModel.performActionOnSelection(.toggleRead) }
             ActionButton(systemImage: "star", color: .yellow, help: "Toggle Star") { viewModel.performActionOnSelection(.toggleStar) }
             ActionButton(systemImage: "timer", help: "Hide Temporarily") { viewModel.performActionOnSelection(.hide) }

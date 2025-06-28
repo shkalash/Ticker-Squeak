@@ -61,6 +61,10 @@ class PlaceholderSettingsManager: SettingsManaging {
 }
 
 class PlaceholderIgnoreManager: IgnoreManaging {
+    func isIgnored(ticker: String) -> Bool {
+        return subject.value.contains(ticker)
+    }
+    
     private let subject = CurrentValueSubject<[String], Never>(["MSFT", "TSLA"])
     var ignoreList: AnyPublisher<[String], Never> { subject.eraseToAnyPublisher() }
     

@@ -105,9 +105,6 @@ class TickerListViewModel: ObservableObject {
     func snoozeTicker(id: String) {
         // Snoozing adds the ticker to the snooze list until the end of the day.
         snoozeManager.setSnooze(for: id, isSnoozed: true)
-        // It should also be removed from the visible list. This is a permanent
-        // removal for this session, unlike hideTicker which is temporary.
-        tickerStore.removeItem(id: id) // Corrected: No longer calls hideTicker
     }
     
     func addToIgnoreList(ticker: String) { ignoreManager.addToIgnoreList(ticker) }

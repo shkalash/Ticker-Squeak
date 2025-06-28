@@ -58,12 +58,12 @@ class TimerBasedSnoozeManager: SnoozeManaging {
     }
     
     func isSnoozed(ticker: String) -> Bool {
-        internalSnoozedTickers.contains(ticker.uppercased())
+        internalSnoozedTickers.contains(ticker)
     }
 
     @objc func clearSnoozeList() {
 #if DEBUG
-        print("[Snooze] Snooze list automatically cleared.")
+        print("[Snooze] Snooze list cleared.")
 #endif
         internalSnoozedTickers.removeAll()
         // Save the clear date to prevent clearing again until the next scheduled time
