@@ -7,7 +7,7 @@ enum ImageType {
 }
 
 struct PickerOption: Identifiable {
-    let id = UUID() // Use UUID for Identifiable conformance
+    let id = { tag }
     let label: String
     let imageName: String
     let tag: Int
@@ -39,7 +39,6 @@ struct IconTabPicker: View {
                         selection = option.tag
                     }) {
                         buttonContent(for: option, isCompact: isCompact)
-                            //.padding(.horizontal, isCompact ? 12 : 8)
                             .frame(maxWidth: .infinity, minHeight: 40)
                             .contentShape(Rectangle())
                     }
@@ -54,7 +53,6 @@ struct IconTabPicker: View {
                     ForEach(options) { option in
                         // Always render the FULL content for measurement
                         buttonContent(for: option, isCompact: false)
-                            //.padding(.horizontal, 8) // Use the padding for the non-compact version
                             .frame(minHeight: 40)
                     }
                 }
@@ -72,8 +70,7 @@ struct IconTabPicker: View {
                 updateCompactMode(availableWidth: geometry.size.width)
             }
         }
-        .frame(height: 40) // Give the GeometryReader a height
-        //.padding(4)
+        .frame(height: 40)
         .background(Color.gray.opacity(0.1))
         .cornerRadius(10)
     }
