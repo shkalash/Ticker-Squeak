@@ -31,7 +31,6 @@ struct TickerSqueakApp: App {
         }
     }
 }
-// TODO: Make tabs drop the description and show only image if too small
 // TODO: maybe replace the icon picker tab to a sidebar or something else in settings
 // TODO: Ticker Image?
 // TODO: Final data migration

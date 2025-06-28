@@ -26,8 +26,6 @@ struct SettingsView_Content: View {
                 PickerOption(label: "Server", imageName: "dot.radiowaves.left.and.right", tag: 1),
                 PickerOption(label: "Charting", imageName: "chart.xyaxis.line", tag: 2),
             ])
-            .padding([.horizontal])
-            .padding(.bottom, 8)
             
             Divider()
             ScrollView {

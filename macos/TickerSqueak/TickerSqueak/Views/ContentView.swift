@@ -21,8 +21,6 @@ struct ContentView_Content: View {
                 PickerOption(label: "Ignore List", imageName: "eye.slash", tag: 3),
                 PickerOption(label: "Settings", imageName: "gearshape", tag: 4),
             ])
-            .padding([.horizontal, .top])
-            .padding(.bottom, 8)
             
             Divider()
 
@@ -39,6 +37,8 @@ struct ContentView_Content: View {
                     IgnoreListView_Content(dependencies: dependencies)
             case 4:
                     SettingsView_Content(dependencies: dependencies)
+                        .padding(.top , 3)
+                        .padding(.horizontal, 5)
             default:
                 EmptyView()
             }
@@ -68,5 +68,5 @@ struct ContentView: View {
     
     return ContentView_Content(dependencies: previewDependencies)
         .environmentObject(previewDependencies)
-        .frame(width: 300, height: 400)
+        .frame(width:600, height: 400)
 }
