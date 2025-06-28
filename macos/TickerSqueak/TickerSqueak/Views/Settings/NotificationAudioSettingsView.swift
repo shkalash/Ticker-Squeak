@@ -18,8 +18,10 @@ struct NotificationAudioSettingsView_Content: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            // Dynamically create a picker for each sound type defined in the SoundLibrary.
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Notifications Audio")
+                .font(.headline)
+
             ForEach(SoundLibrary.SoundType.allCases, id: \.self) { soundType in
                 SoundPickerRow(
                     soundType: soundType,
@@ -34,7 +36,6 @@ struct NotificationAudioSettingsView_Content: View {
                 )
             }
         }
-        .padding()
     }
 }
 
@@ -50,7 +51,6 @@ private struct SoundPickerRow: View {
         VStack(alignment: .leading, spacing: 5) {
             // Label for the sound type
             Text(soundType.rawValue)
-                .font(.headline)
 
             // Picker and Play button
             HStack {
@@ -92,5 +92,4 @@ struct NotificationAudioSettingsView: View {
     
     return NotificationAudioSettingsView_Content(dependencies: previewDependencies)
         .environmentObject(previewDependencies)
-        .frame(width: 400)
 }

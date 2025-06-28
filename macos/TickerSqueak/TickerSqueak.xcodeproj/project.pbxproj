@@ -11,6 +11,7 @@
 		F68BC1802E0D56F9008D0D8C /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC17F2E0D56F5008D0D8C /* Dialog.swift */; };
 		F68BC1842E0D598B008D0D8C /* DialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1832E0D598B008D0D8C /* DialogView.swift */; };
 		F68BC1862E0D5C98008D0D8C /* PersistentWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1852E0D5C98008D0D8C /* PersistentWindow.swift */; };
+		F68BC1882E0D5CF7008D0D8C /* PersistentFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1872E0D5CF7008D0D8C /* PersistentFrame.swift */; };
 		F68BC18E2E0D684A008D0D8C /* IgnoreListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC18D2E0D684A008D0D8C /* IgnoreListViewModel.swift */; };
 		F68BC1972E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1962E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift */; };
 		F68BC1992E0D76FF008D0D8C /* NotificationAudioSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1982E0D76FF008D0D8C /* NotificationAudioSettingsView.swift */; };
@@ -27,6 +28,11 @@
 		F68BC1B12E0DDA3D008D0D8C /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1B02E0DDA3D008D0D8C /* ContentViewModel.swift */; };
 		F68BC1B32E0EA2A1008D0D8C /* SnoozeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1B22E0EA2A1008D0D8C /* SnoozeListViewModel.swift */; };
 		F68BC2D02E0EACE8008D0D8C /* HiddenTickersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC2CF2E0EACE8008D0D8C /* HiddenTickersViewModel.swift */; };
+		F68BC4032E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC4022E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift */; };
+		F68BC4052E0F0CBD008D0D8C /* ChartingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC4042E0F0CBD008D0D8C /* ChartingSettingsView.swift */; };
+		F68BC40B2E0F4E81008D0D8C /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40A2E0F4E81008D0D8C /* ToastView.swift */; };
+		F68BC40D2E0FB64E008D0D8C /* ToastPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */; };
+		F68BC40F2E0FB696008D0D8C /* ToastStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40E2E0FB696008D0D8C /* ToastStyle.swift */; };
 		F698C2EA2E0700F6000CA939 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = F698C2E92E0700F6000CA939 /* Swifter */; };
 		F6CE02222E0ACFDD0068E717 /* 4Notes.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E42E0ACCAE00E46FE6 /* 4Notes.aiff */; };
 		F6CE02232E0ACFDD0068E717 /* Awaken.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E52E0ACCAE00E46FE6 /* Awaken.aiff */; };
@@ -44,31 +50,20 @@
 		F6DB08BD2E0CB21E00ABE3FE /* PersistenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DB08BC2E0CB21E00ABE3FE /* PersistenceKey.swift */; };
 		F6DB08C62E0CB6B600ABE3FE /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DB08C52E0CB6B600ABE3FE /* AppSettings.swift */; };
 		F6DB08D82E0D265500ABE3FE /* SoundLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DB08D72E0D265500ABE3FE /* SoundLibrary.swift */; };
-		F6EEE9222E0ACCAE00E46FE6 /* TVSettingsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9062E0ACCAE00E46FE6 /* TVSettingsData.swift */; };
 		F6EEE9232E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9112E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift */; };
 		F6EEE9242E0ACCAE00E46FE6 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90A2E0ACCAE00E46FE6 /* Toast.swift */; };
 		F6EEE9282E0ACCAE00E46FE6 /* WindowAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8FE2E0ACCAE00E46FE6 /* WindowAccessor.swift */; };
 		F6EEE9292E0ACCAE00E46FE6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE91A2E0ACCAE00E46FE6 /* ContentView.swift */; };
-		F6EEE92A2E0ACCAE00E46FE6 /* TVViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9082E0ACCAE00E46FE6 /* TVViewModel.swift */; };
-		F6EEE92C2E0ACCAE00E46FE6 /* TVSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9072E0ACCAE00E46FE6 /* TVSettingsView.swift */; };
 		F6EEE92D2E0ACCAE00E46FE6 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8F52E0ACCAE00E46FE6 /* AppError.swift */; };
-		F6EEE92E2E0ACCAE00E46FE6 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90D2E0ACCAE00E46FE6 /* ToastView.swift */; };
-		F6EEE92F2E0ACCAE00E46FE6 /* OneOptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9022E0ACCAE00E46FE6 /* OneOptionViewModel.swift */; };
-		F6EEE9302E0ACCAE00E46FE6 /* SettingsViewOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9182E0ACCAE00E46FE6 /* SettingsViewOld.swift */; };
 		F6EEE9312E0ACCAE00E46FE6 /* TickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8F32E0ACCAE00E46FE6 /* TickerItem.swift */; };
 		F6EEE9322E0ACCAE00E46FE6 /* IconTabPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9102E0ACCAE00E46FE6 /* IconTabPicker.swift */; };
-		F6EEE9332E0ACCAE00E46FE6 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8FA2E0ACCAE00E46FE6 /* View.swift */; };
 		F6EEE9342E0ACCAE00E46FE6 /* NSSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8F92E0ACCAE00E46FE6 /* NSSound.swift */; };
 		F6EEE9352E0ACCAE00E46FE6 /* TickerSqueakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9202E0ACCAE00E46FE6 /* TickerSqueakApp.swift */; };
-		F6EEE9362E0ACCAE00E46FE6 /* OneOptionSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9012E0ACCAE00E46FE6 /* OneOptionSettingsView.swift */; };
-		F6EEE9372E0ACCAE00E46FE6 /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90B2E0ACCAE00E46FE6 /* ToastModifier.swift */; };
 		F6EEE9382E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9132E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift */; };
-		F6EEE9392E0ACCAE00E46FE6 /* IgnoreInputSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9042E0ACCAE00E46FE6 /* IgnoreInputSheet.swift */; };
+		F6EEE9392E0ACCAE00E46FE6 /* IgnoreInputDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9042E0ACCAE00E46FE6 /* IgnoreInputDialog.swift */; };
 		F6EEE93B2E0ACCAE00E46FE6 /* DirectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90F2E0ACCAE00E46FE6 /* DirectionButton.swift */; };
 		F6EEE93C2E0ACCAE00E46FE6 /* DesignMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8FC2E0ACCAE00E46FE6 /* DesignMode.swift */; };
-		F6EEE93D2E0ACCAE00E46FE6 /* ToastStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90C2E0ACCAE00E46FE6 /* ToastStyle.swift */; };
 		F6EEE93E2E0ACCAE00E46FE6 /* ErrorDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8F62E0ACCAE00E46FE6 /* ErrorDialogView.swift */; };
-		F6EEE9402E0ACCAE00E46FE6 /* OneOptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9002E0ACCAE00E46FE6 /* OneOptionSettings.swift */; };
 		F6EEE9422E0ACCAE00E46FE6 /* Sonar.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8EC2E0ACCAE00E46FE6 /* Sonar.aiff */; };
 		F6EEE9432E0ACCAE00E46FE6 /* Gling.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8EB2E0ACCAE00E46FE6 /* Gling.aiff */; };
 		F6EEE9442E0ACCAE00E46FE6 /* Droplet.aiff in Resources */ = {isa = PBXBuildFile; fileRef = F6EEE8E92E0ACCAE00E46FE6 /* Droplet.aiff */; };
@@ -112,6 +107,7 @@
 		F68BC17F2E0D56F5008D0D8C /* Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
 		F68BC1832E0D598B008D0D8C /* DialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogView.swift; sourceTree = "<group>"; };
 		F68BC1852E0D5C98008D0D8C /* PersistentWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentWindow.swift; sourceTree = "<group>"; };
+		F68BC1872E0D5CF7008D0D8C /* PersistentFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentFrame.swift; sourceTree = "<group>"; };
 		F68BC18D2E0D684A008D0D8C /* IgnoreListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreListViewModel.swift; sourceTree = "<group>"; };
 		F68BC1962E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAudioSettingsViewModel.swift; sourceTree = "<group>"; };
 		F68BC1982E0D76FF008D0D8C /* NotificationAudioSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAudioSettingsView.swift; sourceTree = "<group>"; };
@@ -128,6 +124,11 @@
 		F68BC1B02E0DDA3D008D0D8C /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		F68BC1B22E0EA2A1008D0D8C /* SnoozeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeListViewModel.swift; sourceTree = "<group>"; };
 		F68BC2CF2E0EACE8008D0D8C /* HiddenTickersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenTickersViewModel.swift; sourceTree = "<group>"; };
+		F68BC4022E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartingSettingsViewModel.swift; sourceTree = "<group>"; };
+		F68BC4042E0F0CBD008D0D8C /* ChartingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartingSettingsView.swift; sourceTree = "<group>"; };
+		F68BC40A2E0F4E81008D0D8C /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresenter.swift; sourceTree = "<group>"; };
+		F68BC40E2E0FB696008D0D8C /* ToastStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastStyle.swift; sourceTree = "<group>"; };
 		F698C2D92E06FFAE000CA939 /* TickerSqueak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TickerSqueak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6DB08AA2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeTimeEditorView.swift; sourceTree = "<group>"; };
 		F6DB08B02E0CAD6800ABE3FE /* TickerPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerPayload.swift; sourceTree = "<group>"; };
@@ -149,25 +150,14 @@
 		F6EEE8F52E0ACCAE00E46FE6 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		F6EEE8F62E0ACCAE00E46FE6 /* ErrorDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDialogView.swift; sourceTree = "<group>"; };
 		F6EEE8F92E0ACCAE00E46FE6 /* NSSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSSound.swift; sourceTree = "<group>"; };
-		F6EEE8FA2E0ACCAE00E46FE6 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		F6EEE8FC2E0ACCAE00E46FE6 /* DesignMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignMode.swift; sourceTree = "<group>"; };
 		F6EEE8FE2E0ACCAE00E46FE6 /* WindowAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowAccessor.swift; sourceTree = "<group>"; };
-		F6EEE9002E0ACCAE00E46FE6 /* OneOptionSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneOptionSettings.swift; sourceTree = "<group>"; };
-		F6EEE9012E0ACCAE00E46FE6 /* OneOptionSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneOptionSettingsView.swift; sourceTree = "<group>"; };
-		F6EEE9022E0ACCAE00E46FE6 /* OneOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneOptionViewModel.swift; sourceTree = "<group>"; };
-		F6EEE9042E0ACCAE00E46FE6 /* IgnoreInputSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreInputSheet.swift; sourceTree = "<group>"; };
-		F6EEE9062E0ACCAE00E46FE6 /* TVSettingsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVSettingsData.swift; sourceTree = "<group>"; };
-		F6EEE9072E0ACCAE00E46FE6 /* TVSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVSettingsView.swift; sourceTree = "<group>"; };
-		F6EEE9082E0ACCAE00E46FE6 /* TVViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVViewModel.swift; sourceTree = "<group>"; };
+		F6EEE9042E0ACCAE00E46FE6 /* IgnoreInputDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreInputDialog.swift; sourceTree = "<group>"; };
 		F6EEE90A2E0ACCAE00E46FE6 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
-		F6EEE90B2E0ACCAE00E46FE6 /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
-		F6EEE90C2E0ACCAE00E46FE6 /* ToastStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastStyle.swift; sourceTree = "<group>"; };
-		F6EEE90D2E0ACCAE00E46FE6 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		F6EEE90F2E0ACCAE00E46FE6 /* DirectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionButton.swift; sourceTree = "<group>"; };
 		F6EEE9102E0ACCAE00E46FE6 /* IconTabPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTabPicker.swift; sourceTree = "<group>"; };
 		F6EEE9112E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemovalDelayEditorView.swift; sourceTree = "<group>"; };
 		F6EEE9132E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerSqueakViewModel.swift; sourceTree = "<group>"; };
-		F6EEE9182E0ACCAE00E46FE6 /* SettingsViewOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewOld.swift; sourceTree = "<group>"; };
 		F6EEE91A2E0ACCAE00E46FE6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F6EEE91E2E0ACCAE00E46FE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F6EEE91F2E0ACCAE00E46FE6 /* TickerSqueak.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TickerSqueak.entitlements; sourceTree = "<group>"; };
@@ -175,11 +165,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F68BC1892E0D5D29008D0D8C /* Modifiers */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Modifiers;
-			sourceTree = "<group>";
-		};
 		F68BC18A2E0D65AD008D0D8C /* Dependencies */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Dependencies;
@@ -188,6 +173,16 @@
 		F68BC1B72E0EA2DF008D0D8C /* Lists */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Lists;
+			sourceTree = "<group>";
+		};
+		F68BC2D32E0ECE56008D0D8C /* Debug */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Debug;
+			sourceTree = "<group>";
+		};
+		F68BC3F92E0F0C79008D0D8C /* Charting */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Charting;
 			sourceTree = "<group>";
 		};
 		F6DB08AC2E0CACE800ABE3FE /* Managers */ = {
@@ -251,8 +246,8 @@
 		F6EEE8F42E0ACCAE00E46FE6 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				F68BC3F92E0F0C79008D0D8C /* Charting */,
 				F68BC1AC2E0DD4A8008D0D8C /* DataMigrator.swift */,
-				F68BC17F2E0D56F5008D0D8C /* Dialog.swift */,
 				F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */,
 				F6DB08C52E0CB6B600ABE3FE /* AppSettings.swift */,
 				F6DB08B02E0CAD6800ABE3FE /* TickerPayload.swift */,
@@ -267,6 +262,7 @@
 		F6EEE8F82E0ACCAE00E46FE6 /* Dialogs */ = {
 			isa = PBXGroup;
 			children = (
+				F6EEE9042E0ACCAE00E46FE6 /* IgnoreInputDialog.swift */,
 				F68BC1832E0D598B008D0D8C /* DialogView.swift */,
 				F6EEE8F62E0ACCAE00E46FE6 /* ErrorDialogView.swift */,
 			);
@@ -277,7 +273,6 @@
 			isa = PBXGroup;
 			children = (
 				F6EEE8F92E0ACCAE00E46FE6 /* NSSound.swift */,
-				F6EEE8FA2E0ACCAE00E46FE6 /* View.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -292,41 +287,13 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		F6EEE9032E0ACCAE00E46FE6 /* OneOption */ = {
-			isa = PBXGroup;
-			children = (
-				F6EEE9002E0ACCAE00E46FE6 /* OneOptionSettings.swift */,
-				F6EEE9012E0ACCAE00E46FE6 /* OneOptionSettingsView.swift */,
-				F6EEE9022E0ACCAE00E46FE6 /* OneOptionViewModel.swift */,
-			);
-			path = OneOption;
-			sourceTree = "<group>";
-		};
-		F6EEE9052E0ACCAE00E46FE6 /* Sheets */ = {
-			isa = PBXGroup;
-			children = (
-				F6EEE9042E0ACCAE00E46FE6 /* IgnoreInputSheet.swift */,
-			);
-			path = Sheets;
-			sourceTree = "<group>";
-		};
-		F6EEE9092E0ACCAE00E46FE6 /* TradingView */ = {
-			isa = PBXGroup;
-			children = (
-				F6EEE9062E0ACCAE00E46FE6 /* TVSettingsData.swift */,
-				F6EEE9072E0ACCAE00E46FE6 /* TVSettingsView.swift */,
-				F6EEE9082E0ACCAE00E46FE6 /* TVViewModel.swift */,
-			);
-			path = TradingView;
-			sourceTree = "<group>";
-		};
 		F6EEE90E2E0ACCAE00E46FE6 /* Toast */ = {
 			isa = PBXGroup;
 			children = (
+				F68BC40E2E0FB696008D0D8C /* ToastStyle.swift */,
+				F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */,
+				F68BC40A2E0F4E81008D0D8C /* ToastView.swift */,
 				F6EEE90A2E0ACCAE00E46FE6 /* Toast.swift */,
-				F6EEE90B2E0ACCAE00E46FE6 /* ToastModifier.swift */,
-				F6EEE90C2E0ACCAE00E46FE6 /* ToastStyle.swift */,
-				F6EEE90D2E0ACCAE00E46FE6 /* ToastView.swift */,
 			);
 			path = Toast;
 			sourceTree = "<group>";
@@ -336,9 +303,9 @@
 			children = (
 				F6EEE90E2E0ACCAE00E46FE6 /* Toast */,
 				F6EEE90F2E0ACCAE00E46FE6 /* DirectionButton.swift */,
+				F68BC1872E0D5CF7008D0D8C /* PersistentFrame.swift */,
 				F6EEE9102E0ACCAE00E46FE6 /* IconTabPicker.swift */,
-				F6EEE9112E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift */,
-				F6DB08AA2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift */,
+				F68BC17F2E0D56F5008D0D8C /* Dialog.swift */,
 			);
 			path = UILib;
 			sourceTree = "<group>";
@@ -346,6 +313,7 @@
 		F6EEE9142E0ACCAE00E46FE6 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				F68BC4022E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift */,
 				F68BC2CF2E0EACE8008D0D8C /* HiddenTickersViewModel.swift */,
 				F68BC1B22E0EA2A1008D0D8C /* SnoozeListViewModel.swift */,
 				F68BC1B02E0DDA3D008D0D8C /* ContentViewModel.swift */,
@@ -364,12 +332,14 @@
 		F6EEE9192E0ACCAE00E46FE6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				F68BC4042E0F0CBD008D0D8C /* ChartingSettingsView.swift */,
 				F68BC1A82E0DC6BF008D0D8C /* SettingsView.swift */,
 				F68BC1A42E0D8F07008D0D8C /* ListSettingsView.swift */,
 				F68BC1A02E0D8ADB008D0D8C /* ServerSettingsView.swift */,
 				F68BC19C2E0D7BEA008D0D8C /* NotificationSettingsView.swift */,
 				F68BC1982E0D76FF008D0D8C /* NotificationAudioSettingsView.swift */,
-				F6EEE9182E0ACCAE00E46FE6 /* SettingsViewOld.swift */,
+				F6EEE9112E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift */,
+				F6DB08AA2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -379,8 +349,6 @@
 			children = (
 				F68BC1B72E0EA2DF008D0D8C /* Lists */,
 				F6EEE8F82E0ACCAE00E46FE6 /* Dialogs */,
-				F68BC1892E0D5D29008D0D8C /* Modifiers */,
-				F6EEE9052E0ACCAE00E46FE6 /* Sheets */,
 				F6EEE9192E0ACCAE00E46FE6 /* Settings */,
 				F6EEE91A2E0ACCAE00E46FE6 /* ContentView.swift */,
 			);
@@ -390,6 +358,7 @@
 		F6EEE9212E0ACCAE00E46FE6 /* TickerSqueak */ = {
 			isa = PBXGroup;
 			children = (
+				F68BC2D32E0ECE56008D0D8C /* Debug */,
 				F68BC18A2E0D65AD008D0D8C /* Dependencies */,
 				F6EEE8EF2E0ACCAE00E46FE6 /* Audio */,
 				F6DB08AD2E0CAD4700ABE3FE /* Protocols */,
@@ -397,8 +366,6 @@
 				F6EEE8F42E0ACCAE00E46FE6 /* Data */,
 				F6EEE8FB2E0ACCAE00E46FE6 /* Extensions */,
 				F6EEE8FF2E0ACCAE00E46FE6 /* Helpers */,
-				F6EEE9032E0ACCAE00E46FE6 /* OneOption */,
-				F6EEE9092E0ACCAE00E46FE6 /* TradingView */,
 				F6EEE9122E0ACCAE00E46FE6 /* UILib */,
 				F6EEE9142E0ACCAE00E46FE6 /* ViewModels */,
 				F6EEE91D2E0ACCAE00E46FE6 /* Views */,
@@ -426,9 +393,10 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				F68BC1892E0D5D29008D0D8C /* Modifiers */,
 				F68BC18A2E0D65AD008D0D8C /* Dependencies */,
 				F68BC1B72E0EA2DF008D0D8C /* Lists */,
+				F68BC2D32E0ECE56008D0D8C /* Debug */,
+				F68BC3F92E0F0C79008D0D8C /* Charting */,
 				F6DB08AC2E0CACE800ABE3FE /* Managers */,
 				F6DB08AD2E0CAD4700ABE3FE /* Protocols */,
 			);
@@ -504,7 +472,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F6EEE9222E0ACCAE00E46FE6 /* TVSettingsData.swift in Sources */,
 				F6EEE9232E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift in Sources */,
 				F68BC19B2E0D7BD8008D0D8C /* NotificationSettingsViewModel.swift in Sources */,
 				F6EEE9242E0ACCAE00E46FE6 /* Toast.swift in Sources */,
@@ -515,29 +482,25 @@
 				F68BC19F2E0D8A95008D0D8C /* ServerSettingsViewModel.swift in Sources */,
 				F6DB08B12E0CAD6800ABE3FE /* TickerPayload.swift in Sources */,
 				F68BC1862E0D5C98008D0D8C /* PersistentWindow.swift in Sources */,
+				F68BC4052E0F0CBD008D0D8C /* ChartingSettingsView.swift in Sources */,
 				F68BC18E2E0D684A008D0D8C /* IgnoreListViewModel.swift in Sources */,
 				F6EEE9282E0ACCAE00E46FE6 /* WindowAccessor.swift in Sources */,
 				F6EEE9292E0ACCAE00E46FE6 /* ContentView.swift in Sources */,
-				F6EEE92A2E0ACCAE00E46FE6 /* TVViewModel.swift in Sources */,
-				F6EEE92C2E0ACCAE00E46FE6 /* TVSettingsView.swift in Sources */,
 				F68BC1992E0D76FF008D0D8C /* NotificationAudioSettingsView.swift in Sources */,
 				F68BC17E2E0D4B9A008D0D8C /* NotificationMethod.swift in Sources */,
 				F6EEE92D2E0ACCAE00E46FE6 /* AppError.swift in Sources */,
 				F6DB08C62E0CB6B600ABE3FE /* AppSettings.swift in Sources */,
-				F6EEE92E2E0ACCAE00E46FE6 /* ToastView.swift in Sources */,
-				F6EEE92F2E0ACCAE00E46FE6 /* OneOptionViewModel.swift in Sources */,
-				F6EEE9302E0ACCAE00E46FE6 /* SettingsViewOld.swift in Sources */,
 				F6EEE9312E0ACCAE00E46FE6 /* TickerItem.swift in Sources */,
+				F68BC40B2E0F4E81008D0D8C /* ToastView.swift in Sources */,
+				F68BC40F2E0FB696008D0D8C /* ToastStyle.swift in Sources */,
 				F6EEE9322E0ACCAE00E46FE6 /* IconTabPicker.swift in Sources */,
 				F68BC1AD2E0DD4A8008D0D8C /* DataMigrator.swift in Sources */,
-				F6EEE9332E0ACCAE00E46FE6 /* View.swift in Sources */,
+				F68BC4032E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift in Sources */,
 				F6EEE9342E0ACCAE00E46FE6 /* NSSound.swift in Sources */,
 				F6EEE9352E0ACCAE00E46FE6 /* TickerSqueakApp.swift in Sources */,
 				F68BC1B12E0DDA3D008D0D8C /* ContentViewModel.swift in Sources */,
-				F6EEE9362E0ACCAE00E46FE6 /* OneOptionSettingsView.swift in Sources */,
-				F6EEE9372E0ACCAE00E46FE6 /* ToastModifier.swift in Sources */,
 				F6EEE9382E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift in Sources */,
-				F6EEE9392E0ACCAE00E46FE6 /* IgnoreInputSheet.swift in Sources */,
+				F6EEE9392E0ACCAE00E46FE6 /* IgnoreInputDialog.swift in Sources */,
 				F68BC1AB2E0DCF28008D0D8C /* TickerListViewModel.swift in Sources */,
 				F6EEE93B2E0ACCAE00E46FE6 /* DirectionButton.swift in Sources */,
 				F6DB08AB2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift in Sources */,
@@ -546,12 +509,12 @@
 				F68BC2D02E0EACE8008D0D8C /* HiddenTickersViewModel.swift in Sources */,
 				F6EEE93C2E0ACCAE00E46FE6 /* DesignMode.swift in Sources */,
 				F6DB08D82E0D265500ABE3FE /* SoundLibrary.swift in Sources */,
-				F6EEE93D2E0ACCAE00E46FE6 /* ToastStyle.swift in Sources */,
 				F68BC1972E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift in Sources */,
 				F68BC1842E0D598B008D0D8C /* DialogView.swift in Sources */,
 				F68BC1B32E0EA2A1008D0D8C /* SnoozeListViewModel.swift in Sources */,
+				F68BC40D2E0FB64E008D0D8C /* ToastPresenter.swift in Sources */,
 				F6EEE93E2E0ACCAE00E46FE6 /* ErrorDialogView.swift in Sources */,
-				F6EEE9402E0ACCAE00E46FE6 /* OneOptionSettings.swift in Sources */,
+				F68BC1882E0D5CF7008D0D8C /* PersistentFrame.swift in Sources */,
 				F68BC19D2E0D7BEA008D0D8C /* NotificationSettingsView.swift in Sources */,
 				F68BC1A72E0DC6B2008D0D8C /* SettingsViewModel.swift in Sources */,
 			);

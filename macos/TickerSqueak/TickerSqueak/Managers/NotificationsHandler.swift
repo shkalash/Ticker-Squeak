@@ -12,7 +12,6 @@ import AppKit
 
 class AppNotificationHandler: NotificationHandling {
 
-    let toastPublisher = PassthroughSubject<Toast, Never>()
     var authorizationStatus: AnyPublisher<UNAuthorizationStatus, Never> {
         authorizationStatusSubject.eraseToAnyPublisher()
     }
@@ -106,6 +105,9 @@ class AppNotificationHandler: NotificationHandling {
                                     message: "Ticker Alert \(ticker)" ,
                                     duration: settingsManager.currentSettings.toastDuration,
                                     width: 350.0, sound: sound)
-        toastPublisher.send(toast)
+        DispatchQueue.main.async{
+            ToastManager.shared.show(toast)
+        }
     }
+    
 }

@@ -31,6 +31,8 @@ struct AppSettings: Codable, Equatable {
     var toastDuration: Double = 2.0
     var notificationMethod : NotificationMethod = .all
     
+    var charting: ChartingSettings = ChartingSettings()
+
     // Helper for default time
     /// Provides a default Date object representing 6 PM in the New York time zone.
     private static func defaultSnoozeClearTime() -> Date {

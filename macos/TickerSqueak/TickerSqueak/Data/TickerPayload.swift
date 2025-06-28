@@ -10,6 +10,11 @@ struct TickerPayload: Decodable {
         case highPriority
     }
     
+    init(ticker: String, isHighPriority: Bool = false) {
+        self.ticker = ticker.uppercased()
+        self.isHighPriority = isHighPriority
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

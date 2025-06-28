@@ -1,47 +1,26 @@
+//
+//  TradingViewService.swift
+//  TickerSqueak
+//
+//  Created by Shai Kalev on 6/27/25.
+//
+
 import Foundation
 import AppKit
 import Carbon.HIToolbox
 
-class TVViewModel: ObservableObject {
-    @Published var settings: TVSettingsData {
-        didSet {
-            save()
-        }
+/// Handles the logic for opening a ticker in TradingView.
+class TradingViewService: ChartingService {
+    let provider: ChartingProvider = .tradingView
+    private let settingsManager: SettingsManaging
+
+    init(settingsManager: SettingsManaging) {
+        self.settingsManager = settingsManager
     }
     
-    @Published var hasAccessToAccessibilityAPI: Bool = false
-    private let key = "TVSettingsData"
-
-    init() {
-        if let data = UserDefaults.standard.data(forKey: key),
-           let decoded = try? JSONDecoder().decode(TVSettingsData.self, from: data) {
-            settings = decoded
-        } else {
-            settings = .default
-        }
-        requestAccess()
-    }
-
-    private func save() {
-        if let data = try? JSONEncoder().encode(settings) {
-            UserDefaults.standard.set(data, forKey: key)
-        }
-    }
-    
-    func requestAccess() {
-        #if DEBUG
-        if DesignMode.isRunning {
-            hasAccessToAccessibilityAPI = true
-            return
-        }
-        #endif
-        let options = [kAXTrustedCheckOptionPrompt.takeRetainedValue() as String: true] as CFDictionary
-        hasAccessToAccessibilityAPI = AXIsProcessTrustedWithOptions(options)
-    }
-          
-
-    func showTickerInTradingView(_ ticker: String) {
-        guard settings.useTradingView else { return }
+    func open(ticker: String) {
+        // Only proceed if this service is enabled in the user's settings.
+        guard settingsManager.currentSettings.charting.tradingView.isEnabled else { return }
         
         let bundleID = "com.tradingview.tradingviewapp.desktop"
         
@@ -84,14 +63,14 @@ class TVViewModel: ObservableObject {
 
     /// Sends the configured tab-switching shortcut after a delay.
     private func sendTabSwitchIfNeeded(completion: @escaping () -> Void) {
-        guard settings.changeTab else {
+        guard settingsManager.currentSettings.charting.tradingView.changeTab else {
             completion()
             return
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + settings.delayBeforeTab) { [self] in
-            let key = CGKeyCode(keyCodeForNumber(settings.tabNumber))
-            let modifierFlags = modifierToCGEventFlag(settings.tabModifier)
+        DispatchQueue.main.asyncAfter(deadline: .now() + settingsManager.currentSettings.charting.tradingView.delayBeforeTab) { [self] in
+            let key = CGKeyCode(keyCodeForNumber(settingsManager.currentSettings.charting.tradingView.tabNumber))
+            let modifierFlags = modifierToCGEventFlag(settingsManager.currentSettings.charting.tradingView.tabModifier)
             
             let source = CGEventSource(stateID: .hidSystemState)
             let keyDown = CGEvent(keyboardEventSource: source, virtualKey: key, keyDown: true)
@@ -110,14 +89,14 @@ class TVViewModel: ObservableObject {
     private func typeSequentially(ticker: String, index: Int) {
         // Base case: If we've typed all characters, press Return and finish.
         guard index < ticker.count else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + settings.delayBetweenCharacters) { [self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + settingsManager.currentSettings.charting.tradingView.delayBetweenCharacters) { [self] in
                 sendKeyPress(key: CGKeyCode(kVK_Return))
             }
             return
         }
         
         // The first character should wait for `delayBeforeTyping`
-        let initialDelay = (index == 0) ? settings.delayBeforeTyping : 0
+        let initialDelay = (index == 0) ? settingsManager.currentSettings.charting.tradingView.delayBeforeTyping : 0
         
         DispatchQueue.main.asyncAfter(deadline: .now() + initialDelay) { [self] in
             let charIndex = ticker.index(ticker.startIndex, offsetBy: index)
@@ -127,7 +106,7 @@ class TVViewModel: ObservableObject {
                 sendKeyPress(key: key)
                 
                 // Recursive step: Schedule the next character to be typed.
-                DispatchQueue.main.asyncAfter(deadline: .now() + settings.delayBetweenCharacters) { [self] in
+                DispatchQueue.main.asyncAfter(deadline: .now() + settingsManager.currentSettings.charting.tradingView.delayBetweenCharacters) { [self] in
                     typeSequentially(ticker: ticker, index: index + 1)
                 }
             } else {
@@ -151,7 +130,7 @@ class TVViewModel: ObservableObject {
         keyUp?.post(tap: .cghidEventTap)
     }
     
-    private func modifierToCGEventFlag(_ modifier: TVSettingsData.ModifierKey) -> CGEventFlags {
+    private func modifierToCGEventFlag(_ modifier: ModifierKey) -> CGEventFlags {
         switch modifier {
         case .command: return .maskCommand
         case .control: return .maskControl

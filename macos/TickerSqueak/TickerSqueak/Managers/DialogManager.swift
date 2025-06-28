@@ -12,7 +12,7 @@ import SwiftUI
 class DialogManager: ObservableObject {
     static let shared = DialogManager()
     
-    @Published private(set) var currentDialog: DialogInformation?
+    @Published var currentDialog: DialogInformation?
     private var dialogQueue: [DialogInformation] = []
 
     private init() {}
@@ -28,8 +28,10 @@ class DialogManager: ObservableObject {
     /// Dismisses the currently displayed dialog and attempts to show the next one.
     /// This is called by the UI layer after an action has been performed.
     func dismissCurrentDialog() {
+        // Setting currentDialog to nil will dismiss the sheet.
         currentDialog = nil
-        // Allow dismiss animation to complete before showing the next dialog.
+        
+        // Wait a moment for the dismiss animation to finish before showing the next dialog.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.showNextDialog()
         }

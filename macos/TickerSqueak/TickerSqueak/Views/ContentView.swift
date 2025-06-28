@@ -1,12 +1,10 @@
 import SwiftUI
 
-/// The main internal view of the application. It assembles the primary views for each tab
-/// by receiving the dependencies it needs to pass down.
+/// The main internal view of the application.
 struct ContentView_Content: View {
     
     @StateObject private var viewModel = ContentViewModel()
     
-    // It accepts any object conforming to AppDependencies, making it flexible for previews.
     private let dependencies: any AppDependencies
 
     init(dependencies: any AppDependencies) {
@@ -28,13 +26,10 @@ struct ContentView_Content: View {
             
             Divider()
 
-            // Switch between the main views based on the selected tab.
-            // It now calls the _Content versions of its children, passing dependencies explicitly.
             switch viewModel.selectedTab {
             case 0:
-                TickerListView_Content(dependencies: dependencies, onSymbolClicked: { ticker in
-                    // The charting service is now correctly sourced from the dependency container.
-                    //dependencies.chartingService.open(ticker: ticker)
+                TickerListView_Content(dependencies: dependencies, onTickerClicked: { ticker in
+                    dependencies.chartingService.open(ticker: ticker)
                 })
             case 1:
                 HiddenTickersView_Content(dependencies: dependencies)
@@ -54,67 +49,24 @@ struct ContentView_Content: View {
 
 /// The public-facing "loader" view for use in the live application.
 struct ContentView: View {
-    // It reads the REAL DependencyContainer from the environment.
+
     @EnvironmentObject private var dependencies: DependencyContainer
+    @EnvironmentObject private var dialogManager: DialogManager
 
     var body: some View {
-        // It then passes those dependencies into the content view.
         ContentView_Content(dependencies: dependencies)
+        .sheet(item: $dialogManager.currentDialog) { dialogInfo in
+            DialogView(dialogInfo: dialogInfo)
+        }
+        .withToasts()
     }
 }
-//    var body: some View {
-//        VStack {
-//            VStack{
-//                IconTabPicker(selection: $selectedTab, options: [
-//                    PickerOption(label: "Tickers", imageName: "chart.bar", tag: 0),
-//                    PickerOption(label: "Ignore", imageName: "eye.slash", tag: 1),
-//                    PickerOption(label: "Settings", imageName: "gearshape", tag: 2),
-//                ])
-//            }.padding(.vertical)
-//            switch selectedTab {
-//                case 0:
-//                    TickerListView(viewModel: viewModel){ ticker in
-//                        oneOptionViewModel.openChartInOneOptionApp(ticker: ticker)
-//                        tvSettingsViewModel.showTickerInTradingView(ticker)
-//                    }
-//                case 1:
-//                    IgnoreListView(
-//                        viewModel: viewModel,
-//                        showIgnoreInput: $showIgnoreInput,
-//                        ignoreInputText: $ignoreInputText
-//                    )
-//                case 2:
-//                    SettingsView(viewModel: viewModel, tvSettingsViewModel: tvSettingsViewModel, oneOptionViewModel: oneOptionViewModel)
-//                default:
-//                    Text("Unknown")
-//            }
-//
-//            
-//        }
-//        .toastView(toast: $viewModel.toastMessage)
-//        .sheet(isPresented: $showIgnoreInput) {
-//            IgnoreInputSheet(
-//                ignoreInputText: $ignoreInputText,
-//                showIgnoreInput: $showIgnoreInput,
-//                onAddTickers: { tickers in
-//                    for sym in tickers {
-//                        viewModel.addToIgnore(sym)
-//                    }
-//                }
-//            )
-//        }
-//    }
-//#Preview {
-//    ContentView(viewModel: TickerSqueakViewModel(), tvSettingsViewModel: TVViewModel() , oneOptionViewModel: OneOptionViewModel())
-//}
+
 #Preview {
-    // 1. Create the mock dependency container for the preview.
+
     let previewDependencies = PreviewDependencyContainer()
     
-    // 2. Directly create `ContentView_Content` and pass the mock dependencies
-    //    into its initializer. This makes the preview work correctly.
     return ContentView_Content(dependencies: previewDependencies)
-        // 3. Still provide the environmentObject for any potential grandchild views.
         .environmentObject(previewDependencies)
-        .frame(width: 600, height: 700)
+        .frame(width: 300, height: 400)
 }

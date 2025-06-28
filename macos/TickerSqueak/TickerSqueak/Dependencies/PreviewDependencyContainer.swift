@@ -4,6 +4,7 @@
 import Combine
 import UserNotifications
 class PreviewDependencyContainer: AppDependencies {
+    
     var persistenceHandler: PersistenceHandling
     var settingsManager: SettingsManaging
     var ignoreManager: IgnoreManaging
@@ -11,7 +12,8 @@ class PreviewDependencyContainer: AppDependencies {
     var tickerProvider: TickerProviding
     var notificationsHandler: NotificationHandling
     var tickerStore: TickerStoreManaging
-
+    var chartingService: ChartingService
+    
     init() {
         // Initialize with default placeholder implementations.
         self.persistenceHandler = PlaceholderPersistenceHandler()
@@ -21,6 +23,7 @@ class PreviewDependencyContainer: AppDependencies {
         self.tickerProvider = PlaceholderTickerProvider()
         self.notificationsHandler = PlaceholderNotificationHandler()
         self.tickerStore = PlaceholderTickerStore()
+        self.chartingService = CompositeChartingService(services: [OneOptionService(settingsManager: settingsManager) , TradingViewService(settingsManager: settingsManager)])
     }
 }
 
@@ -94,13 +97,6 @@ class PlaceholderNotificationHandler: NotificationHandling {
 }
 
 class PlaceholderTickerStore: TickerStoreManaging {
-    
-    
-    func revealTicker(_ ticker: String) {
-        
-    }
-    
-    
     private let subject: CurrentValueSubject<[TickerItem], Never>
     var allTickers: AnyPublisher<[TickerItem], Never> { subject.eraseToAnyPublisher() }
 
@@ -136,7 +132,8 @@ class PlaceholderTickerStore: TickerStoreManaging {
     func toggleUnread(id: String) { updateItem(id: id) { $0.isUnread.toggle() } }
     func toggleStarred(id: String) { updateItem(id: id) { $0.isStarred.toggle() } }
     func updateDirection(id: String, direction: TickerItem.Direction) { updateItem(id: id) { $0.direction = direction } }
-    func hideTicker(id: String) { removeItem(id: id) } // Hiding just removes it for previews
     func removeItem(id: String) { subject.value.removeAll { $0.id == id } }
     func clearAll() { subject.value.removeAll() }
+    func hideTicker(id: String) { hiddenSubject.value.append(id) }
+    func revealTicker(_ ticker: String) {hiddenSubject.value.removeAll { $0 == ticker }}
 }

@@ -17,4 +17,5 @@ protocol AppDependencies: ObservableObject {
     var tickerProvider: TickerProviding { get }
     var notificationsHandler: NotificationHandling { get }
     var tickerStore: TickerStoreManaging { get }
+    var chartingService: ChartingService { get }
 }

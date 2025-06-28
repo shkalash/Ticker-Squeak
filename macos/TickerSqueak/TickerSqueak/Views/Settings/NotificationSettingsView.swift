@@ -18,7 +18,7 @@ struct NotificationSettingsView_Content: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Notification Method")
                 .font(.headline)
 
@@ -66,7 +66,6 @@ struct NotificationSettingsView_Content: View {
                 }
             }
         }
-        .padding()
     }
     
     /// Creates a binding for a specific notification method. Toggling it on or off

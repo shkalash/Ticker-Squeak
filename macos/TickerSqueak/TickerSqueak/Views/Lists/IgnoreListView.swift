@@ -59,7 +59,7 @@ struct IgnoreListView_Content: View {
         }
         .sheet(isPresented: $isShowingInputSheet) {
             // Present the input sheet when the state variable is true
-            IgnoreInputSheet(onAddTickers: { tickersToAdd in
+            IgnoreInputDialog(onAddTickers: { tickersToAdd in
                 viewModel.add(tickers: tickersToAdd)
             })
         }

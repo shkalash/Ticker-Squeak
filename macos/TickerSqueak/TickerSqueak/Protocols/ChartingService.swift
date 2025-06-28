@@ -8,15 +8,11 @@
 
 import Foundation
 
-/// Defines the contract for a service that can open a ticker symbol in an external application.
+/// The contract for any service that can open a ticker in a charting application.
 protocol ChartingService {
+    /// The specific provider this service represents.
+    var provider: ChartingProvider { get }
+    
+    /// The action to open a given ticker symbol.
     func open(ticker: String)
-}
-
-
-/// A placeholder implementation of the ChartingService used for previews and testing.
-class PlaceholderChartingService: ChartingService {
-    func open(ticker: String) {
-        print("[ChartingService] Would open ticker: \(ticker)")
-    }
 }

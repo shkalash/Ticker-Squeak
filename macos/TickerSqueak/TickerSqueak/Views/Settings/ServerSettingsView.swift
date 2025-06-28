@@ -18,7 +18,7 @@ struct ServerSettingsView_Content: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
+        VStack(alignment: .leading, spacing: 8) {
             // MARK: - Server Port Section
             Text("Server Port")
                 .font(.headline)
@@ -35,9 +35,7 @@ struct ServerSettingsView_Content: View {
                     Label("Revert", systemImage: "arrow.uturn.backward")
                 }
                 .disabled(!viewModel.hasUnappliedChanges)
-
-                Spacer()
-
+                .padding(.horizontal)
                 Button(action: viewModel.applyPortChange) {
                     Label("Apply", systemImage: "checkmark.circle.fill")
                 }
@@ -59,8 +57,6 @@ struct ServerSettingsView_Content: View {
                 Text(viewModel.isServerRunning ? "Listening on Port : " + String(format: "%d", viewModel.currentServerPort) : "Stopped")
                     .foregroundColor(.secondary)
 
-                Spacer()
-
                 Button(action: {
                     if viewModel.isServerRunning {
                         viewModel.stopServer()
@@ -79,7 +75,6 @@ struct ServerSettingsView_Content: View {
                 }.buttonStyle(.borderless)
             }
         }
-        .padding()
     }
 }
 

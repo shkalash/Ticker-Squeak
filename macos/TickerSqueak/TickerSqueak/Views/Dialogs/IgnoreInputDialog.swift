@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct IgnoreInputSheet: View {
+struct IgnoreInputDialog: View {
     /// Local state to hold the text being entered by the user.
     @State private var inputText: String = ""
     
@@ -53,7 +53,7 @@ struct IgnoreInputSheet: View {
 
 #Preview {
     // The preview just shows the sheet and prints the action.
-    IgnoreInputSheet(onAddTickers: { tickers in
+    IgnoreInputDialog(onAddTickers: { tickers in
         print("Tickers to add: \(tickers)")
     })
 }

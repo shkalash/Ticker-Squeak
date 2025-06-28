@@ -23,7 +23,7 @@ class DependencyContainer: AppDependencies {
     let tickerProvider: TickerProviding
     let notificationsHandler: NotificationHandling
     let tickerStore: TickerStoreManaging
-
+    let chartingService: ChartingService
     // MARK: - Lifecycle
     
     init() {
@@ -43,6 +43,13 @@ class DependencyContainer: AppDependencies {
         self.tickerProvider = NetworkTickerProvider(settingsManager: settingsManager)
         self.notificationsHandler = AppNotificationHandler(settingsManager: settingsManager)
         
+        // Create the individual charting services
+        let tradingViewService = TradingViewService(settingsManager: self.settingsManager)
+        let oneOptionService = OneOptionService(settingsManager: self.settingsManager)
+
+        // Create the composite service that the app will use
+        self.chartingService = CompositeChartingService(services: [tradingViewService, oneOptionService])
+        
         // 5. The main TickerStore, which coordinates many of the other services.
         self.tickerStore = TickerManager(
             tickerReceiver: tickerProvider,
@@ -52,13 +59,5 @@ class DependencyContainer: AppDependencies {
             notificationHandler: notificationsHandler,
             persistence: persistenceHandler
         )
-    }
-}
-// Extend DependencyContainer for easy previewing
-extension DependencyContainer {
-    static var preview: DependencyContainer {
-        let container = DependencyContainer()
-        // Here you could override specific managers with mock versions if needed
-        return container
     }
 }

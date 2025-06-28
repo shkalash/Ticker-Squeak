@@ -6,10 +6,10 @@ struct TickerListView_Content: View {
     @StateObject private var viewModel: TickerListViewModel
     
     /// The action to perform when a ticker symbol is clicked.
-    private let onSymbolClicked: (String) -> Void
+    private let onTickerClicked: (String) -> Void
 
-    init(dependencies: any AppDependencies, onSymbolClicked: @escaping (String) -> Void) {
-        self.onSymbolClicked = onSymbolClicked
+    init(dependencies: any AppDependencies, onTickerClicked: @escaping (String) -> Void) {
+        self.onTickerClicked = onTickerClicked
         _viewModel = StateObject(wrappedValue: TickerListViewModel(dependencies: dependencies))
     }
 
@@ -25,7 +25,7 @@ struct TickerListView_Content: View {
                         item: item,
                         onSymbolClicked: {
                             viewModel.markAsRead(id: item.id)
-                            onSymbolClicked(item.ticker)
+                            onTickerClicked(item.ticker)
                         },
                         onToggleUnread: { viewModel.toggleUnread(id: item.id) },
                         onToggleStarred: { viewModel.toggleStarred(id: item.id) },
@@ -49,14 +49,14 @@ struct TickerListView_Content: View {
 /// The public-facing "loader" view.
 struct TickerListView: View {
     @EnvironmentObject private var dependencies: DependencyContainer
-    private let onSymbolClicked: (String) -> Void
+    private let onTickerClicked: (String) -> Void
 
-    init(onSymbolClicked: @escaping (String) -> Void) {
-        self.onSymbolClicked = onSymbolClicked
+    init(onTickerClicked: @escaping (String) -> Void) {
+        self.onTickerClicked = onTickerClicked
     }
 
     var body: some View {
-        TickerListView_Content(dependencies: dependencies, onSymbolClicked: onSymbolClicked)
+        TickerListView_Content(dependencies: dependencies, onTickerClicked: onTickerClicked)
     }
 }
 
@@ -259,7 +259,7 @@ private struct ActionButton: View {
 #Preview {
     let previewDependencies = PreviewDependencyContainer()
     
-    return TickerListView_Content(dependencies: previewDependencies, onSymbolClicked: { ticker in
+    return TickerListView_Content(dependencies: previewDependencies, onTickerClicked: { ticker in
         print("Symbol clicked: \(ticker)")
     })
     .environmentObject(previewDependencies)

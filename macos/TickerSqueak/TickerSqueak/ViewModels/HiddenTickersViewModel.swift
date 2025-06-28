@@ -26,7 +26,7 @@ class HiddenTickersViewModel: ObservableObject {
 
     // MARK: - Lifecycle
     
-    init(dependencies: AppDependencies) {
+    init(dependencies: any AppDependencies) {
         self.tickerStore = dependencies.tickerStore
         
         // Subscribe to the list of hidden tickers from the store.

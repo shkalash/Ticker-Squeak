@@ -19,42 +19,40 @@ struct SettingsView_Content: View {
         self.dependencies = dependencies
     }
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack() {
             // The custom tab picker for navigation
             IconTabPicker(selection: $viewModel.selectedTab, options: [
                 PickerOption(label: "General", imageName: "gearshape.fill", tag: 0),
                 PickerOption(label: "Server", imageName: "dot.radiowaves.left.and.right", tag: 1),
+                    PickerOption(label: "Charting", imageName: "chart.xyaxis.line", tag: 2),
             ])
-            .padding([.horizontal, .top])
+            .padding([.horizontal])
             .padding(.bottom, 8)
             
             Divider()
-            
-            // The switch statement now passes the dependencies down to the
-            // specific content view for each tab.
-            switch viewModel.selectedTab {
-                case 0:
-                    // MARK: - General Settings Tab
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 24) {
+            ScrollView {
+                // The switch statement now passes the dependencies down to the
+                // specific content view for each tab.
+                switch viewModel.selectedTab {
+                    case 0:
+                        // MARK: - General Settings Tab
+                        
+                        VStack(alignment: .leading, spacing: 8) {
                             ListSettingsView_Content(dependencies: dependencies)
                             Divider()
                             NotificationSettingsView_Content(dependencies: dependencies)
                             Divider()
                             NotificationAudioSettingsView_Content(dependencies: dependencies)
-                        }
-                        .padding()
-                    }
-                    
-                case 1:
-                    // MARK: - Server Settings Tab
-                    ScrollView {
-                        ServerSettingsView_Content(dependencies: dependencies)
+                        }.padding()
+            case 1:
+                // MARK: - Server Settings Tab
+                    ServerSettingsView_Content(dependencies: dependencies)
                             .padding()
-                    }
-                    
-                default:
-                    EmptyView()
+            case 2:
+                ChartingSettingsView_Content(dependencies: dependencies)
+            default:
+                EmptyView()
+            }
             }
         }
     }
@@ -82,5 +80,4 @@ struct SettingsView: View {
     return SettingsView_Content(dependencies: previewDependencies)
         // 3. Still provide the environmentObject for any potential grandchild views.
         .environmentObject(previewDependencies)
-        .frame(width: 500, height: 550)
 }

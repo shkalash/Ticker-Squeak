@@ -19,14 +19,10 @@ struct ListSettingsView_Content: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("List Settings")
                 .font(.headline)
             
-            // MARK: - Removal Delay Section
-            
-            // This custom binding converts the ViewModel's TimeInterval (seconds)
-            // into a String (minutes) for the TextField.
             let minutesBinding = Binding<String>(
                 get: {
                     "\(Int(viewModel.hidingTimeout / 60))"
@@ -93,7 +89,6 @@ struct ListSettingsView_Content: View {
                 .labelsHidden()
             }
         }
-        .padding()
     }
 }
 
