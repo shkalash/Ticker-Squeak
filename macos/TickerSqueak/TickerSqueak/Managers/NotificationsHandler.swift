@@ -101,10 +101,10 @@ class AppNotificationHandler: NotificationHandling {
     
     private func showToast(for ticker: String, isHighPriority: Bool) {
         let sound = settingsManager.currentSettings.soundLibrary.getSound(for: isHighPriority ?  .highPriorityAlert : .alert)
-        let toast : Toast = Toast(style: isHighPriority ? .warning : .info,
+        let toast : Toast = Toast(style: isHighPriority ? .importantInfo : .info,
                                     message: "Ticker Alert \(ticker)" ,
                                     duration: settingsManager.currentSettings.toastDuration,
-                                    width: 350.0, sound: sound)
+                                    sound: sound)
         DispatchQueue.main.async{
             ToastManager.shared.show(toast)
         }

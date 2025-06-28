@@ -18,7 +18,6 @@ struct TickerSqueakApp: App {
             ContentView()
                 .environmentObject(dependencies)
                 .persistentFrame(forKey: windowName, persistence: dependencies.persistenceHandler)
-                .frame(minWidth: 300, minHeight: 400)
                 .environmentObject(dialogManager)
                 .onAppear{
                     // Server must be started on app run
@@ -31,7 +30,7 @@ struct TickerSqueakApp: App {
         }
     }
 }
-// TODO: Visual design for toasts
+// TODO: Putting a ticker into the hidden, removing, getting same notification fails. Same with ignore, same with snooze
 // TODO: View doesn't correctly adjust to window size
 // TODO: Make tabs drop the description and show only image if too small
 // TODO: maybe replace the icon picker tab to a sidebar or something else in settings

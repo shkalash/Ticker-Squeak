@@ -32,7 +32,6 @@
 		F68BC4052E0F0CBD008D0D8C /* ChartingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC4042E0F0CBD008D0D8C /* ChartingSettingsView.swift */; };
 		F68BC40B2E0F4E81008D0D8C /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40A2E0F4E81008D0D8C /* ToastView.swift */; };
 		F68BC40D2E0FB64E008D0D8C /* ToastPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */; };
-		F68BC40F2E0FB696008D0D8C /* ToastStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40E2E0FB696008D0D8C /* ToastStyle.swift */; };
 		F698C2EA2E0700F6000CA939 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = F698C2E92E0700F6000CA939 /* Swifter */; };
 		F6CE02222E0ACFDD0068E717 /* 4Notes.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E42E0ACCAE00E46FE6 /* 4Notes.aiff */; };
 		F6CE02232E0ACFDD0068E717 /* Awaken.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E52E0ACCAE00E46FE6 /* Awaken.aiff */; };
@@ -127,7 +126,6 @@
 		F68BC4042E0F0CBD008D0D8C /* ChartingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartingSettingsView.swift; sourceTree = "<group>"; };
 		F68BC40A2E0F4E81008D0D8C /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresenter.swift; sourceTree = "<group>"; };
-		F68BC40E2E0FB696008D0D8C /* ToastStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastStyle.swift; sourceTree = "<group>"; };
 		F698C2D92E06FFAE000CA939 /* TickerSqueak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TickerSqueak.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6DB08AA2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeTimeEditorView.swift; sourceTree = "<group>"; };
 		F6DB08B02E0CAD6800ABE3FE /* TickerPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerPayload.swift; sourceTree = "<group>"; };
@@ -288,10 +286,9 @@
 		F6EEE90E2E0ACCAE00E46FE6 /* Toast */ = {
 			isa = PBXGroup;
 			children = (
-				F68BC40E2E0FB696008D0D8C /* ToastStyle.swift */,
+				F6EEE90A2E0ACCAE00E46FE6 /* Toast.swift */,
 				F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */,
 				F68BC40A2E0F4E81008D0D8C /* ToastView.swift */,
-				F6EEE90A2E0ACCAE00E46FE6 /* Toast.swift */,
 			);
 			path = Toast;
 			sourceTree = "<group>";
@@ -489,7 +486,6 @@
 				F6DB08C62E0CB6B600ABE3FE /* AppSettings.swift in Sources */,
 				F6EEE9312E0ACCAE00E46FE6 /* TickerItem.swift in Sources */,
 				F68BC40B2E0F4E81008D0D8C /* ToastView.swift in Sources */,
-				F68BC40F2E0FB696008D0D8C /* ToastStyle.swift in Sources */,
 				F6EEE9322E0ACCAE00E46FE6 /* IconTabPicker.swift in Sources */,
 				F68BC1AD2E0DD4A8008D0D8C /* DataMigrator.swift in Sources */,
 				F68BC4032E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift in Sources */,

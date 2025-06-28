@@ -19,7 +19,7 @@ struct ToastPresenter: ViewModifier {
             if let toast = toastManager.currentToast {
                 ToastView(toast: toast)
                     // Animate the toast sliding in from the top.
-                    .transition(.move(edge: .top).combined(with: .opacity))
+                    .transition(.slide)
                     // Tapping the toast will dismiss it immediately.
                     .onTapGesture {
                         toastManager.dismissCurrentToast()
