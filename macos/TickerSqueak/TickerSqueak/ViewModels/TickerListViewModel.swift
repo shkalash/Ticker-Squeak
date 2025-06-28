@@ -53,7 +53,7 @@ class TickerListViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: &$appSettings)
         
-        // Filtering logix
+        // Filtering logic
         
         // 1. Create a publisher for the filtered items and share it
         let filteredItemsPublisher = tickerStore.allTickers

@@ -16,9 +16,8 @@ struct TickerListView_Content: View {
     var body: some View {
         VStack(spacing: 0) {
             // Main filter and action toolbar
-            TickerListToolbar(viewModel: viewModel)
-            // Multi selection tools
-            SelectionToolbar(viewModel: viewModel)
+            // And Multi selection tools. Adapts to fit the multiple selection tools if possible
+            AdaptiveToolbarContainer(viewModel: viewModel)
             // The main list of tickers
             List(selection: $viewModel.selection) {
                 ForEach(viewModel.visibleTickers) { item in
@@ -41,8 +40,35 @@ struct TickerListView_Content: View {
                 }
             }
             .listStyle(.inset(alternatesRowBackgrounds: true))
-            .animation(.spring, value: viewModel.selection.isEmpty)
         }
+    }
+}
+
+
+struct AdaptiveToolbarContainer: View {
+    @ObservedObject var viewModel: TickerListViewModel
+
+    var body: some View {
+        ViewThatFits(in: .horizontal) {
+            // Attempt 1: The ideal single-line layout
+            HStack() {
+                TickerListToolbar(viewModel: viewModel)
+                Spacer(minLength: 3)
+                SelectionToolbar(viewModel: viewModel)
+                Spacer(minLength: 3)
+                TickerListToolbarTrailing(viewModel: viewModel)
+            }
+            
+            // Attempt 2: The fallback two-line layout
+            VStack(spacing: 0) {
+                HStack{
+                    TickerListToolbar(viewModel: viewModel)
+                    Spacer(minLength: 5)
+                    TickerListToolbarTrailing(viewModel: viewModel)
+                }
+                SelectionToolbar(viewModel: viewModel)
+            }
+        }.padding(.top, 8)
     }
 }
 
@@ -114,8 +140,17 @@ private struct TickerListToolbar: View {
             .foregroundColor(.primary)
             .help("Toggle All Directions")
             
-            Spacer()
-            
+        }
+        .padding(.leading)
+        .buttonStyle(.bordered)
+    }
+        
+}
+
+private struct TickerListToolbarTrailing: View {
+    @ObservedObject var viewModel: TickerListViewModel
+    var body: some View {
+        HStack{
             // --- Global Action Buttons ---
             Button(action: { viewModel.setMute(!viewModel.appSettings.isMuted) }) {
                 Image(systemName: viewModel.appSettings.isMuted ? "speaker.slash" : "speaker.wave.3")
@@ -126,11 +161,8 @@ private struct TickerListToolbar: View {
             Button(action: viewModel.clearAllTickers) {
                 Image(systemName: "trash")
             }.help("Clear All Tickers")
-        }
-        .padding()
-        .buttonStyle(.bordered)
+        }.padding(.trailing)
     }
-        
 }
 
 private struct SelectionToolbar: View {
@@ -155,7 +187,6 @@ private struct SelectionToolbar: View {
         }
         .disabled(viewModel.selection.isEmpty)
         .opacity(viewModel.selection.isEmpty ? 0.5 : 1.0)
-        .padding(.horizontal)
     }
 }
 
