@@ -153,6 +153,8 @@ private struct SelectionToolbar: View {
                             onMiddleClick: {viewModel.performActionOnSelection(.setNeutral)}
             )
         }
+        .disabled(viewModel.selection.isEmpty)
+        .opacity(viewModel.selection.isEmpty ? 0.5 : 1.0)
         .padding(.horizontal)
     }
 }

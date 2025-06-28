@@ -53,38 +53,54 @@ class TickerListViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: &$appSettings)
         
-        // Pipeline 2: Combine the raw list of tickers with our *local* @Published
-        // `appSettings` property. This guarantees that whenever the settings change
-        // (triggering a UI update), the filtering logic is re-run with the exact same data.
-        tickerStore.allTickers
+        // Filtering logix
+        
+        // 1. Create a publisher for the filtered items and share it
+        let filteredItemsPublisher = tickerStore.allTickers
             .combineLatest($appSettings)
-            .receive(on: DispatchQueue.main)
             .map { (alerts, settings) -> [TickerItem] in
                 return alerts.filter { item in
-                    let passesOtherFilters =
-                        (settings.showStarred && item.isStarred) ||
-                        (settings.showUnread && item.isUnread)
-                    if (settings.showBearish || settings.showBullish){
-                        // if we have a direction filter on use those
-                        let passesDirection =
-                            (settings.showBullish && item.direction == .bullish) ||
-                            (settings.showBearish && item.direction == .bearish)
-                        // now check any of the other filters
-                        if (settings.showUnread || settings.showStarred){
-                            return passesOtherFilters && passesDirection
-                        }
-                        // otherwise just use the direction
-                        return passesDirection
-                    }
-                    // include any marked filter
-                    if (settings.showUnread || settings.showStarred){
-                        return passesOtherFilters
-                    }
-                    // otherwise show
-                    return true
+                    let anyMarkedFilterActive = settings.showUnread || settings.showStarred
+                    let anyDirectionFilterActive = settings.showBullish || settings.showBearish
+
+                    // Condition 1: Check marked status (if any such filter is on)
+                    let passesMarkedFilter = !anyMarkedFilterActive ||
+                                             (settings.showStarred && item.isStarred) ||
+                                             (settings.showUnread && item.isUnread)
+
+                    // Condition 2: Check direction (if any such filter is on)
+                    let passesDirectionFilter = !anyDirectionFilterActive ||
+                                                (settings.showBullish && item.direction == .bullish) ||
+                                                (settings.showBearish && item.direction == .bearish)
+
+                    // An item is visible if it passes both sets of active filters.
+                    // If a filter set is inactive, its condition is true.
+                    return passesMarkedFilter && passesDirectionFilter
                 }
             }
-            .assign(to: &$visibleTickers)
+            .share() // Share the results to avoid re-calculating for each subscriber
+
+        // 2. First subscriber: Update the visibleTickers array
+        filteredItemsPublisher
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.visibleTickers, on: self)
+            .store(in: &cancellables)
+
+        // 3. Second subscriber: Update the selection set
+        filteredItemsPublisher
+            // Get just the IDs from the visible items
+            .map { Set($0.map(\.id)) }
+            // Combine with the latest selection set
+            .combineLatest($selection)
+            // The core logic: find the intersection
+            .map { (visibleIDs, currentSelection) in
+                return currentSelection.intersection(visibleIDs)
+            }
+            // IMPORTANT: Prevent an infinite loop if the selection doesn't change
+            .removeDuplicates()
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.selection, on: self)
+            .store(in: &cancellables)
         
         // Pipeline 3: Calculates the unread count from the *unfiltered* list.
         // This remains separate as it's not affected by UI filters.
