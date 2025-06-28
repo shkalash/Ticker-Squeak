@@ -65,11 +65,11 @@ struct DebugView: View {
                 }
             }
             
-            Button("Trigger Error with Retry Action") {
+            Button("Trigger Warning with Retry Action") {
                 viewModel.performAfterDismissing {
                     let error = NSError(domain: "TestError", code: 102, userInfo: [NSLocalizedDescriptionKey: "A recoverable error occurred. Please try again."])
                     let retryAction = DialogAction(title: "Retry", kind: .primary) { print("[Debug] Retry action executed!") }
-                    ErrorManager.shared.report(error, proposing: [retryAction])
+                    ErrorManager.shared.report(error, proposing: [retryAction] , level: .warning)
                 }
             }
             

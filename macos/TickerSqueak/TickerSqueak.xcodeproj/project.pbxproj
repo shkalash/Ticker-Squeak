@@ -59,7 +59,6 @@
 		F6EEE9322E0ACCAE00E46FE6 /* IconTabPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9102E0ACCAE00E46FE6 /* IconTabPicker.swift */; };
 		F6EEE9342E0ACCAE00E46FE6 /* NSSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8F92E0ACCAE00E46FE6 /* NSSound.swift */; };
 		F6EEE9352E0ACCAE00E46FE6 /* TickerSqueakApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9202E0ACCAE00E46FE6 /* TickerSqueakApp.swift */; };
-		F6EEE9382E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9132E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift */; };
 		F6EEE9392E0ACCAE00E46FE6 /* IgnoreInputDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE9042E0ACCAE00E46FE6 /* IgnoreInputDialog.swift */; };
 		F6EEE93B2E0ACCAE00E46FE6 /* DirectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE90F2E0ACCAE00E46FE6 /* DirectionButton.swift */; };
 		F6EEE93C2E0ACCAE00E46FE6 /* DesignMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6EEE8FC2E0ACCAE00E46FE6 /* DesignMode.swift */; };
@@ -157,7 +156,6 @@
 		F6EEE90F2E0ACCAE00E46FE6 /* DirectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionButton.swift; sourceTree = "<group>"; };
 		F6EEE9102E0ACCAE00E46FE6 /* IconTabPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconTabPicker.swift; sourceTree = "<group>"; };
 		F6EEE9112E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemovalDelayEditorView.swift; sourceTree = "<group>"; };
-		F6EEE9132E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerSqueakViewModel.swift; sourceTree = "<group>"; };
 		F6EEE91A2E0ACCAE00E46FE6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F6EEE91E2E0ACCAE00E46FE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F6EEE91F2E0ACCAE00E46FE6 /* TickerSqueak.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TickerSqueak.entitlements; sourceTree = "<group>"; };
@@ -324,7 +322,6 @@
 				F68BC19A2E0D7BD8008D0D8C /* NotificationSettingsViewModel.swift */,
 				F68BC1962E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift */,
 				F68BC18D2E0D684A008D0D8C /* IgnoreListViewModel.swift */,
-				F6EEE9132E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -499,7 +496,6 @@
 				F6EEE9342E0ACCAE00E46FE6 /* NSSound.swift in Sources */,
 				F6EEE9352E0ACCAE00E46FE6 /* TickerSqueakApp.swift in Sources */,
 				F68BC1B12E0DDA3D008D0D8C /* ContentViewModel.swift in Sources */,
-				F6EEE9382E0ACCAE00E46FE6 /* TickerSqueakViewModel.swift in Sources */,
 				F6EEE9392E0ACCAE00E46FE6 /* IgnoreInputDialog.swift in Sources */,
 				F68BC1AB2E0DCF28008D0D8C /* TickerListViewModel.swift in Sources */,
 				F6EEE93B2E0ACCAE00E46FE6 /* DirectionButton.swift in Sources */,

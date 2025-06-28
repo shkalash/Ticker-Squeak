@@ -170,7 +170,10 @@ class TickerManager: TickerStoreManaging {
             guard let self = self else { return }
             self.receivedTickers.remove(tickerSymbol)
             self.pendingRemovals.removeValue(forKey: tickerSymbol)
+#if DEBUG
             print("[Store] Ticker \(tickerSymbol) has been fully removed from memory after delay.")
+#endif
+            
         }
         
         pendingRemovals[tickerSymbol] = workItem

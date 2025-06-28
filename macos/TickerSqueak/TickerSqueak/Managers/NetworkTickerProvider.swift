@@ -65,12 +65,15 @@ class NetworkTickerProvider: TickerProviding {
             let port = UInt16(settingsManager.currentSettings.serverPort)
             try server.start(port, forceIPv4: true)
             isRunningPublisher.send(true)
+#if DEBUG
             print("[Server] Running on port \(port)")
+#endif
+
         } catch {
             let errorMessage = "[Server] Failed to start: \(error.localizedDescription)"
             print(errorMessage)
             isRunningPublisher.send(false)
-            // ErrorManager.shared.report(AppError.networkError(description: errorMessage))
+            ErrorManager.shared.report(AppError.networkError(description: errorMessage))
         }
     }
 
@@ -78,12 +81,16 @@ class NetworkTickerProvider: TickerProviding {
         guard isRunningPublisher.value else { return }
         server.stop()
         isRunningPublisher.send(false)
+#if DEBUG
         print("[Server] Stopped.")
+#endif
     }
     
     /// A private helper to handle restarting the server, for instance when the port changes.
     private func restartServer() {
+#if DEBUG
         print("[Server] Configuration changed. Restarting server...")
+#endif
         stop()
         // Add a small delay to ensure the port is fully released before starting again.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {

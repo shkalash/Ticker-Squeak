@@ -31,8 +31,9 @@ struct TickerSqueakApp: App {
         }
     }
 }
-// TODO: Visual design for toasts and dialogs
+// TODO: Visual design for toasts
 // TODO: View doesn't correctly adjust to window size
 // TODO: Make tabs drop the description and show only image if too small
-// TODO: Minor spacing and alignments in settings views, maybe replace the icon picker tab to a sidebar or something else.
+// TODO: maybe replace the icon picker tab to a sidebar or something else in settings
 // TODO: Ticker Image?
+// TODO: Final data migration

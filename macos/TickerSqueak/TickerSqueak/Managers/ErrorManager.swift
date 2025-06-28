@@ -13,15 +13,15 @@ class ErrorManager {
     private init() {}
 
     /// Reports an error, optionally with actions proposed by the caller.
-    func report(_ error: Error, proposing actions: [DialogAction] = []) {
+    func report(_ error: Error, proposing actions: [DialogAction] = [] , level: DialogInformation.Level = .error) {
         #if DEBUG
         print("Error Reported: \(error.localizedDescription)")
         #endif
         
         let dialogInfo = DialogInformation(
-            title: "Error",
+            title: level == .error ? "Error" : "Warning",
             message: error.localizedDescription,
-            level: .error,
+            level: level,
             actions: actions
         )
         
@@ -29,4 +29,5 @@ class ErrorManager {
             DialogManager.shared.present(dialogInfo)
         }
     }
+    
 }

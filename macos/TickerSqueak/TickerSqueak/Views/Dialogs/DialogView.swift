@@ -14,13 +14,14 @@ struct DialogView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Image(systemName: iconName(for: dialogInfo.level))
-                .font(.largeTitle)
-                .foregroundColor(color(for: dialogInfo.level))
-
-            Text(dialogInfo.title)
-                .font(.headline)
-
+            HStack(alignment: .center , spacing: 15){
+                Image(systemName: iconName(for: dialogInfo.level))
+                    .font(.largeTitle)
+                    .foregroundColor(color(for: dialogInfo.level))
+                
+                Text(dialogInfo.title)
+                    .font(.headline)
+            }
             Text(dialogInfo.message)
                 .multilineTextAlignment(.center)
 
@@ -70,8 +71,7 @@ struct DialogButton: View {
             // Then, tell the manager to dismiss the dialog.
             DialogManager.shared.dismissCurrentDialog()
         }) {
-            Text(action.title)
-                .frame(maxWidth: .infinity)
+            Text(action.title).frame(width: 50)
         }
         .keyboardShortcut(action.kind == .primary ? .defaultAction : .cancelAction)
         .tint(action.kind == .destructive ? .red : .accentColor)

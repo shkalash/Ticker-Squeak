@@ -62,7 +62,9 @@ class TimerBasedSnoozeManager: SnoozeManaging {
     }
 
     @objc func clearSnoozeList() {
+#if DEBUG
         print("[Snooze] Snooze list automatically cleared.")
+#endif
         internalSnoozedTickers.removeAll()
         // Save the clear date to prevent clearing again until the next scheduled time
         persistence.save(value: Date(), for: .lastSnoozeClearDate)
@@ -78,9 +80,9 @@ class TimerBasedSnoozeManager: SnoozeManaging {
         guard let nextClearDate = calendar.nextDate(after: Date(), matching: clearComponents, matchingPolicy: .nextTime) else {
             return
         }
-        
+#if DEBUG
         print("[Snooze] Next snooze clear scheduled for \(nextClearDate.formatted(date: .long, time: .standard))")
-        
+#endif
         snoozeClearTimer = Timer.scheduledTimer(
             timeInterval: nextClearDate.timeIntervalSinceNow,
             target: self,
