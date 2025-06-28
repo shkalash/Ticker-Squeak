@@ -17,13 +17,14 @@ struct TickerListView_Content: View {
         VStack(spacing: 0) {
             // Main filter and action toolbar
             TickerListToolbar(viewModel: viewModel)
-
+            // Multi selection tools
+            SelectionToolbar(viewModel: viewModel)
             // The main list of tickers
             List(selection: $viewModel.selection) {
                 ForEach(viewModel.visibleTickers) { item in
                     TickerListRow(
                         item: item,
-                        onSymbolClicked: {
+                        onTickerClicked: {
                             viewModel.markAsRead(id: item.id)
                             onTickerClicked(item.ticker)
                         },
@@ -113,10 +114,6 @@ private struct TickerListToolbar: View {
             .foregroundColor(.primary)
             .help("Toggle All Directions")
             
-            SelectionToolbar(viewModel: viewModel)
-           .frame(height: 20)
-           .opacity(viewModel.selection.count > 1  ? 1 : 0)
-           .clipped()
             Spacer()
             
             // --- Global Action Buttons ---
@@ -139,7 +136,7 @@ private struct TickerListToolbar: View {
 private struct SelectionToolbar: View {
     @ObservedObject var viewModel: TickerListViewModel
     var body: some View {
-        HStack {
+        HStack() {
             ActionButton(systemImage: "envelope.open", color: .white, help: "Toggle Read") { viewModel.performActionOnSelection(.toggleRead) }
             ActionButton(systemImage: "star", color: .yellow, help: "Toggle Star") { viewModel.performActionOnSelection(.toggleStar) }
             ActionButton(systemImage: "timer", help: "Hide Temporarily") { viewModel.performActionOnSelection(.hide) }
@@ -163,7 +160,7 @@ private struct SelectionToolbar: View {
 
 private struct TickerListRow: View {
     let item: TickerItem
-    let onSymbolClicked: () -> Void
+    let onTickerClicked: () -> Void
     let onToggleUnread: () -> Void
     let onToggleStarred: () -> Void
     let onHide: () -> Void
@@ -176,7 +173,7 @@ private struct TickerListRow: View {
             ActionButton(systemImage: item.isUnread ? "circle.fill" : "circle", color: item.isUnread ? .white : .gray.opacity(0.4), help: "Toggle Read", action: onToggleUnread)
             ActionButton(systemImage: item.isStarred ? "star.fill" : "star", color: item.isStarred ? .yellow : .gray, help: "Toggle Star", action: onToggleStarred)
             
-            Button(action: onSymbolClicked) {
+            Button(action: onTickerClicked) {
                 Text(item.ticker)
                     .font(.system(.body, design: .monospaced))
                     .fontWeight(item.isUnread ? .bold : .regular)
@@ -203,6 +200,7 @@ private struct TickerListRow: View {
             ActionButton(systemImage: "timer", help: "Hide", action: onHide)
             
             Text(item.receivedAt.formatted(date: .omitted, time: .shortened))
+                .frame(minWidth : 40)
                 .font(.caption)
                 .foregroundColor(.secondary)
             

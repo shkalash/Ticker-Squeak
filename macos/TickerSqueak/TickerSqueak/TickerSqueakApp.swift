@@ -23,7 +23,6 @@ struct TickerSqueakApp: App {
                     // Server must be started on app run
                     dependencies.tickerProvider.start()
                 }
-                .frame(minWidth: 600)
             #if DEBUG
                 .withDebugOverlay()
                 .environmentObject(dependencies)
@@ -31,6 +30,4 @@ struct TickerSqueakApp: App {
         }
     }
 }
-// TODO: maybe replace the icon picker tab to a sidebar or something else in settings
-// TODO: Ticker Image?
-// TODO: Final data migration
+

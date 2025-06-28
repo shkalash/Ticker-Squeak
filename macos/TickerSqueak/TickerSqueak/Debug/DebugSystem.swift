@@ -41,7 +41,7 @@ struct DebugView: View {
     
     // It gets the ViewModel from its parent to coordinate dismissal.
     @ObservedObject private var viewModel: DebugViewModel
-    @State private var tickerToSend: String = "TEST_A"
+    @State private var tickerToSend: String = "TESTA"
     init(dependencies: any AppDependencies, viewModel: DebugViewModel) {
         self.dependencies = dependencies
         self.viewModel = viewModel
