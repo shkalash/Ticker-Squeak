@@ -31,7 +31,7 @@ struct ChartingSettingsView_Content: View {
                 hasAccessToAccessibilityAPI: viewModel.hasAccessToAccessibilityAPI,
                 onRequestAccess: { viewModel.requestAccessibilityPermission() }
             )
-        }.padding([.horizontal])
+        }
         // Check for accessibility changes when the view appears.
         .onAppear {
             viewModel.checkAccessibilityStatus()

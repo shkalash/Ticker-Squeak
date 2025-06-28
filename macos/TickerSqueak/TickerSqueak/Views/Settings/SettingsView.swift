@@ -24,7 +24,7 @@ struct SettingsView_Content: View {
             IconTabPicker(selection: $viewModel.selectedTab, options: [
                 PickerOption(label: "General", imageName: "gearshape.fill", tag: 0),
                 PickerOption(label: "Server", imageName: "dot.radiowaves.left.and.right", tag: 1),
-                    PickerOption(label: "Charting", imageName: "chart.xyaxis.line", tag: 2),
+                PickerOption(label: "Charting", imageName: "chart.xyaxis.line", tag: 2),
             ])
             .padding([.horizontal])
             .padding(.bottom, 8)
@@ -44,15 +44,15 @@ struct SettingsView_Content: View {
                             Divider()
                             NotificationAudioSettingsView_Content(dependencies: dependencies)
                         }.padding()
-            case 1:
-                // MARK: - Server Settings Tab
-                    ServerSettingsView_Content(dependencies: dependencies)
+                    case 1:
+                        ServerSettingsView_Content(dependencies: dependencies)
                             .padding()
-            case 2:
-                ChartingSettingsView_Content(dependencies: dependencies)
-            default:
-                EmptyView()
-            }
+                    case 2:
+                        ChartingSettingsView_Content(dependencies: dependencies)
+                            .padding()
+                    default:
+                        EmptyView()
+                }
             }
         }
     }
