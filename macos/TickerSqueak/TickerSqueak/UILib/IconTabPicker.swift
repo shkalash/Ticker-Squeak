@@ -7,7 +7,7 @@ enum ImageType {
 }
 
 struct PickerOption: Identifiable {
-    let id = { tag }
+    var id : Int { tag }
     let label: String
     let imageName: String
     let tag: Int
