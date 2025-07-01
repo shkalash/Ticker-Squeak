@@ -4,7 +4,7 @@ import SwiftUI
 struct ContentView_Content: View {
     
     @StateObject private var viewModel = ContentViewModel()
-    
+   
     private let dependencies: any AppDependencies
 
     init(dependencies: any AppDependencies) {
@@ -20,6 +20,7 @@ struct ContentView_Content: View {
                 PickerOption(label: "Snooze List", imageName: "moon.zzz", tag: 2),
                 PickerOption(label: "Ignore List", imageName: "eye.slash", tag: 3),
                 PickerOption(label: "Settings", imageName: "gearshape", tag: 4),
+//                PickerOption(label: "OneOption", imageName: "oneoption", tag: 5 , imageType: .asset)
             ])
             
             Divider()
@@ -39,6 +40,11 @@ struct ContentView_Content: View {
                     SettingsView_Content(dependencies: dependencies)
                         .padding(.top , 3)
                         .padding(.horizontal, 5)
+                //case 5:
+                    
+//                    WebView(url: URL(string:  "https://app.oneoption.com/option-stalker/chart/SPY?size=5m")!)
+//                    WebGridView()
+//                        .padding()
             default:
                 EmptyView()
             }

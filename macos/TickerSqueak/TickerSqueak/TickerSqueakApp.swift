@@ -28,6 +28,10 @@ struct TickerSqueakApp: App {
                 .environmentObject(dependencies)
             #endif
         }
+        // Define the new, secondary window for our web view
+        Window("Floating SPY", id: "floating-spy") {
+            FloatingWebView()
+        }
     }
 }
 

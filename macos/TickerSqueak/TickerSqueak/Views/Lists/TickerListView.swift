@@ -92,6 +92,7 @@ struct TickerListView: View {
 
 private struct TickerListToolbar: View {
     @ObservedObject var viewModel: TickerListViewModel
+    @Environment(\.openWindow) private var openWindow
     var body: some View {
         HStack {
             // --- Filter Buttons ---
@@ -140,6 +141,15 @@ private struct TickerListToolbar: View {
             .foregroundColor(.primary)
             .help("Toggle All Directions")
             
+            Button(action:{
+                openWindow(id: "floating-spy")
+            }, label : {
+                Image("oneoption")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20 , height: 20)
+            })
+           
         }
         .padding(.leading)
         .buttonStyle(.bordered)

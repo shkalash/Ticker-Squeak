@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F64A37E02E13DC7D006CED86 /* AlwaysOnTopModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */; };
+		F67F90272E10675700186678 /* WebGridViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67F90262E10675700186678 /* WebGridViewModel.swift */; };
 		F68BC17E2E0D4B9A008D0D8C /* NotificationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */; };
 		F68BC1802E0D56F9008D0D8C /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC17F2E0D56F5008D0D8C /* Dialog.swift */; };
 		F68BC1842E0D598B008D0D8C /* DialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1832E0D598B008D0D8C /* DialogView.swift */; };
@@ -101,6 +103,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysOnTopModifier.swift; sourceTree = "<group>"; };
+		F67F90262E10675700186678 /* WebGridViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebGridViewModel.swift; sourceTree = "<group>"; };
 		F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMethod.swift; sourceTree = "<group>"; };
 		F68BC17F2E0D56F5008D0D8C /* Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
 		F68BC1832E0D598B008D0D8C /* DialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogView.swift; sourceTree = "<group>"; };
@@ -161,6 +165,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		F67F90212E1062CE00186678 /* WebView */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = WebView;
+			sourceTree = "<group>";
+		};
 		F68BC18A2E0D65AD008D0D8C /* Dependencies */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Dependencies;
@@ -296,6 +305,7 @@
 		F6EEE9122E0ACCAE00E46FE6 /* UILib */ = {
 			isa = PBXGroup;
 			children = (
+				F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */,
 				F6EEE90E2E0ACCAE00E46FE6 /* Toast */,
 				F6EEE90F2E0ACCAE00E46FE6 /* DirectionButton.swift */,
 				F68BC1872E0D5CF7008D0D8C /* PersistentFrame.swift */,
@@ -319,6 +329,7 @@
 				F68BC19A2E0D7BD8008D0D8C /* NotificationSettingsViewModel.swift */,
 				F68BC1962E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift */,
 				F68BC18D2E0D684A008D0D8C /* IgnoreListViewModel.swift */,
+				F67F90262E10675700186678 /* WebGridViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -341,6 +352,7 @@
 		F6EEE91D2E0ACCAE00E46FE6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F67F90212E1062CE00186678 /* WebView */,
 				F68BC1B72E0EA2DF008D0D8C /* Lists */,
 				F6EEE8F82E0ACCAE00E46FE6 /* Dialogs */,
 				F6EEE9192E0ACCAE00E46FE6 /* Settings */,
@@ -387,6 +399,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F67F90212E1062CE00186678 /* WebView */,
 				F68BC18A2E0D65AD008D0D8C /* Dependencies */,
 				F68BC1B72E0EA2DF008D0D8C /* Lists */,
 				F68BC2D32E0ECE56008D0D8C /* Debug */,
@@ -474,8 +487,10 @@
 				F68BC1A92E0DC6BF008D0D8C /* SettingsView.swift in Sources */,
 				F68BC1A32E0D8EE3008D0D8C /* ListSettingsViewModel.swift in Sources */,
 				F68BC19F2E0D8A95008D0D8C /* ServerSettingsViewModel.swift in Sources */,
+				F67F90272E10675700186678 /* WebGridViewModel.swift in Sources */,
 				F6DB08B12E0CAD6800ABE3FE /* TickerPayload.swift in Sources */,
 				F68BC1862E0D5C98008D0D8C /* PersistentWindow.swift in Sources */,
+				F64A37E02E13DC7D006CED86 /* AlwaysOnTopModifier.swift in Sources */,
 				F68BC4052E0F0CBD008D0D8C /* ChartingSettingsView.swift in Sources */,
 				F68BC18E2E0D684A008D0D8C /* IgnoreListViewModel.swift in Sources */,
 				F6EEE9282E0ACCAE00E46FE6 /* WindowAccessor.swift in Sources */,
