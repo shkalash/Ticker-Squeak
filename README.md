@@ -1,0 +1,1 @@
+A swift MacOS app combined with a browser extension that scans specific discord channels and a specific chat room (OneOption) for stock ticker mentions, sends them to the app and notifies the user. Meant to help filter the noise during the trading day. Was a fun personal project to fill a need along with trying out Gemini AI’s capabilities in debugging and writing code.  
