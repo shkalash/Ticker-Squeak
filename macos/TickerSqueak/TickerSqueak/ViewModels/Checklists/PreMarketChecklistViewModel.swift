@@ -7,7 +7,6 @@ import UniformTypeIdentifiers
 @MainActor
 class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
     
-    // MARK: - Published Properties
     @Published private(set) var title: String = "Pre-Market Checklist"
     @Published private(set) var checklist: Checklist?
     @Published var itemStates: [String: ChecklistItemState] = [:]
@@ -16,7 +15,6 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
     @Published var error: Error?
     @Published var expandedSectionIDs: Set<UUID> = []
 
-    // MARK: - Private Dependencies
     private let checklistName = "pre-market-checklist"
     private let templateProvider: ChecklistTemplateProviding
     private let stateManager: ChecklistStateManaging
@@ -24,7 +22,6 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
     private let reportGenerator: PreMarketReportGenerating
     private let fileLocationProvider: FileLocationProviding
     
-    // MARK: - Lifecycle
     init(dependencies: any AppDependencies) {
         self.templateProvider = dependencies.checklistTemplateProvider
         self.stateManager = dependencies.checklistStateManager
@@ -32,8 +29,6 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
         self.reportGenerator = dependencies.preMarketReportGenerator
         self.fileLocationProvider = dependencies.fileLocationProvider
     }
-    
-    // MARK: - Protocol Conformance
     
     func load() async {
         isLoading = true
@@ -70,12 +65,8 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
         
         let newFilenames = await withTaskGroup(of: String?.self) { group in
             var filenames: [String] = []
-            for image in images {
-                group.addTask { try? await self.imagePersister.saveImage(image, for: context) }
-            }
-            for await filename in group where filename != nil {
-                filenames.append(filename!)
-            }
+            for image in images { group.addTask { try? await self.imagePersister.saveImage(image, for: context) } }
+            for await filename in group where filename != nil { filenames.append(filename!) }
             return filenames
         }
         
@@ -83,6 +74,19 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
         var currentState = binding(for: itemID).wrappedValue
         currentState.imageFileNames.append(contentsOf: newFilenames)
         updateItemState(itemID: itemID, newState: currentState)
+    }
+    
+    func deletePastedImage(filename: String, forItemID itemID: String) {
+        var currentState = binding(for: itemID).wrappedValue
+        currentState.imageFileNames.removeAll { $0 == filename }
+        updateItemState(itemID: itemID, newState: currentState)
+        
+        // Add safety check for the date before creating the context
+        guard let date = self.checklistDate else { return }
+        Task {
+            let context = ChecklistContext.preMarket(date: date)
+            try? await imagePersister.deleteImage(withFilename: filename, for: context)
+        }
     }
     
     func startNewDay() async {
@@ -96,27 +100,21 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
     func generateAndExportReport() async {
         guard let checklist = checklist, let date = checklistDate else { return }
         let currentState = ChecklistState(lastModified: date, itemStates: itemStates)
-        
         let reportContent = reportGenerator.generateReport(for: currentState, withTemplate: checklist)
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateFormatter = DateFormatter(); dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: date)
         let filename = "\(checklist.title) - \(dateString).md"
 
-        // Use the new reusable helper
         NSSavePanel.present(withContent: reportContent, suggestedFilename: filename)
     }
-    
-    // MARK: - Private Helpers & Bindings
     
     private func saveLogToDisk() async {
         guard let checklist = self.checklist, let date = self.checklistDate else { return }
         let currentState = ChecklistState(lastModified: date, itemStates: itemStates)
         let reportContent = reportGenerator.generateReport(for: currentState, withTemplate: checklist)
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateFormatter = DateFormatter(); dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: date)
         let filename = "PreMarket-\(dateString).md"
         

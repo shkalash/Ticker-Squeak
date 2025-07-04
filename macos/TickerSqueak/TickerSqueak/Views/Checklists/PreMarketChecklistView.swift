@@ -83,12 +83,24 @@ struct PreMarketChecklistView_Content: View {
                                         case .image(let caption):
                                             VStack(alignment: .leading, spacing: 6) {
                                                 Text(caption).font(.callout).foregroundColor(.secondary)
-                                                MultiImagePlaceholderView(
-                                                    imageFileNames: stateBinding.imageFileNames,
-                                                    onPaste: { images in
-                                                        Task { await viewModel.savePastedImages(images, forItemID: item.id) }
-                                                    }
-                                                )
+                                                if let date = viewModel.checklistDate {
+                                                            MultiImageWellView(
+                                                                imageFileNames: stateBinding.imageFileNames,
+                                                                // Create the correct context for the pre-market checklist.
+                                                                context: .preMarket(date: date),
+                                                                onPaste: { images in
+                                                                    Task { await viewModel.savePastedImages(images, forItemID: item.id) }
+                                                                },
+                                                                onDelete: { filename in
+                                                                    viewModel.deletePastedImage(filename: filename, forItemID: item.id)
+                                                                }
+                                                            )
+                                                        } else {
+                                                            // If there's no date, we can't create the context, so show a placeholder.
+                                                            Text("Date not available for image context.")
+                                                                .foregroundColor(.secondary)
+                                                                .font(.caption)
+                                                        }
                                             }
                                             .padding(.vertical, 4)
                                     }

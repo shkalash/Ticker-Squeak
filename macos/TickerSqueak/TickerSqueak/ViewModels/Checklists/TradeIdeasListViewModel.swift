@@ -19,7 +19,7 @@ class TradeIdeasListViewModel: ObservableObject {
 
     // MARK: - Private Dependencies & State
     private let tradeIdeaManager: TradeIdeaManaging
-    private let appCoordinator: AppNavigationCoordinating
+    private let appCoordinator: any AppNavigationCoordinating
     private var isHandlingNavigationRequest = false // The state guard to prevent race conditions
 
     init(dependencies: any AppDependencies) {

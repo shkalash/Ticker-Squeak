@@ -24,7 +24,7 @@
 		F68BC40B2E0F4E81008D0D8C /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40A2E0F4E81008D0D8C /* ToastView.swift */; };
 		F68BC40D2E0FB64E008D0D8C /* ToastPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */; };
 		F698C2EA2E0700F6000CA939 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = F698C2E92E0700F6000CA939 /* Swifter */; };
-		F6B3AF352E1848D800F2DB91 /* MultiImagePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B3AF342E1848D800F2DB91 /* MultiImagePlaceholderView.swift */; };
+		F6B3AF372E18503100F2DB91 /* MultiImageWellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B3AF362E18503100F2DB91 /* MultiImageWellView.swift */; };
 		F6B5080A2E175396005953F2 /* NSImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508092E175396005953F2 /* NSImage+Extensions.swift */; };
 		F6B508912E180A3C005953F2 /* NSSavePanel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508902E180A3C005953F2 /* NSSavePanel+Extension.swift */; };
 		F6B508952E180E70005953F2 /* MultiClickButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508942E180E70005953F2 /* MultiClickButton.swift */; };
@@ -114,7 +114,7 @@
 		F68BC40A2E0F4E81008D0D8C /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresenter.swift; sourceTree = "<group>"; };
 		F698C2D92E06FFAE000CA939 /* TickerSqueak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TickerSqueak.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6B3AF342E1848D800F2DB91 /* MultiImagePlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiImagePlaceholderView.swift; sourceTree = "<group>"; };
+		F6B3AF362E18503100F2DB91 /* MultiImageWellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiImageWellView.swift; sourceTree = "<group>"; };
 		F6B508092E175396005953F2 /* NSImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Extensions.swift"; sourceTree = "<group>"; };
 		F6B508902E180A3C005953F2 /* NSSavePanel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSSavePanel+Extension.swift"; sourceTree = "<group>"; };
 		F6B508942E180E70005953F2 /* MultiClickButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiClickButton.swift; sourceTree = "<group>"; };
@@ -342,8 +342,8 @@
 		F6EEE9122E0ACCAE00E46FE6 /* UILib */ = {
 			isa = PBXGroup;
 			children = (
-				F6B3AF342E1848D800F2DB91 /* MultiImagePlaceholderView.swift */,
 				F6EEE90E2E0ACCAE00E46FE6 /* Toast */,
+				F6B3AF362E18503100F2DB91 /* MultiImageWellView.swift */,
 				F6B508962E180EB3005953F2 /* StatusButton.swift */,
 				F6B508942E180E70005953F2 /* MultiClickButton.swift */,
 				F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */,
@@ -536,8 +536,8 @@
 				F6EEE9282E0ACCAE00E46FE6 /* WindowAccessor.swift in Sources */,
 				F6EEE9292E0ACCAE00E46FE6 /* ContentView.swift in Sources */,
 				F68BC1992E0D76FF008D0D8C /* NotificationAudioSettingsView.swift in Sources */,
-				F6B3AF352E1848D800F2DB91 /* MultiImagePlaceholderView.swift in Sources */,
 				F6B508952E180E70005953F2 /* MultiClickButton.swift in Sources */,
+				F6B3AF372E18503100F2DB91 /* MultiImageWellView.swift in Sources */,
 				F68BC17E2E0D4B9A008D0D8C /* NotificationMethod.swift in Sources */,
 				F6EEE92D2E0ACCAE00E46FE6 /* AppError.swift in Sources */,
 				F6DB08C62E0CB6B600ABE3FE /* AppSettings.swift in Sources */,

@@ -61,10 +61,14 @@ struct TradeChecklistView_Content: View {
                                     case .image(let caption):
                                         VStack(alignment: .leading, spacing: 6) {
                                             Text(caption).font(.callout).foregroundColor(.secondary)
-                                            MultiImagePlaceholderView(
+                                            MultiImageWellView(
                                                 imageFileNames: stateBinding.imageFileNames,
+                                                context: .tradeIdea(id: viewModel.tradeIdea.id),
                                                 onPaste: { images in
                                                     Task { await viewModel.savePastedImages(images, forItemID: item.id) }
+                                                },
+                                                onDelete: { filename in
+                                                    viewModel.deletePastedImage(filename: filename, forItemID: item.id)
                                                 }
                                             )
                                         }

@@ -5,12 +5,12 @@
 //  Created by Shai Kalev on 7/4/25.
 //
 
-
 import Foundation
-import Combine // For @Published and ObservableObject
+import Combine
 import AppKit
-/// Defines the interface for the view model that drives a checklist view.
-/// It orchestrates data fetching and state updates.
+import SwiftUI
+
+/// Defines the base interface for a view model that drives any checklist view.
 @MainActor
 protocol ChecklistViewModelProtocol: ObservableObject {
     // MARK: - Published State for the View
@@ -19,7 +19,7 @@ protocol ChecklistViewModelProtocol: ObservableObject {
     var itemStates: [String: ChecklistItemState] { get }
     var isLoading: Bool { get }
     var error: Error? { get set }
-    var expandedSectionIDs: Set<UUID> {get set}
+    var expandedSectionIDs: Set<UUID> { get set }
     
     // MARK: - Actions from the View
     
@@ -27,15 +27,14 @@ protocol ChecklistViewModelProtocol: ObservableObject {
     func load() async
     
     /// Updates the state for a single checklist item and triggers a save.
-    /// - Parameter itemID: The ID of the item being updated.
-    /// - Parameter newState: The complete new state for that item.
     func updateItemState(itemID: String, newState: ChecklistItemState)
     
-    /// Handles pasting a new image, persisting it, and updating the state.
-    /// - Parameter image: The `NSImage` that was pasted.
-    /// - Parameter itemID: The ID of the image item to associate with.
+    /// Handles pasting new images, persisting them, and updating the state.
     func savePastedImages(_ images: [NSImage], forItemID itemID: String) async
-
+    
+    /// Handles deleting a persisted image and updating the state.
+    func deletePastedImage(filename: String, forItemID itemID: String)
+    
     /// Generates a report and presents a save panel to the user for exporting.
     func generateAndExportReport() async
 }
@@ -46,13 +45,14 @@ protocol PreMarketChecklistViewModelProtocol: ChecklistViewModelProtocol {
     func startNewDay() async
 }
 
+/// A specialized ViewModel protocol for the Trade Idea checklist.
 @MainActor
-protocol TradeIdeaChecklistViewModelProtocol : ChecklistViewModelProtocol{
-    
+protocol TradeChecklistViewModelProtocol: ChecklistViewModelProtocol {
     var tradeIdea: TradeIdea { get }
-    /// Opens the current ticker in the charting service
+    
+    /// Opens the current ticker in the charting service.
     func openInChartingService()
     
-    /// updates the idea's status
+    /// Updates the idea's status.
     func updateStatus(to newStatus: IdeaStatus)
 }

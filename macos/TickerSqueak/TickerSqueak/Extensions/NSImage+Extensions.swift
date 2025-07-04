@@ -11,3 +11,7 @@ extension NSImage {
         return bitmapImage.representation(using: .png, properties: [:])
     }
 }
+// Extension to make NSImage identifiable for the .sheet modifier
+extension NSImage: @retroactive Identifiable {
+    public var id: Int { hash }
+}
