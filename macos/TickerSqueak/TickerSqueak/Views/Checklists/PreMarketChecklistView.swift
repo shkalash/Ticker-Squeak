@@ -129,54 +129,6 @@ struct PreMarketChecklistView_Content: View {
     }
 }
 
-struct MultiImagePlaceholderView: View {
-    @Binding var imageFileNames: [String]
-    let onPaste: ([NSImage]) -> Void
-    
-    @State private var images: [NSImage] = []
-    // Dependencies to load images would be passed here in a real app
-    
-    var body: some View {
-        // A simple representation for now.
-        // A full implementation would load images from the file system.
-        ZStack {
-            RoundedRectangle(cornerRadius: 8)
-                .strokeBorder(style: StrokeStyle(lineWidth: 2, dash: [8]))
-                .foregroundColor(.secondary)
-            
-            if imageFileNames.isEmpty {
-                Text("Paste Screenshots Here")
-                    .foregroundColor(.secondary)
-            } else {
-                Text("\(imageFileNames.count) image(s) attached")
-                    .foregroundColor(.secondary)
-            }
-        }
-        .frame(minHeight: 80)
-        .onPasteCommand(of: [UTType.image]) { providers in
-            var newImages: [NSImage] = []
-            let dispatchGroup = DispatchGroup()
-            for provider in providers {
-                dispatchGroup.enter()
-                if provider.canLoadObject(ofClass: NSImage.self) {
-                    _ = provider.loadObject(ofClass: NSImage.self) { image, _ in
-                        if let nsImage = image as? NSImage {
-                            newImages.append(nsImage)
-                        }
-                        dispatchGroup.leave()
-                    }
-                } else {
-                    dispatchGroup.leave()
-                }
-            }
-            dispatchGroup.notify(queue: .main) {
-                if !newImages.isEmpty {
-                    onPaste(newImages)
-                }
-            }
-        }
-    }
-}
 
 // Loader view and Preview remain the same
 struct PreMarketChecklistView: View {

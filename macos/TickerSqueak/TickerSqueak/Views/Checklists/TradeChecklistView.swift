@@ -78,9 +78,6 @@ struct TradeChecklistView_Content: View {
                         )
                     }
                 }
-                .listStyle(.inset(alternatesRowBackgrounds: true))
-            } else if viewModel.error != nil {
-                // ... Error view ...
             }
         }
         .task {
