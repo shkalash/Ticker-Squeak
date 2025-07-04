@@ -37,6 +37,12 @@ protocol ChecklistViewModelProtocol: ObservableObject {
     
     /// Generates a report and presents a save panel to the user for exporting.
     func generateAndExportReport() async
+    
+    /// Expands all collapsible sections in the checklist.
+    func expandAllSections()
+    
+    /// Collapses all collapsible sections in the checklist.
+    func collapseAllSections()
 }
 
 /// A specialized ViewModel protocol for checklists that have a "New Day" workflow.

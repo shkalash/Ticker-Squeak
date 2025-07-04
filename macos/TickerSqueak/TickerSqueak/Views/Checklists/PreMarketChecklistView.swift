@@ -7,7 +7,7 @@ import UniformTypeIdentifiers
 struct PreMarketChecklistView_Content: View {
     
     @StateObject private var viewModel: PreMarketChecklistViewModel
-
+    
     init(dependencies: any AppDependencies) {
         _viewModel = StateObject(wrappedValue: PreMarketChecklistViewModel(dependencies: dependencies))
     }
@@ -16,36 +16,52 @@ struct PreMarketChecklistView_Content: View {
         VStack(spacing: 0) {
             // Header
             HStack(alignment: .firstTextBaseline) {
-                            VStack(alignment: .leading) {
-                                Text(viewModel.title).font(.title2).fontWeight(.bold)
-                                
-                                if let date = viewModel.checklistDate {
-                                    Text(date.formatted(date: .long, time: .omitted))
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                            
-                            Spacer()
-                            
-                            Button {
-                                Task { await viewModel.startNewDay() }
-                            } label: {
-                                Image(systemName: "forward.fill")
-                                Text("New Day")
-                            }
-                            .disabled(viewModel.isLoading || viewModel.checklist == nil)
-
-                            Button {
-                                Task { await viewModel.generateAndExportReport() }
-                            } label: {
-                                Image(systemName: "square.and.arrow.up")
-                                Text("Export")
-                            }
-                            .disabled(viewModel.isLoading || viewModel.checklist == nil)
-                        }
-                        .padding()
-
+                VStack(alignment: .leading) {
+                    Text(viewModel.title).font(.title2).fontWeight(.bold)
+                    
+                    if let date = viewModel.checklistDate {
+                        Text(date.formatted(date: .long, time: .omitted))
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                
+                Spacer()
+                
+                Button(action: viewModel.expandAllSections) {
+                    Image(systemName: "chevron.down.square")
+                }
+                .help("Expand All Sections")
+                // Disable if the checklist isn't loaded or if all sections are already expanded
+                .disabled(viewModel.checklist == nil || viewModel.expandedSectionIDs.count == viewModel.checklist?.sections.count)
+                
+                Button(action: viewModel.collapseAllSections) {
+                    Image(systemName: "chevron.up.square")
+                }
+                .help("Collapse All Sections")
+                // Disable if no sections are expanded
+                .disabled(viewModel.expandedSectionIDs.isEmpty)
+                
+                Spacer()
+                
+                Button {
+                    Task { await viewModel.startNewDay() }
+                } label: {
+                    Image(systemName: "forward.fill")
+                    Text("New Day")
+                }
+                .disabled(viewModel.isLoading || viewModel.checklist == nil)
+                
+                Button {
+                    Task { await viewModel.generateAndExportReport() }
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                    Text("Export")
+                }
+                .disabled(viewModel.isLoading || viewModel.checklist == nil)
+            }
+            .padding()
+            
             // Main content area
             if viewModel.isLoading {
                 Spacer()
@@ -77,6 +93,7 @@ struct PreMarketChecklistView_Content: View {
                                                     .background(Color(nsColor: .textBackgroundColor))
                                                     .cornerRadius(6)
                                                     .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.secondary.opacity(0.5)))
+                                                    .padding(.trailing , 20)
                                             }
                                             .padding(.vertical, 4)
                                             
@@ -84,23 +101,23 @@ struct PreMarketChecklistView_Content: View {
                                             VStack(alignment: .leading, spacing: 6) {
                                                 Text(caption).font(.callout).foregroundColor(.secondary)
                                                 if let date = viewModel.checklistDate {
-                                                            MultiImageWellView(
-                                                                imageFileNames: stateBinding.imageFileNames,
-                                                                // Create the correct context for the pre-market checklist.
-                                                                context: .preMarket(date: date),
-                                                                onPaste: { images in
-                                                                    Task { await viewModel.savePastedImages(images, forItemID: item.id) }
-                                                                },
-                                                                onDelete: { filename in
-                                                                    viewModel.deletePastedImage(filename: filename, forItemID: item.id)
-                                                                }
-                                                            )
-                                                        } else {
-                                                            // If there's no date, we can't create the context, so show a placeholder.
-                                                            Text("Date not available for image context.")
-                                                                .foregroundColor(.secondary)
-                                                                .font(.caption)
+                                                    MultiImageWellView(
+                                                        imageFileNames: stateBinding.imageFileNames,
+                                                        // Create the correct context for the pre-market checklist.
+                                                        context: .preMarket(date: date),
+                                                        onPaste: { images in
+                                                            Task { await viewModel.savePastedImages(images, forItemID: item.id) }
+                                                        },
+                                                        onDelete: { filename in
+                                                            viewModel.deletePastedImage(filename: filename, forItemID: item.id)
                                                         }
+                                                    )
+                                                } else {
+                                                    // If there's no date, we can't create the context, so show a placeholder.
+                                                    Text("Date not available for image context.")
+                                                        .foregroundColor(.secondary)
+                                                        .font(.caption)
+                                                }
                                             }
                                             .padding(.vertical, 4)
                                     }

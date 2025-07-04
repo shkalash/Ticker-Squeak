@@ -143,4 +143,15 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
             }
         )
     }
+    func expandAllSections() {
+        // To expand all, we get the IDs of all sections from our loaded checklist
+        // and create a Set containing all of them.
+        guard let checklist = checklist else { return }
+        self.expandedSectionIDs = Set(checklist.sections.map { $0.id })
+    }
+
+    func collapseAllSections() {
+        // To collapse all, we simply clear the set of expanded section IDs.
+        self.expandedSectionIDs.removeAll()
+    }
 }

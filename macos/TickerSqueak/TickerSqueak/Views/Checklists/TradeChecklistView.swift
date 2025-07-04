@@ -41,38 +41,39 @@ struct TradeChecklistView_Content: View {
                                     let stateBinding = viewModel.binding(for: item.id)
                                     
                                     switch item.type {
-                                    case .checkbox(let text):
-                                        Toggle(text, isOn: stateBinding.isChecked)
+                                        case .checkbox(let text):
+                                            Toggle(text, isOn: stateBinding.isChecked)
+                                                .padding(.vertical, 4)
+                                            
+                                        case .textInput(let prompt):
+                                            VStack(alignment: .leading, spacing: 6) {
+                                                Text(prompt).font(.callout).foregroundColor(.secondary)
+                                                TextEditor(text: stateBinding.userText)
+                                                    .font(.body)
+                                                    .frame(minHeight: 80)
+                                                    .padding(4)
+                                                    .background(Color(nsColor: .textBackgroundColor))
+                                                    .cornerRadius(6)
+                                                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.secondary.opacity(0.5)))
+                                                    .padding(.trailing , 20)
+                                            }
                                             .padding(.vertical, 4)
-                                    
-                                    case .textInput(let prompt):
-                                        VStack(alignment: .leading, spacing: 6) {
-                                            Text(prompt).font(.callout).foregroundColor(.secondary)
-                                            TextEditor(text: stateBinding.userText)
-                                                .font(.body)
-                                                .frame(minHeight: 80)
-                                                .padding(4)
-                                                .background(Color(nsColor: .textBackgroundColor))
-                                                .cornerRadius(6)
-                                                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.secondary.opacity(0.5)))
-                                        }
-                                        .padding(.vertical, 4)
-                                    
-                                    case .image(let caption):
-                                        VStack(alignment: .leading, spacing: 6) {
-                                            Text(caption).font(.callout).foregroundColor(.secondary)
-                                            MultiImageWellView(
-                                                imageFileNames: stateBinding.imageFileNames,
-                                                context: .tradeIdea(id: viewModel.tradeIdea.id),
-                                                onPaste: { images in
-                                                    Task { await viewModel.savePastedImages(images, forItemID: item.id) }
-                                                },
-                                                onDelete: { filename in
-                                                    viewModel.deletePastedImage(filename: filename, forItemID: item.id)
-                                                }
-                                            )
-                                        }
-                                        .padding(.vertical, 4)
+                                            
+                                        case .image(let caption):
+                                            VStack(alignment: .leading, spacing: 6) {
+                                                Text(caption).font(.callout).foregroundColor(.secondary)
+                                                MultiImageWellView(
+                                                    imageFileNames: stateBinding.imageFileNames,
+                                                    context: .tradeIdea(id: viewModel.tradeIdea.id),
+                                                    onPaste: { images in
+                                                        Task { await viewModel.savePastedImages(images, forItemID: item.id) }
+                                                    },
+                                                    onDelete: { filename in
+                                                        viewModel.deletePastedImage(filename: filename, forItemID: item.id)
+                                                    }
+                                                )
+                                            }
+                                            .padding(.vertical, 4)
                                     }
                                 }
                             },
@@ -96,7 +97,7 @@ struct TradeChecklistView_Content: View {
 /// The custom header for the checklist detail view.
 private struct ChecklistHeaderView: View {
     @ObservedObject var viewModel: TradeChecklistViewModel
-
+    
     var body: some View {
         HStack(alignment: .center) {
             // The interactive status button on the left.
@@ -119,6 +120,22 @@ private struct ChecklistHeaderView: View {
             
             Spacer()
             
+            Button(action: viewModel.expandAllSections) {
+                Image(systemName: "chevron.down.square")
+            }
+            .help("Expand All Sections")
+            // Disable if the checklist isn't loaded or if all sections are already expanded
+            .disabled(viewModel.checklist == nil || viewModel.expandedSectionIDs.count == viewModel.checklist?.sections.count)
+            
+            Button(action: viewModel.collapseAllSections) {
+                Image(systemName: "chevron.up.square")
+            }
+            .help("Collapse All Sections")
+            // Disable if no sections are expanded
+            .disabled(viewModel.expandedSectionIDs.isEmpty)
+            
+            Spacer()
+            
             // Button to open the charting service.
             Button {
                 viewModel.openInChartingService()
@@ -137,7 +154,7 @@ private struct ChecklistHeaderView: View {
 struct TradeChecklistView: View {
     @EnvironmentObject private var dependencies: DependencyContainer
     let tradeIdea: TradeIdea
-
+    
     var body: some View {
         TradeChecklistView_Content(dependencies: dependencies, tradeIdea: tradeIdea)
     }
@@ -151,7 +168,7 @@ struct TradeChecklistView: View {
         
         // The dependencies are created once.
         let previewDependencies = PreviewDependencyContainer()
-
+        
         var body: some View {
             // If we have successfully loaded the idea, show the content view.
             if let idea = tradeIdea {
