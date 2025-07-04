@@ -4,6 +4,7 @@
 import Combine
 import UserNotifications
 import AppKit
+@MainActor
 class PreviewDependencyContainer: AppDependencies {
     
     
@@ -22,6 +23,7 @@ class PreviewDependencyContainer: AppDependencies {
     var tradeIdeaReportGenerator: TradeIdeaReportGenerating
     var fileLocationProvider: FileLocationProviding
     var tradeIdeaManager: TradeIdeaManaging
+    var appCoordinator: any AppNavigationCoordinating
     
     init() {
         // Initialize with default placeholder implementations.
@@ -40,6 +42,7 @@ class PreviewDependencyContainer: AppDependencies {
         self.tradeIdeaReportGenerator = PlaceholderTradeIdeaReportGenerator()
         self.fileLocationProvider = PlaceholderFileLocationProvider()
         self.tradeIdeaManager = PlaceholderTradeIdeaManager()
+        self.appCoordinator = PlaceholderAppCoordinator()
     }
 }
 
@@ -117,6 +120,7 @@ class PlaceholderNotificationHandler: NotificationHandling {
 }
 
 class PlaceholderTickerStore: TickerStoreManaging {
+    
     private let subject: CurrentValueSubject<[TickerItem], Never>
     var allTickers: AnyPublisher<[TickerItem], Never> { subject.eraseToAnyPublisher() }
 
@@ -156,6 +160,7 @@ class PlaceholderTickerStore: TickerStoreManaging {
     func clearAll() { subject.value.removeAll() }
     func hideTicker(id: String) { hiddenSubject.value.append(id) }
     func revealTicker(_ ticker: String) {hiddenSubject.value.removeAll { $0 == ticker }}
+    func markAsStarred(id: String) { updateItem(id: id) { $0.isStarred = true} }
     
 }
 // MARK: - New Placeholder Implementations for Checklist
@@ -368,12 +373,11 @@ class PlaceholderTradeIdeaManager: TradeIdeaManaging {
         // Simulate deleting by removing from the dictionary.
         storage.removeValue(forKey: ideaToDelete.id)
     }
-
-    func findOrCreateIdea(forTicker ticker: String, on date: Date) async -> TradeIdea {
+    func findOrCreateIdea(forTicker ticker: String, on date: Date) async -> (idea: TradeIdea, wasCreated: Bool) {
         // Simulate the find-or-create logic against the in-memory storage.
         let ideasForDay = await fetchIdeas(for: date)
         if let existingIdea = ideasForDay.first(where: { $0.ticker.uppercased() == ticker.uppercased() }) {
-            return existingIdea
+            return (idea : existingIdea , wasCreated: false)
         } else {
             let newIdea = TradeIdea(
                 id: UUID(),
@@ -385,7 +389,13 @@ class PlaceholderTradeIdeaManager: TradeIdeaManaging {
                 checklistState: ChecklistState(lastModified: Date(), itemStates: [:])
             )
             await saveIdea(newIdea)
-            return newIdea
+            return (idea: newIdea , wasCreated: true)
         }
     }
+}
+
+class PlaceholderAppCoordinator: AppNavigationCoordinating {
+    @Published var tradeIdeaTickerToNavigate: String?
+    func requestNavigation(toTicker ticker: String) { self.tradeIdeaTickerToNavigate = ticker }
+    func clearTradeIdeaNavigationRequest() { self.tradeIdeaTickerToNavigate = nil }
 }

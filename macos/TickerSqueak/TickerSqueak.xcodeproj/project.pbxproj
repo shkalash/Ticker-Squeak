@@ -8,38 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		F64A37E02E13DC7D006CED86 /* AlwaysOnTopModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */; };
-		F67F90272E10675700186678 /* WebGridViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F67F90262E10675700186678 /* WebGridViewModel.swift */; };
 		F68BC17E2E0D4B9A008D0D8C /* NotificationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */; };
 		F68BC1802E0D56F9008D0D8C /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC17F2E0D56F5008D0D8C /* Dialog.swift */; };
 		F68BC1842E0D598B008D0D8C /* DialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1832E0D598B008D0D8C /* DialogView.swift */; };
 		F68BC1862E0D5C98008D0D8C /* PersistentWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1852E0D5C98008D0D8C /* PersistentWindow.swift */; };
 		F68BC1882E0D5CF7008D0D8C /* PersistentFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1872E0D5CF7008D0D8C /* PersistentFrame.swift */; };
-		F68BC18E2E0D684A008D0D8C /* IgnoreListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC18D2E0D684A008D0D8C /* IgnoreListViewModel.swift */; };
-		F68BC1972E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1962E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift */; };
 		F68BC1992E0D76FF008D0D8C /* NotificationAudioSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1982E0D76FF008D0D8C /* NotificationAudioSettingsView.swift */; };
-		F68BC19B2E0D7BD8008D0D8C /* NotificationSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC19A2E0D7BD8008D0D8C /* NotificationSettingsViewModel.swift */; };
 		F68BC19D2E0D7BEA008D0D8C /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC19C2E0D7BEA008D0D8C /* NotificationSettingsView.swift */; };
-		F68BC19F2E0D8A95008D0D8C /* ServerSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC19E2E0D8A95008D0D8C /* ServerSettingsViewModel.swift */; };
 		F68BC1A12E0D8ADB008D0D8C /* ServerSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1A02E0D8ADB008D0D8C /* ServerSettingsView.swift */; };
-		F68BC1A32E0D8EE3008D0D8C /* ListSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1A22E0D8EE3008D0D8C /* ListSettingsViewModel.swift */; };
 		F68BC1A52E0D8F07008D0D8C /* ListSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1A42E0D8F07008D0D8C /* ListSettingsView.swift */; };
-		F68BC1A72E0DC6B2008D0D8C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1A62E0DC6B2008D0D8C /* SettingsViewModel.swift */; };
 		F68BC1A92E0DC6BF008D0D8C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1A82E0DC6BF008D0D8C /* SettingsView.swift */; };
-		F68BC1AB2E0DCF28008D0D8C /* TickerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1AA2E0DCF28008D0D8C /* TickerListViewModel.swift */; };
 		F68BC1AD2E0DD4A8008D0D8C /* DataMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1AC2E0DD4A8008D0D8C /* DataMigrator.swift */; };
 		F68BC1B12E0DDA3D008D0D8C /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1B02E0DDA3D008D0D8C /* ContentViewModel.swift */; };
-		F68BC1B32E0EA2A1008D0D8C /* SnoozeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1B22E0EA2A1008D0D8C /* SnoozeListViewModel.swift */; };
-		F68BC2D02E0EACE8008D0D8C /* HiddenTickersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC2CF2E0EACE8008D0D8C /* HiddenTickersViewModel.swift */; };
-		F68BC4032E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC4022E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift */; };
 		F68BC4052E0F0CBD008D0D8C /* ChartingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC4042E0F0CBD008D0D8C /* ChartingSettingsView.swift */; };
 		F68BC40B2E0F4E81008D0D8C /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40A2E0F4E81008D0D8C /* ToastView.swift */; };
 		F68BC40D2E0FB64E008D0D8C /* ToastPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */; };
 		F698C2EA2E0700F6000CA939 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = F698C2E92E0700F6000CA939 /* Swifter */; };
-		F6B508012E175142005953F2 /* PreMarketChecklistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508002E175142005953F2 /* PreMarketChecklistViewModel.swift */; };
 		F6B5080A2E175396005953F2 /* NSImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508092E175396005953F2 /* NSImage+Extensions.swift */; };
-		F6B508852E180070005953F2 /* TradeIdeasListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508842E180070005953F2 /* TradeIdeasListViewModel.swift */; };
-		F6B508872E1800A0005953F2 /* TradeChecklistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508862E1800A0005953F2 /* TradeChecklistViewModel.swift */; };
 		F6B508912E180A3C005953F2 /* NSSavePanel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508902E180A3C005953F2 /* NSSavePanel+Extension.swift */; };
+		F6B508952E180E70005953F2 /* MultiClickButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508942E180E70005953F2 /* MultiClickButton.swift */; };
+		F6B508972E180EB3005953F2 /* StatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508962E180EB3005953F2 /* StatusButton.swift */; };
 		F6CE02222E0ACFDD0068E717 /* 4Notes.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E42E0ACCAE00E46FE6 /* 4Notes.aiff */; };
 		F6CE02232E0ACFDD0068E717 /* Awaken.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E52E0ACCAE00E46FE6 /* Awaken.aiff */; };
 		F6CE02242E0ACFDD0068E717 /* Bowl.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E62E0ACCAE00E46FE6 /* Bowl.aiff */; };
@@ -109,38 +97,26 @@
 
 /* Begin PBXFileReference section */
 		F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysOnTopModifier.swift; sourceTree = "<group>"; };
-		F67F90262E10675700186678 /* WebGridViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebGridViewModel.swift; sourceTree = "<group>"; };
 		F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMethod.swift; sourceTree = "<group>"; };
 		F68BC17F2E0D56F5008D0D8C /* Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
 		F68BC1832E0D598B008D0D8C /* DialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogView.swift; sourceTree = "<group>"; };
 		F68BC1852E0D5C98008D0D8C /* PersistentWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentWindow.swift; sourceTree = "<group>"; };
 		F68BC1872E0D5CF7008D0D8C /* PersistentFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentFrame.swift; sourceTree = "<group>"; };
-		F68BC18D2E0D684A008D0D8C /* IgnoreListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IgnoreListViewModel.swift; sourceTree = "<group>"; };
-		F68BC1962E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAudioSettingsViewModel.swift; sourceTree = "<group>"; };
 		F68BC1982E0D76FF008D0D8C /* NotificationAudioSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAudioSettingsView.swift; sourceTree = "<group>"; };
-		F68BC19A2E0D7BD8008D0D8C /* NotificationSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewModel.swift; sourceTree = "<group>"; };
 		F68BC19C2E0D7BEA008D0D8C /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
-		F68BC19E2E0D8A95008D0D8C /* ServerSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSettingsViewModel.swift; sourceTree = "<group>"; };
 		F68BC1A02E0D8ADB008D0D8C /* ServerSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSettingsView.swift; sourceTree = "<group>"; };
-		F68BC1A22E0D8EE3008D0D8C /* ListSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSettingsViewModel.swift; sourceTree = "<group>"; };
 		F68BC1A42E0D8F07008D0D8C /* ListSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSettingsView.swift; sourceTree = "<group>"; };
-		F68BC1A62E0DC6B2008D0D8C /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		F68BC1A82E0DC6BF008D0D8C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		F68BC1AA2E0DCF28008D0D8C /* TickerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerListViewModel.swift; sourceTree = "<group>"; };
 		F68BC1AC2E0DD4A8008D0D8C /* DataMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrator.swift; sourceTree = "<group>"; };
 		F68BC1B02E0DDA3D008D0D8C /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
-		F68BC1B22E0EA2A1008D0D8C /* SnoozeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeListViewModel.swift; sourceTree = "<group>"; };
-		F68BC2CF2E0EACE8008D0D8C /* HiddenTickersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenTickersViewModel.swift; sourceTree = "<group>"; };
-		F68BC4022E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartingSettingsViewModel.swift; sourceTree = "<group>"; };
 		F68BC4042E0F0CBD008D0D8C /* ChartingSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartingSettingsView.swift; sourceTree = "<group>"; };
 		F68BC40A2E0F4E81008D0D8C /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresenter.swift; sourceTree = "<group>"; };
 		F698C2D92E06FFAE000CA939 /* TickerSqueak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TickerSqueak.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6B508002E175142005953F2 /* PreMarketChecklistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreMarketChecklistViewModel.swift; sourceTree = "<group>"; };
 		F6B508092E175396005953F2 /* NSImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Extensions.swift"; sourceTree = "<group>"; };
-		F6B508842E180070005953F2 /* TradeIdeasListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeIdeasListViewModel.swift; sourceTree = "<group>"; };
-		F6B508862E1800A0005953F2 /* TradeChecklistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeChecklistViewModel.swift; sourceTree = "<group>"; };
 		F6B508902E180A3C005953F2 /* NSSavePanel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSSavePanel+Extension.swift"; sourceTree = "<group>"; };
+		F6B508942E180E70005953F2 /* MultiClickButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiClickButton.swift; sourceTree = "<group>"; };
+		F6B508962E180EB3005953F2 /* StatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusButton.swift; sourceTree = "<group>"; };
 		F6DB08AA2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeTimeEditorView.swift; sourceTree = "<group>"; };
 		F6DB08B02E0CAD6800ABE3FE /* TickerPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerPayload.swift; sourceTree = "<group>"; };
 		F6DB08BC2E0CB21E00ABE3FE /* PersistenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceKey.swift; sourceTree = "<group>"; };
@@ -223,6 +199,26 @@
 		F6B508102E17FADA005953F2 /* TradeIdeas */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TradeIdeas;
+			sourceTree = "<group>";
+		};
+		F6B5089D2E1822AC005953F2 /* Checklists */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Checklists;
+			sourceTree = "<group>";
+		};
+		F6B5089E2E1822B7005953F2 /* Webviews */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Webviews;
+			sourceTree = "<group>";
+		};
+		F6B5089F2E1822C5005953F2 /* Lists */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Lists;
+			sourceTree = "<group>";
+		};
+		F6B508A02E1822D9005953F2 /* Settings */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		F6DB08AC2E0CACE800ABE3FE /* Managers */ = {
@@ -344,8 +340,10 @@
 		F6EEE9122E0ACCAE00E46FE6 /* UILib */ = {
 			isa = PBXGroup;
 			children = (
-				F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */,
 				F6EEE90E2E0ACCAE00E46FE6 /* Toast */,
+				F6B508962E180EB3005953F2 /* StatusButton.swift */,
+				F6B508942E180E70005953F2 /* MultiClickButton.swift */,
+				F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */,
 				F6EEE90F2E0ACCAE00E46FE6 /* DirectionButton.swift */,
 				F68BC1872E0D5CF7008D0D8C /* PersistentFrame.swift */,
 				F6EEE9102E0ACCAE00E46FE6 /* IconTabPicker.swift */,
@@ -357,21 +355,11 @@
 		F6EEE9142E0ACCAE00E46FE6 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				F6B508862E1800A0005953F2 /* TradeChecklistViewModel.swift */,
-				F6B508842E180070005953F2 /* TradeIdeasListViewModel.swift */,
-				F6B508002E175142005953F2 /* PreMarketChecklistViewModel.swift */,
-				F68BC4022E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift */,
-				F68BC2CF2E0EACE8008D0D8C /* HiddenTickersViewModel.swift */,
-				F68BC1B22E0EA2A1008D0D8C /* SnoozeListViewModel.swift */,
+				F6B5089D2E1822AC005953F2 /* Checklists */,
+				F6B5089F2E1822C5005953F2 /* Lists */,
+				F6B508A02E1822D9005953F2 /* Settings */,
+				F6B5089E2E1822B7005953F2 /* Webviews */,
 				F68BC1B02E0DDA3D008D0D8C /* ContentViewModel.swift */,
-				F68BC1AA2E0DCF28008D0D8C /* TickerListViewModel.swift */,
-				F68BC1A62E0DC6B2008D0D8C /* SettingsViewModel.swift */,
-				F68BC1A22E0D8EE3008D0D8C /* ListSettingsViewModel.swift */,
-				F68BC19E2E0D8A95008D0D8C /* ServerSettingsViewModel.swift */,
-				F68BC19A2E0D7BD8008D0D8C /* NotificationSettingsViewModel.swift */,
-				F68BC1962E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift */,
-				F68BC18D2E0D684A008D0D8C /* IgnoreListViewModel.swift */,
-				F67F90262E10675700186678 /* WebGridViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -395,10 +383,10 @@
 			isa = PBXGroup;
 			children = (
 				F6B508022E1751BF005953F2 /* Checklists */,
-				F67F90212E1062CE00186678 /* WebView */,
-				F68BC1B72E0EA2DF008D0D8C /* Lists */,
 				F6EEE8F82E0ACCAE00E46FE6 /* Dialogs */,
+				F68BC1B72E0EA2DF008D0D8C /* Lists */,
 				F6EEE9192E0ACCAE00E46FE6 /* Settings */,
+				F67F90212E1062CE00186678 /* WebView */,
 				F6EEE91A2E0ACCAE00E46FE6 /* ContentView.swift */,
 			);
 			path = Views;
@@ -454,6 +442,10 @@
 				F6B507FF2E174CE7005953F2 /* Handlers */,
 				F6B508022E1751BF005953F2 /* Checklists */,
 				F6B508102E17FADA005953F2 /* TradeIdeas */,
+				F6B5089D2E1822AC005953F2 /* Checklists */,
+				F6B5089E2E1822B7005953F2 /* Webviews */,
+				F6B5089F2E1822C5005953F2 /* Lists */,
+				F6B508A02E1822D9005953F2 /* Settings */,
 				F6DB08AC2E0CACE800ABE3FE /* Managers */,
 				F6DB08AD2E0CAD4700ABE3FE /* Protocols */,
 			);
@@ -530,55 +522,43 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6EEE9232E0ACCAE00E46FE6 /* RemovalDelayEditorView.swift in Sources */,
-				F68BC19B2E0D7BD8008D0D8C /* NotificationSettingsViewModel.swift in Sources */,
 				F6EEE9242E0ACCAE00E46FE6 /* Toast.swift in Sources */,
 				F68BC1A12E0D8ADB008D0D8C /* ServerSettingsView.swift in Sources */,
 				F68BC1802E0D56F9008D0D8C /* Dialog.swift in Sources */,
 				F68BC1A92E0DC6BF008D0D8C /* SettingsView.swift in Sources */,
-				F68BC1A32E0D8EE3008D0D8C /* ListSettingsViewModel.swift in Sources */,
-				F68BC19F2E0D8A95008D0D8C /* ServerSettingsViewModel.swift in Sources */,
-				F67F90272E10675700186678 /* WebGridViewModel.swift in Sources */,
 				F6DB08B12E0CAD6800ABE3FE /* TickerPayload.swift in Sources */,
 				F68BC1862E0D5C98008D0D8C /* PersistentWindow.swift in Sources */,
 				F64A37E02E13DC7D006CED86 /* AlwaysOnTopModifier.swift in Sources */,
 				F68BC4052E0F0CBD008D0D8C /* ChartingSettingsView.swift in Sources */,
-				F68BC18E2E0D684A008D0D8C /* IgnoreListViewModel.swift in Sources */,
 				F6EEE9282E0ACCAE00E46FE6 /* WindowAccessor.swift in Sources */,
 				F6EEE9292E0ACCAE00E46FE6 /* ContentView.swift in Sources */,
-				F6B508872E1800A0005953F2 /* TradeChecklistViewModel.swift in Sources */,
 				F68BC1992E0D76FF008D0D8C /* NotificationAudioSettingsView.swift in Sources */,
+				F6B508952E180E70005953F2 /* MultiClickButton.swift in Sources */,
 				F68BC17E2E0D4B9A008D0D8C /* NotificationMethod.swift in Sources */,
 				F6EEE92D2E0ACCAE00E46FE6 /* AppError.swift in Sources */,
 				F6DB08C62E0CB6B600ABE3FE /* AppSettings.swift in Sources */,
+				F6B508972E180EB3005953F2 /* StatusButton.swift in Sources */,
 				F6EEE9312E0ACCAE00E46FE6 /* TickerItem.swift in Sources */,
 				F68BC40B2E0F4E81008D0D8C /* ToastView.swift in Sources */,
 				F6EEE9322E0ACCAE00E46FE6 /* IconTabPicker.swift in Sources */,
 				F68BC1AD2E0DD4A8008D0D8C /* DataMigrator.swift in Sources */,
 				F6B508912E180A3C005953F2 /* NSSavePanel+Extension.swift in Sources */,
-				F68BC4032E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift in Sources */,
 				F6EEE9342E0ACCAE00E46FE6 /* NSSound+Extensions.swift in Sources */,
 				F6EEE9352E0ACCAE00E46FE6 /* TickerSqueakApp.swift in Sources */,
 				F68BC1B12E0DDA3D008D0D8C /* ContentViewModel.swift in Sources */,
 				F6EEE9392E0ACCAE00E46FE6 /* IgnoreInputDialog.swift in Sources */,
-				F6B508852E180070005953F2 /* TradeIdeasListViewModel.swift in Sources */,
-				F68BC1AB2E0DCF28008D0D8C /* TickerListViewModel.swift in Sources */,
 				F6EEE93B2E0ACCAE00E46FE6 /* DirectionButton.swift in Sources */,
 				F6DB08AB2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift in Sources */,
 				F6DB08BD2E0CB21E00ABE3FE /* PersistenceKey.swift in Sources */,
 				F68BC1A52E0D8F07008D0D8C /* ListSettingsView.swift in Sources */,
-				F68BC2D02E0EACE8008D0D8C /* HiddenTickersViewModel.swift in Sources */,
 				F6EEE93C2E0ACCAE00E46FE6 /* DesignMode.swift in Sources */,
 				F6B5080A2E175396005953F2 /* NSImage+Extensions.swift in Sources */,
 				F6DB08D82E0D265500ABE3FE /* SoundLibrary.swift in Sources */,
-				F68BC1972E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift in Sources */,
 				F68BC1842E0D598B008D0D8C /* DialogView.swift in Sources */,
-				F68BC1B32E0EA2A1008D0D8C /* SnoozeListViewModel.swift in Sources */,
-				F6B508012E175142005953F2 /* PreMarketChecklistViewModel.swift in Sources */,
 				F68BC40D2E0FB64E008D0D8C /* ToastPresenter.swift in Sources */,
 				F6EEE93E2E0ACCAE00E46FE6 /* ErrorDialogView.swift in Sources */,
 				F68BC1882E0D5CF7008D0D8C /* PersistentFrame.swift in Sources */,
 				F68BC19D2E0D7BEA008D0D8C /* NotificationSettingsView.swift in Sources */,
-				F68BC1A72E0DC6B2008D0D8C /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

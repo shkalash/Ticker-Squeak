@@ -22,7 +22,8 @@ protocol TickerStoreManaging {
     func toggleUnread(id: String)
     func toggleStarred(id: String)
     func updateDirection(id: String, direction: TickerItem.Direction)
-
+    func markAsStarred(id: String)
+    
     // MARK: List Management
     func hideTicker(id: String)
     func clearAll()

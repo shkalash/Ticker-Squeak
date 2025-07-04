@@ -20,6 +20,7 @@ protocol ChecklistViewModelProtocol: ObservableObject {
     var isLoading: Bool { get }
     var error: Error? { get set }
     var expandedSectionIDs: Set<UUID> {get set}
+    
     // MARK: - Actions from the View
     
     /// Loads the checklist template and its most recent state.
@@ -43,4 +44,15 @@ protocol ChecklistViewModelProtocol: ObservableObject {
 @MainActor
 protocol PreMarketChecklistViewModelProtocol: ChecklistViewModelProtocol {
     func startNewDay() async
+}
+
+@MainActor
+protocol TradeIdeaChecklistViewModelProtocol : ChecklistViewModelProtocol{
+    
+    var tradeIdea: TradeIdea { get }
+    /// Opens the current ticker in the charting service
+    func openInChartingService()
+    
+    /// updates the idea's status
+    func updateStatus(to newStatus: IdeaStatus)
 }

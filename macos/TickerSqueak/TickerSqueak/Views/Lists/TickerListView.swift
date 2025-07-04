@@ -7,11 +7,13 @@ struct TickerListView_Content: View {
     
     /// The action to perform when a ticker symbol is clicked.
     private let onTickerClicked: (String) -> Void
-
-    init(dependencies: any AppDependencies, onTickerClicked: @escaping (String) -> Void) {
-        self.onTickerClicked = onTickerClicked
-        _viewModel = StateObject(wrappedValue: TickerListViewModel(dependencies: dependencies))
-    }
+    private let onOpenTradeIdea: (String) -> Void
+    
+    init(dependencies: any AppDependencies, onTickerClicked: @escaping (String) -> Void, onOpenTradeIdea: @escaping (String) -> Void) {
+            self.onTickerClicked = onTickerClicked
+            self.onOpenTradeIdea = onOpenTradeIdea
+            _viewModel = StateObject(wrappedValue: TickerListViewModel(dependencies: dependencies))
+        }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -33,7 +35,13 @@ struct TickerListView_Content: View {
                         onSnooze: { viewModel.snoozeTicker(id: item.id) },
                         onIgnore: { viewModel.addToIgnoreList(ticker: item.ticker)},
                         onUpdateDirection: { newDirection in
-                            viewModel.updateDirection(id: item.id, direction: newDirection)}
+                            viewModel.updateDirection(id: item.id, direction: newDirection)},
+                        onOpenTradeIdea: {
+                            // Call the ViewModel to perform the actions...
+                            viewModel.createAndOpenTradeIdea(id: item.id)
+                            // ...then call the closure to trigger navigation.
+                            onOpenTradeIdea(item.ticker)
+                        }
                     )
                     .listRowBackground(viewModel.selection.contains(item.id) ? Color.yellow.opacity(0.4) : (item.isUnread ? Color.blue.opacity(0.1) : Color.clear))
                     .tag(item.id) // Required for selection to work
@@ -77,13 +85,15 @@ struct AdaptiveToolbarContainer: View {
 struct TickerListView: View {
     @EnvironmentObject private var dependencies: DependencyContainer
     private let onTickerClicked: (String) -> Void
-
-    init(onTickerClicked: @escaping (String) -> Void) {
+    private let onOpenTradeIdea: (String) -> Void
+    init(onTickerClicked: @escaping (String) -> Void,
+         onOpenTradeIdea: @escaping (String) -> Void) {
         self.onTickerClicked = onTickerClicked
+        self.onOpenTradeIdea = onOpenTradeIdea
     }
 
     var body: some View {
-        TickerListView_Content(dependencies: dependencies, onTickerClicked: onTickerClicked)
+        TickerListView_Content(dependencies: dependencies, onTickerClicked: onTickerClicked , onOpenTradeIdea: onOpenTradeIdea)
     }
 }
 
@@ -190,9 +200,9 @@ private struct SelectionToolbar: View {
                                     backgroundColor: .clear,
                                     cornerRadius: 1,
                                     noneDirectionStyle: .upAndDown),
-                            onLeftClick: {viewModel.performActionOnSelection(.setBullish)},
-                            onRightClick: {viewModel.performActionOnSelection(.setBearish)},
-                            onMiddleClick: {viewModel.performActionOnSelection(.setNeutral)}
+                            onSetBullish: {viewModel.performActionOnSelection(.setBullish)},
+                            onSetBearish: {viewModel.performActionOnSelection(.setBearish)},
+                            onSetNeutral: {viewModel.performActionOnSelection(.setNeutral)}
             )
         }
         .disabled(viewModel.selection.isEmpty)
@@ -210,6 +220,7 @@ private struct TickerListRow: View {
     let onSnooze: () -> Void
     let onIgnore: () -> Void
     let onUpdateDirection: (TickerItem.Direction) -> Void
+    let onOpenTradeIdea: () -> Void
     // TODO: scroll position needs to move maybe when removing filter?
     var body: some View {
         HStack {
@@ -226,18 +237,21 @@ private struct TickerListRow: View {
             
             DirectionButton(
                 direction: item.direction,
-                onLeftClick: {
+                onSetBullish: {
                     // Tell the ViewModel to update the direction to bullish
                     onUpdateDirection(.bullish)
                 },
-                onRightClick: {
+                onSetBearish: {
                     // Tell the ViewModel to update the direction to bearish
                     onUpdateDirection(.bearish)
                 },
-                onMiddleClick: {
+                onSetNeutral: {
                     onUpdateDirection(.none)
                 }
+                
             )
+            
+            ActionButton(systemImage: "lightbulb.fill", color: .yellow, help: "Create/View Trade Idea", action: onOpenTradeIdea).padding(.leading)
             
             Spacer()
             ActionButton(systemImage: "timer", help: "Hide", action: onHide)
@@ -301,7 +315,7 @@ private struct ActionButton: View {
     
     return TickerListView_Content(dependencies: previewDependencies, onTickerClicked: { ticker in
         print("Symbol clicked: \(ticker)")
-    })
+    } , onOpenTradeIdea: { ticker in })
     .environmentObject(previewDependencies)
     .frame(width: 600, height: 700)
 }

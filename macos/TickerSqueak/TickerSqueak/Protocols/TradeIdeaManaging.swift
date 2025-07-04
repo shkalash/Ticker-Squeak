@@ -23,6 +23,6 @@ protocol TradeIdeaManaging {
     /// The key method for navigation: finds an existing idea for a given ticker and date,
     /// or creates and persists a new one if none is found.
     /// The date check should ignore the time component.
-    /// - Returns: The found or newly created `TradeIdea`.
-    func findOrCreateIdea(forTicker ticker: String, on date: Date) async -> TradeIdea
+    /// Returns a tuple with the idea and indicating if the idea was newly created.
+    func findOrCreateIdea(forTicker ticker: String, on date: Date) async -> (idea: TradeIdea, wasCreated: Bool)
 }

@@ -12,6 +12,7 @@ import Foundation
 /// An instance of this class is created once when the app launches and is injected
 /// into the SwiftUI environment, making all services available to any view that needs them.
 /// This acts as the "Composition Root" of the app.
+@MainActor
 class DependencyContainer: AppDependencies {
     // MARK: - Public Properties (Services)
     
@@ -30,6 +31,7 @@ class DependencyContainer: AppDependencies {
     let tradeIdeaManager: TradeIdeaManaging
     var preMarketReportGenerator: PreMarketReportGenerating
     var tradeIdeaReportGenerator: TradeIdeaReportGenerating
+    var appCoordinator: any AppNavigationCoordinating
     // MARK: - Lifecycle
     
     init() {
@@ -80,5 +82,7 @@ class DependencyContainer: AppDependencies {
         )
         
         self.tradeIdeaManager = FileBasedTradeIdeaManager(fileLocationProvider: fileLocationProvider, imagePersister: imagePersister)
+        
+        self.appCoordinator = AppCoordinator()
     }
 }

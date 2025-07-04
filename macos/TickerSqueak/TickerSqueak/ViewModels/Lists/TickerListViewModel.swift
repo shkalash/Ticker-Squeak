@@ -125,6 +125,15 @@ class TickerListViewModel: ObservableObject {
     
     func addToIgnoreList(ticker: String) { ignoreManager.addToIgnoreList(ticker) }
     func updateDirection(id: String, direction: TickerItem.Direction) { tickerStore.updateDirection(id: id, direction: direction) }
+    
+    /// Prepares a ticker item to become a trade idea by starring and marking it unread,
+    /// then signals that navigation should occur.
+    func createAndOpenTradeIdea(id: String) {
+        // Star the item if it isn't already.
+        tickerStore.markAsStarred(id: id)
+        // Always mark as read
+        tickerStore.markAsRead(id: id)
+    }
 
     // MARK: - Public Intents for Toolbar and Global Actions
     

@@ -16,33 +16,40 @@ struct ContentView_Content: View {
             // Main navigation tab picker
             IconTabPicker(selection: $viewModel.selectedTab, options: [
                 PickerOption(label: "Pre-Market", imageName: "sunrise", tag: 0),
-                
                 PickerOption(label: "Tickers", imageName: "chart.bar", tag: 1),
-                PickerOption(label: "Hidden List", imageName: "timer", tag: 2),
-                PickerOption(label: "Snooze List", imageName: "moon.zzz", tag: 3),
-                PickerOption(label: "Ignore List", imageName: "eye.slash", tag: 4),
-                PickerOption(label: "Settings", imageName: "gearshape", tag: 5),
+                PickerOption(label: "Trade Ideas", imageName: "lightbulb.fill", tag: 2),
+                PickerOption(label: "Hidden List", imageName: "timer", tag: 3),
+                PickerOption(label: "Snooze List", imageName: "moon.zzz", tag: 4),
+                PickerOption(label: "Ignore List", imageName: "eye.slash", tag: 5),
+                PickerOption(label: "Settings", imageName: "gearshape", tag: 6),
             ])
             
             Divider()
 
             switch viewModel.selectedTab {
-            // --- NEW CASE ADDED ---
             case 0:
                 PreMarketChecklistView_Content(dependencies: dependencies)
             
-            // --- EXISTING CASES RE-NUMBERED ---
             case 1:
-                TickerListView_Content(dependencies: dependencies, onTickerClicked: { ticker in
-                    dependencies.chartingService.open(ticker: ticker)
-                })
+                    TickerListView_Content(
+                        dependencies: dependencies,
+                        onTickerClicked: { ticker in
+                            dependencies.chartingService.open(ticker: ticker)
+                        },
+                        onOpenTradeIdea: { ticker in
+                            dependencies.appCoordinator.requestNavigation(toTicker: ticker)
+                            viewModel.selectedTab = 2
+                        }
+                    )
             case 2:
-                HiddenTickersView_Content(dependencies: dependencies)
+                TradeIdeasListView_Content(dependencies: dependencies)
             case 3:
-                SnoozeListView_Content(dependencies: dependencies)
+                HiddenTickersView_Content(dependencies: dependencies)
             case 4:
-                IgnoreListView_Content(dependencies: dependencies)
+                SnoozeListView_Content(dependencies: dependencies)
             case 5:
+                IgnoreListView_Content(dependencies: dependencies)
+            case 6:
                 SettingsView_Content(dependencies: dependencies)
                     .padding(.top , 3)
                     .padding(.horizontal, 5)
@@ -75,5 +82,5 @@ struct ContentView: View {
     
     return ContentView_Content(dependencies: previewDependencies)
         .environmentObject(previewDependencies)
-        .frame(width:600, height: 800)
+        .frame(width:600, height: 400)
 }

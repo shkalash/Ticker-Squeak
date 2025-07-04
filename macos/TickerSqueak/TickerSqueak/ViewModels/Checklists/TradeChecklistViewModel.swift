@@ -5,7 +5,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 @MainActor
-class TradeChecklistViewModel: ChecklistViewModelProtocol {
+class TradeChecklistViewModel: TradeIdeaChecklistViewModelProtocol {
 
     // MARK: - Published Properties
     @Published private(set) var title: String
@@ -14,8 +14,7 @@ class TradeChecklistViewModel: ChecklistViewModelProtocol {
     @Published private(set) var isLoading: Bool = false
     @Published var error: Error?
     @Published var expandedSectionIDs: Set<UUID> = []
-    
-    @Published private var tradeIdea: TradeIdea
+    @Published private(set) var tradeIdea: TradeIdea
 
     // MARK: - Private Dependencies
     private let checklistName = "trade-checklist"
@@ -25,7 +24,7 @@ class TradeChecklistViewModel: ChecklistViewModelProtocol {
     // Correctly depend on the specific report generator protocol
     private let reportGenerator: TradeIdeaReportGenerating
     private var cancellables = Set<AnyCancellable>()
-
+    private let chartingService: ChartingService
     // MARK: - Lifecycle
     init(tradeIdea: TradeIdea, dependencies: any AppDependencies) {
         self.tradeIdea = tradeIdea
@@ -36,7 +35,7 @@ class TradeChecklistViewModel: ChecklistViewModelProtocol {
         self.templateProvider = dependencies.checklistTemplateProvider
         self.imagePersister = dependencies.imagePersister
         self.reportGenerator = dependencies.tradeIdeaReportGenerator
-        
+        self.chartingService = dependencies.chartingService
         // When any state changes, automatically save the entire TradeIdea object.
         $itemStates
             .debounce(for: .seconds(1), scheduler: DispatchQueue.main) // Autosave after 1s
@@ -90,7 +89,24 @@ class TradeChecklistViewModel: ChecklistViewModelProtocol {
         NSSavePanel.present(withContent: reportContent, suggestedFilename: filename)
     }
     
+    func openInChartingService() {
+        chartingService.open(ticker: self.tradeIdea.ticker)
+    }
+    
+    func updateStatus(to newStatus: IdeaStatus) {
+        let oldStatus = self.tradeIdea.status
+        self.tradeIdea.status = newStatus
+        
+        if oldStatus == .idea && (newStatus == .taken || newStatus == .rejected) {
+            self.tradeIdea.decisionAt = Date()
+        } else if newStatus == .idea {
+            self.tradeIdea.decisionAt = nil
+        }
+        
+        // The autosave publisher will handle persisting this change.
+    }
     // MARK: - Private Helpers & Bindings
+    
     
     private func saveChanges() {
         self.tradeIdea.checklistState.itemStates = self.itemStates

@@ -206,6 +206,12 @@ class TickerManager: TickerStoreManaging {
         }
     }
     
+    func markAsStarred(id: String) {
+        if let index = tickerList.firstIndex(where: { $0.id == id }) {
+            tickerList[index].isStarred = true
+        }
+    }
+    
     func toggleUnread(id: String) {
         if let index = tickerList.firstIndex(where: { $0.id == id }) {
             tickerList[index].isUnread.toggle()

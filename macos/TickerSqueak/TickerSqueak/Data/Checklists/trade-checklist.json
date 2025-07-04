@@ -1,0 +1,152 @@
+
+{
+  "title": "Trade Idea Checklist",
+  "sections": [
+    {
+      "title": "The Catalyst Check",
+      "items": [
+        {
+          "id": "ti_catalyst_01",
+          "type": "textInput",
+          "prompt": "Why this stock, right now?"
+        },
+        {
+          "id": "ti_catalyst_02",
+          "type": "textInput",
+          "prompt": "Is there a fundamental reason or story driving potential interest?"
+        }
+      ]
+    },
+    {
+      "title": "Market Health",
+      "items": [
+        {
+          "id": "ti_market_01",
+          "type": "checkbox",
+          "text": "Is the market supporting my trade direction?"
+        }
+      ]
+    },
+    {
+      "title": "Sector Strength",
+      "items": [
+        {
+          "id": "ti_sector_01",
+          "type": "checkbox",
+          "text": "Is the stock's sector outperforming or at least in-line with the broader market?"
+        }
+      ]
+    },
+    {
+      "title": "Stock's Daily Chart Alignment",
+      "items": [
+        {
+          "id": "ti_daily_01",
+          "type": "checkbox",
+          "text": "Does the stock's daily chart show a clean, strong structure in my favor?"
+        },
+        {
+          "id": "ti_daily_02",
+          "type": "checkbox",
+          "text": "Are there nearby support and resistance levels that can affect the trade?"
+        },
+        {
+          "id": "ti_daily_03",
+          "type": "image",
+          "caption": "Stock D1"
+        }
+      ]
+    },
+    {
+      "title": "Volume Confirmation",
+      "items": [
+        {
+          "id": "ti_volume_01",
+          "type": "checkbox",
+          "text": "Is there volume conviction behind the recent price action?"
+        }
+      ]
+    },
+    {
+      "title": "Define Risk (Support & Stop-Loss)",
+      "items": [
+        {
+          "id": "ti_risk_01",
+          "type": "textInput",
+          "prompt": "At what specific price level is my trade idea proven wrong based on my expected trade duration?"
+        }
+      ]
+    },
+    {
+      "title": "Define Reward (Resistance & Profit Target)",
+      "items": [
+        {
+          "id": "ti_reward_01",
+          "type": "checkbox",
+          "text": "Is the potential reward worth the risk?"
+        },
+        {
+          "id": "ti_reward_02",
+          "type": "textInput",
+          "prompt": "Where is the nearest resistance level for my trade duration?"
+        }
+      ]
+    },
+    {
+      "title": "How do I plan to take the trade?",
+      "items": [
+        { "id": "ti_plan_01", "type": "textInput", "prompt": "What is my confidence level?" },
+        { "id": "ti_plan_02", "type": "textInput", "prompt": "What is my timeframe?" },
+        { "id": "ti_plan_03", "type": "textInput", "prompt": "What is the correct instrument for the trade?" },
+        { "id": "ti_plan_04", "type": "textInput", "prompt": "Do I have a scenario where I would add to the trade?" },
+        { "id": "ti_plan_05", "type": "textInput", "prompt": "Should I scale in?" }
+      ]
+    },
+    {
+      "title": "In Trade Management",
+      "items": [
+        { "id": "ti_management_01", "type": "textInput", "prompt": "Do I plan to trim the size at target 1 and allow for runners?" },
+        { "id": "ti_management_02", "type": "textInput", "prompt": "If a CDS, is there a point I would try to leg out in case of a pullback?" }
+      ]
+    },
+    {
+      "title": "Time & Volatility Check (ATR)",
+      "items": [
+        { "id": "ti_time_01", "type": "checkbox", "text": "Is it probable the stock can reach my target within my option's expiry timeframe?" }
+      ]
+    },
+    {
+      "title": "What do I expect to happen?",
+      "items": [
+        { "id": "ti_expect_01", "type": "textInput", "prompt": "Once I enter, what are my time frame expectations for the trade?" },
+        { "id": "ti_expect_02", "type": "textInput", "prompt": "What am I expecting SPY and the stock to do?" },
+        { "id": "ti_expect_03", "type": "textInput", "prompt": "How should I respond if this takes longer?" },
+        { "id": "ti_expect_04", "type": "textInput", "prompt": "What might be early signs that the trade might not work out and is worth scratching / taking a tiny loss?" }
+      ]
+    },
+    {
+      "title": "Position Sizing & Risk Calculation",
+      "items": [
+        { "id": "ti_sizing_01", "type": "textInput", "prompt": "How many contracts/shares can I trade according to my risk management rules, and the closest support level that might be tested before the trade is shut down? Size for extra buffer. Stops are never hard stops, so be very mindful of what might be a confirmation of a break of support." }
+      ]
+    },
+    {
+      "title": "Real-Time Market Check (M5)",
+      "items": [
+        { "id": "ti_realtime_01", "type": "checkbox", "text": "Is the immediate market momentum aligned with my trade right now?" },
+        { "id": "ti_realtime_02", "type": "checkbox", "text": "Is the SPY M5 and 1OP supporting this trade right now?" },
+        { "id": "ti_realtime_03", "type": "image", "caption": "SPY M5" }
+      ]
+    },
+    {
+      "title": "Micro-Timing the Entry (M5)",
+      "items": [
+        { "id": "ti_entry_01", "type": "checkbox", "text": "Is this the optimal, low-risk moment to enter the stock?" },
+        { "id": "ti_entry_02", "type": "checkbox", "text": "Are we pulling back to support and clearly bouncing off of it?" },
+        { "id": "ti_entry_03", "type": "checkbox", "text": "Have the HA candles turned in our favor?" },
+        { "id": "ti_entry_04", "type": "checkbox", "text": "Do we have enough room to the recent high to have a decent cushion and allow for trade scratching if the trend will reverse?" },
+        { "id": "ti_entry_05", "type": "image", "caption": "Stock M5" }
+      ]
+    }
+  ]
+}

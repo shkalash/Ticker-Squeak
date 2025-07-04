@@ -9,6 +9,7 @@ import Combine
 
 /// Defines the contract for the application's dependency container.
 /// Any object conforming to this can be used as the central source for shared services.
+@MainActor
 protocol AppDependencies: ObservableObject {
     var persistenceHandler: PersistenceHandling { get }
     var settingsManager: SettingsManaging { get }
@@ -26,4 +27,5 @@ protocol AppDependencies: ObservableObject {
     var tradeIdeaReportGenerator: TradeIdeaReportGenerating { get }
     var fileLocationProvider: FileLocationProviding { get }
     var tradeIdeaManager: TradeIdeaManaging { get }
+    var appCoordinator: any AppNavigationCoordinating { get } 
 }

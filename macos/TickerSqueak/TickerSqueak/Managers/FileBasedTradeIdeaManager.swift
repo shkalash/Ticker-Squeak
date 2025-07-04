@@ -100,30 +100,28 @@ class FileBasedTradeIdeaManager: TradeIdeaManaging {
         }
     }
 
-    func findOrCreateIdea(forTicker ticker: String, on date: Date) async -> TradeIdea {
-        // 1. Fetch all ideas for the given day.
+    func findOrCreateIdea(forTicker ticker: String, on date: Date) async -> (idea: TradeIdea, wasCreated: Bool) {
         let ideasForDay = await fetchIdeas(for: date)
         
-        // 2. Check if an idea for this ticker already exists.
-        // The `isDate(_:inSameDayAs:)` check is implicitly handled by `fetchIdeas`.
         if let existingIdea = ideasForDay.first(where: { $0.ticker.uppercased() == ticker.uppercased() }) {
-            return existingIdea
+            // An idea was found, so 'wasCreated' is false.
+            return (idea: existingIdea, wasCreated: false)
         }
         
-        // 3. If not found, create a new one.
+        // No idea was found, create a new one.
         let newIdea = TradeIdea(
             id: UUID(),
             ticker: ticker.uppercased(),
-            createdAt: Date(), // Created right now
+            createdAt: Date(),
             direction: .none,
             status: .idea,
             decisionAt: nil,
-            checklistState: ChecklistState(lastModified: Date(), itemStates: [:]) // Start with an empty checklist
+            checklistState: ChecklistState(lastModified: Date(), itemStates: [:])
         )
         
-        // 4. Save the new idea to disk before returning it.
         await saveIdea(newIdea)
         
-        return newIdea
+        // The new idea was just created, so 'wasCreated' is true.
+        return (idea: newIdea, wasCreated: true)
     }
 }
