@@ -34,16 +34,51 @@ struct TradeChecklistView_Content: View {
             } else if let checklist = viewModel.checklist {
                 List {
                     ForEach(checklist.sections) { section in
-                        DisclosureGroup(
-                            isExpanded: viewModel.bindingForSectionExpansion(for: section.id),
-                            content: {
+                        let isExpandedBinding = viewModel.bindingForSectionExpansion(for: section.id)
+                        let isExpanded = isExpandedBinding.wrappedValue
+                        VStack {
+                            // The header is now a Button, making the whole row tappable.
+                            Button(action: {
+                                isExpandedBinding.wrappedValue.toggle()
+                            }) {
+                                HStack {
+                                    
+                                    // We manually create and rotate the chevron icon.
+                                    Image(systemName: "chevron.right")
+                                        .font(.caption)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.secondary)
+                                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                                    
+                                    Text(section.title)
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.primary) // Ensure text color is consistent
+                                    
+                                    Spacer()
+                                    
+                                   
+                                }
+                                .padding(.vertical, 8)
+                                .contentShape(Rectangle()) // Make sure the empty space in the HStack is also tappable
+                            }
+                            .buttonStyle(.plain) // Use .plain style to remove default button background/bezel
+                            
+                            // The content is conditionally shown based on the expanded state.
+                            if isExpanded {
+                                // The ForEach loop of items goes here, completely unchanged.
                                 ForEach(section.items) { item in
                                     let stateBinding = viewModel.binding(for: item.id)
                                     
                                     switch item.type {
                                         case .checkbox(let text):
-                                            Toggle(text, isOn: stateBinding.isChecked)
-                                                .padding(.vertical, 4)
+                                            Toggle(isOn: stateBinding.isChecked) {
+                                                Text(text)
+                                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                                    .contentShape(Rectangle())
+                                            }
+                                            .toggleStyle(.checkbox)
+                                            .padding(.vertical, 4)
                                             
                                         case .textInput(let prompt):
                                             VStack(alignment: .leading, spacing: 6) {
@@ -76,11 +111,10 @@ struct TradeChecklistView_Content: View {
                                             .padding(.vertical, 4)
                                     }
                                 }
-                            },
-                            label: {
-                                Text(section.title).font(.headline).fontWeight(.bold)
                             }
-                        )
+                            
+                        }
+                        
                     }
                 }
             }

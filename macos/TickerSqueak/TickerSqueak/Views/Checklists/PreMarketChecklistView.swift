@@ -70,18 +70,52 @@ struct PreMarketChecklistView_Content: View {
             } else if let checklist = viewModel.checklist {
                 List {
                     ForEach(checklist.sections) { section in
-                        DisclosureGroup(
-                            isExpanded: viewModel.bindingForSectionExpansion(for: section.id),
-                            content: {
-                                // The content is the list of items for this section
+                        let isExpandedBinding = viewModel.bindingForSectionExpansion(for: section.id)
+                        let isExpanded = isExpandedBinding.wrappedValue
+                        
+                        VStack {
+                            // The header is now a Button, making the whole row tappable.
+                            Button(action: {
+                                isExpandedBinding.wrappedValue.toggle()
+                            }) {
+                                HStack {
+                                    
+                                    Image(systemName: "chevron.right")
+                                        .font(.caption)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.secondary)
+                                        .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                                    
+                                    Text(section.title)
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.primary) // Ensure text color is consistent
+                                    
+                                    Spacer()
+                                    
+                                    // We manually create and rotate the chevron icon.
+                                    
+                                }
+                                .padding(.vertical, 8)
+                                .contentShape(Rectangle()) // Make sure the empty space in the HStack is also tappable
+                            }
+                            .buttonStyle(.plain) // Use .plain style to remove default button background/bezel
+                            
+                            // The content is conditionally shown based on the expanded state.
+                            if isExpanded {
+                                // The ForEach loop of items goes here, completely unchanged.
                                 ForEach(section.items) { item in
                                     let stateBinding = viewModel.binding(for: item.id)
                                     
-                                    // Switch on the item type to render the correct UI
                                     switch item.type {
                                         case .checkbox(let text):
-                                            Toggle(text, isOn: stateBinding.isChecked)
-                                                .padding(.vertical, 4)
+                                            Toggle(isOn: stateBinding.isChecked) {
+                                                Text(text)
+                                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                                    .contentShape(Rectangle())
+                                            }
+                                            .toggleStyle(.checkbox)
+                                            .padding(.vertical, 4)
                                             
                                         case .textInput(let prompt):
                                             VStack(alignment: .leading, spacing: 6) {
@@ -96,7 +130,6 @@ struct PreMarketChecklistView_Content: View {
                                                     .padding(.trailing , 20)
                                             }
                                             .padding(.vertical, 4)
-                                            
                                         case .image(let caption):
                                             VStack(alignment: .leading, spacing: 6) {
                                                 Text(caption).font(.callout).foregroundColor(.secondary)
@@ -122,14 +155,8 @@ struct PreMarketChecklistView_Content: View {
                                             .padding(.vertical, 4)
                                     }
                                 }
-                            },
-                            label: {
-                                // The label is the section title
-                                Text(section.title)
-                                    .font(.headline)
-                                    .fontWeight(.bold)
                             }
-                        )
+                        }
                     }
                 }
                 .listStyle(.inset(alternatesRowBackgrounds: true))
