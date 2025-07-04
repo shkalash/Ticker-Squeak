@@ -7,24 +7,21 @@
 
 import Foundation
 
-
-struct TradeIdea: Identifiable, Codable, Hashable {
+struct TradeIdea: Identifiable, Codable, Hashable , Equatable {
     // Core Identity
     let id: UUID
     let ticker: String
-    let createdAt: Date
+    let createdAt: Date // When the idea was first created
 
-    // "At-a-Glance" Data for the List View
-    var direction: TickerItem.Direction // Using your existing Direction enum
-    var status: IdeaStatus // The new enum for tracking the idea's outcome
-    var quickNotes: String // A one-line summary or thesis for the list row
-    var thumbnailImageName: String? // The filename of the primary screenshot
+    // At-a-Glance / List View Data
+    var direction: TickerItem.Direction
+    var status: IdeaStatus
+    var decisionAt: Date? // Timestamp for when status changes from .idea
 
-    // The full, detailed checklist state
+    // The full checklist state
     var checklistState: ChecklistState
 }
 
-// New enum to track the status of a trade idea
 enum IdeaStatus: String, Codable {
     case idea     // Default state, still being considered
     case taken    // The trade was executed

@@ -18,7 +18,7 @@ protocol TradeIdeaManaging {
     func saveIdea(_ idea: TradeIdea) async
     
     /// Deletes a `TradeIdea` and all its associated media.
-    func deleteIdea(with ideaID: UUID) async
+    func deleteIdea(_ ideaToDelete: TradeIdea) async
     
     /// The key method for navigation: finds an existing idea for a given ticker and date,
     /// or creates and persists a new one if none is found.
