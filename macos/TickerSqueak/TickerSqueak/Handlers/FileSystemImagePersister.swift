@@ -11,112 +11,115 @@ import AppKit
 /// A concrete implementation of `ImagePersisting` that saves and loads images from the local file system.
 ///
 /// Images are saved as PNG files with unique UUID-based names in the app's dedicated Media directory.
-class FileSystemImagePersister: TradeIdeaImagePersisting {
+import Foundation
 
-    /// Custom errors specific to image persistence operations.
-        enum ImageError: Error, LocalizedError {
-            case conversionFailed
-            case directoryCreationFailed(Error)
+class FileSystemImagePersister: ImagePersisting {
 
-            var errorDescription: String? {
-                switch self {
-                case .conversionFailed:
-                    return "Failed to convert the image to a PNG data format."
-                case .directoryCreationFailed(let underlyingError):
-                    return "Failed to create the media directory for the trade idea. Reason: \(underlyingError.localizedDescription)"
-                }
+    enum ImageError: Error, LocalizedError {
+        case conversionFailed
+        case directoryCreationFailed(Error)
+
+        var errorDescription: String? {
+            switch self {
+            case .conversionFailed:
+                return "Failed to convert the image to a PNG data format."
+            case .directoryCreationFailed(let underlyingError):
+                return "Failed to create the media directory for the trade idea. Reason: \(underlyingError.localizedDescription)"
             }
         }
+    }
 
-        // MARK: - Dependencies
-        private let fileLocationProvider: FileLocationProviding
-        private let fileManager: FileManager
+    private let fileLocationProvider: FileLocationProviding
+    private let fileManager: FileManager
+    // A formatter for creating date-based folder names for the pre-market context
+    private let dateFormatter: DateFormatter
 
-        // MARK: - Initialization
-        init(fileLocationProvider: FileLocationProviding, fileManager: FileManager = .default) {
-            self.fileLocationProvider = fileLocationProvider
-            self.fileManager = fileManager
+    init(fileLocationProvider: FileLocationProviding, fileManager: FileManager = .default) {
+        self.fileLocationProvider = fileLocationProvider
+        self.fileManager = fileManager
+        
+        self.dateFormatter = DateFormatter()
+        self.dateFormatter.dateFormat = "yyyy-MM-dd"
+    }
+
+    // MARK: - ImagePersisting Conformance
+
+    func saveImage(_ image: NSImage, for context: ChecklistContext) async throws -> String {
+        do {
+            let directoryURL = try getOrCreateDirectory(for: context)
+            guard let pngData = image.pngData() else { throw ImageError.conversionFailed }
+            
+            let filename = UUID().uuidString + ".png"
+            let fileURL = directoryURL.appendingPathComponent(filename)
+            try pngData.write(to: fileURL)
+            
+            return filename
+        } catch {
+            ErrorManager.shared.report(error)
+            throw error
         }
+    }
 
-        // MARK: - ImagePersisting Conformance
-
-        func saveImage(_ image: NSImage, forIdeaID ideaID: UUID) async throws -> String {
-            do {
-                // 1. Get the destination directory specific to this Trade Idea.
-                let ideaMediaDirectory = try getOrCreateMediaDirectory(forIdeaID: ideaID)
-
-                // 2. Convert the NSImage to PNG data using our extension.
-                guard let pngData = image.pngData() else {
-                    throw ImageError.conversionFailed
-                }
-
-                // 3. Generate a unique filename for the image itself.
-                let filename = UUID().uuidString + ".png"
-                let fileURL = ideaMediaDirectory.appendingPathComponent(filename)
-
-                // 4. Write the data to disk.
-                try pngData.write(to: fileURL)
-                
-                // 5. Return the unique filename, which will be stored in the TradeIdea's state.
-                return filename
-            } catch {
-                ErrorManager.shared.report(error)
-                throw error
-            }
+    func loadImage(withFilename filename: String, for context: ChecklistContext) async -> NSImage? {
+        do {
+            let directoryURL = try getOrCreateDirectory(for: context)
+            let fileURL = directoryURL.appendingPathComponent(filename)
+            return NSImage(contentsOf: fileURL)
+        } catch {
+            ErrorManager.shared.report(error)
+            return nil
         }
-
-        func loadImage(withFilename filename: String, fromIdeaID ideaID: UUID) async -> NSImage? {
-            do {
-                let ideaMediaDirectory = try getOrCreateMediaDirectory(forIdeaID: ideaID)
-                let fileURL = ideaMediaDirectory.appendingPathComponent(filename)
-                
-                // NSImage(contentsOf:) gracefully returns nil if the file doesn't exist.
-                return NSImage(contentsOf: fileURL)
-            } catch {
-                ErrorManager.shared.report(error)
-                return nil
+    }
+    
+    func deleteImage(withFilename filename: String, for context: ChecklistContext) async throws {
+        do {
+            let directoryURL = try getOrCreateDirectory(for: context)
+            let fileURL = directoryURL.appendingPathComponent(filename)
+            
+            if fileManager.fileExists(atPath: fileURL.path) {
+                try fileManager.removeItem(at: fileURL)
             }
+        } catch {
+            ErrorManager.shared.report(error)
+            throw error
+        }
+    }
+
+    func deleteAllImages(for context: ChecklistContext) async throws {
+        do {
+            let directoryURL = try getOrCreateDirectory(for: context)
+            
+            if fileManager.fileExists(atPath: directoryURL.path) {
+                try fileManager.removeItem(at: directoryURL)
+            }
+        } catch {
+            ErrorManager.shared.report(error)
+            throw error
+        }
+    }
+
+    // MARK: - Private Helper
+
+    /// This is the core of the new logic. It determines the correct subfolder based on the context.
+    private func getOrCreateDirectory(for context: ChecklistContext) throws -> URL {
+        let baseMediaDirectory = try fileLocationProvider.getMediaDirectory()
+        let finalDirectoryURL: URL
+        
+        // Switch on the context to build the correct path
+        switch context {
+        case .tradeIdea(let id):
+            // Path: .../Media/{UUID}/
+            finalDirectoryURL = baseMediaDirectory.appendingPathComponent(id.uuidString)
+        case .preMarket(let date):
+            // Path: .../Media/pre-market/2025-07-04/
+            let dateString = dateFormatter.string(from: date)
+            finalDirectoryURL = baseMediaDirectory.appendingPathComponent("pre-market").appendingPathComponent(dateString)
         }
         
-        func deleteImage(withFilename filename: String, forIdeaID ideaID: UUID) async throws {
-            do {
-                let ideaMediaDirectory = try getOrCreateMediaDirectory(forIdeaID: ideaID)
-                let fileURL = ideaMediaDirectory.appendingPathComponent(filename)
-                
-                if fileManager.fileExists(atPath: fileURL.path) {
-                    try fileManager.removeItem(at: fileURL)
-                }
-            } catch {
-                ErrorManager.shared.report(error)
-                throw error
-            }
+        if !fileManager.fileExists(atPath: finalDirectoryURL.path) {
+            try fileManager.createDirectory(at: finalDirectoryURL, withIntermediateDirectories: true, attributes: nil)
         }
-
-        func deleteAllImages(forIdeaID ideaID: UUID) async throws {
-            do {
-                // Get the URL for the entire idea-specific folder and remove it.
-                let ideaMediaDirectory = try getOrCreateMediaDirectory(forIdeaID: ideaID)
-                
-                if fileManager.fileExists(atPath: ideaMediaDirectory.path) {
-                    try fileManager.removeItem(at: ideaMediaDirectory)
-                }
-            } catch {
-                ErrorManager.shared.report(error)
-                throw error
-            }
-        }
-
-        // MARK: - Private Helper
-
-        /// Gets the URL for an idea's specific media folder (e.g., .../Media/{UUID}/), creating it if it doesn't exist.
-        private func getOrCreateMediaDirectory(forIdeaID ideaID: UUID) throws -> URL {
-            let baseMediaDirectory = try fileLocationProvider.getMediaDirectory()
-            let ideaMediaURL = baseMediaDirectory.appendingPathComponent(ideaID.uuidString)
-            
-            if !fileManager.fileExists(atPath: ideaMediaURL.path) {
-                try fileManager.createDirectory(at: ideaMediaURL, withIntermediateDirectories: true, attributes: nil)
-            }
-            
-            return ideaMediaURL
-        }
+        
+        return finalDirectoryURL
+    }
 }

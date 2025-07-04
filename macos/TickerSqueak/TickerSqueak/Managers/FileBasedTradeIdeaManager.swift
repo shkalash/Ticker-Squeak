@@ -14,14 +14,14 @@ class FileBasedTradeIdeaManager: TradeIdeaManaging {
 
     // MARK: - Dependencies
     private let fileLocationProvider: FileLocationProviding
-    private let imagePersister: TradeIdeaImagePersisting
+    private let imagePersister: ImagePersisting
     private let fileManager: FileManager
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
     init(
         fileLocationProvider: FileLocationProviding,
-        imagePersister: TradeIdeaImagePersisting,
+        imagePersister: ImagePersisting,
         fileManager: FileManager = .default
     ) {
         self.fileLocationProvider = fileLocationProvider
@@ -93,7 +93,7 @@ class FileBasedTradeIdeaManager: TradeIdeaManaging {
             }
             
             // 2. IMPORTANT: Delete the entire media folder associated with this idea.
-            try await imagePersister.deleteAllImages(forIdeaID: ideaToDelete.id)
+            try await imagePersister.deleteAllImages(for: .tradeIdea(id: ideaToDelete.id) )
             
         } catch {
             ErrorManager.shared.report(error)

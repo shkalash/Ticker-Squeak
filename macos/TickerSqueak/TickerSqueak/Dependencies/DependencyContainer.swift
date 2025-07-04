@@ -13,7 +13,6 @@ import Foundation
 /// into the SwiftUI environment, making all services available to any view that needs them.
 /// This acts as the "Composition Root" of the app.
 class DependencyContainer: AppDependencies {
-    
     // MARK: - Public Properties (Services)
     
     let persistenceHandler: PersistenceHandling
@@ -24,12 +23,13 @@ class DependencyContainer: AppDependencies {
     let notificationsHandler: NotificationHandling
     let tickerStore: TickerStoreManaging
     let chartingService: ChartingService
-    // MARK: - New Checklist Services
     let checklistTemplateProvider: ChecklistTemplateProviding
     let checklistStateManager: ChecklistStateManaging
-    let imagePersister: TradeIdeaImagePersisting
-    let reportGenerator: ReportGenerating
+    let imagePersister: ImagePersisting
     let fileLocationProvider: FileLocationProviding
+    let tradeIdeaManager: TradeIdeaManaging
+    var preMarketReportGenerator: PreMarketReportGenerating
+    var tradeIdeaReportGenerator: TradeIdeaReportGenerating
     // MARK: - Lifecycle
     
     init() {
@@ -63,8 +63,11 @@ class DependencyContainer: AppDependencies {
         self.checklistStateManager = DefaultChecklistStateManager(persistence: self.persistenceHandler)
         self.imagePersister = FileSystemImagePersister(fileLocationProvider: fileLocationProvider)
         
-        // Inject the imagePersister into the reportGenerator
-        self.reportGenerator = MarkdownReportGenerator(imagePersister: self.imagePersister)
+        // The pre-market generator has no dependencies.
+        self.preMarketReportGenerator = MarkdownPreMarketReportGenerator()
+        
+        // The trade idea generator depends on the image persister.
+        self.tradeIdeaReportGenerator = MarkdownTradeIdeaReportGenerator(imagePersister: imagePersister)
         
         // 5. The main TickerStore, which coordinates many of the other services.
         self.tickerStore = TickerManager(
@@ -75,5 +78,7 @@ class DependencyContainer: AppDependencies {
             notificationHandler: notificationsHandler,
             persistence: persistenceHandler
         )
+        
+        self.tradeIdeaManager = FileBasedTradeIdeaManager(fileLocationProvider: fileLocationProvider, imagePersister: imagePersister)
     }
 }

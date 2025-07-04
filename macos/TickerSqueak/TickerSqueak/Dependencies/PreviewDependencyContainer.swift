@@ -5,6 +5,8 @@ import Combine
 import UserNotifications
 import AppKit
 class PreviewDependencyContainer: AppDependencies {
+    
+    
     var persistenceHandler: PersistenceHandling
     var settingsManager: SettingsManaging
     var ignoreManager: IgnoreManaging
@@ -15,9 +17,11 @@ class PreviewDependencyContainer: AppDependencies {
     var chartingService: ChartingService
     var checklistTemplateProvider: ChecklistTemplateProviding
     var checklistStateManager: ChecklistStateManaging
-    var imagePersister: TradeIdeaImagePersisting
-    var reportGenerator: ReportGenerating
+    var imagePersister: ImagePersisting
+    var preMarketReportGenerator: PreMarketReportGenerating
+    var tradeIdeaReportGenerator: TradeIdeaReportGenerating
     var fileLocationProvider: FileLocationProviding
+    var tradeIdeaManager: TradeIdeaManaging
     
     init() {
         // Initialize with default placeholder implementations.
@@ -32,8 +36,10 @@ class PreviewDependencyContainer: AppDependencies {
         self.checklistTemplateProvider = PlaceholderChecklistTemplateProvider()
         self.checklistStateManager = PlaceholderChecklistStateManager()
         self.imagePersister = PlaceholderImagePersister()
-        self.reportGenerator = PlaceholderReportGenerator()
+        self.preMarketReportGenerator = PlaceholderPreMarketReportGenerator()
+        self.tradeIdeaReportGenerator = PlaceholderTradeIdeaReportGenerator()
         self.fileLocationProvider = PlaceholderFileLocationProvider()
+        self.tradeIdeaManager = PlaceholderTradeIdeaManager()
     }
 }
 
@@ -171,18 +177,72 @@ class PlaceholderChecklistStateManager: ChecklistStateManaging {
     func saveState(_ state: ChecklistState, forChecklistName checklistName: String) async { storage[checklistName] = state }
 }
 
-class PlaceholderImagePersister: TradeIdeaImagePersisting {
-    
-    func deleteImage(withFilename filename: String) async throws { }
-    func saveImage(_ image: NSImage) async throws -> String { "preview-image.png" }
-    func loadImage(withFilename filename: String) async -> NSImage? { NSImage(systemSymbolName: "photo.fill", accessibilityDescription: nil) }
-}
+import AppKit
+import Foundation
 
-class PlaceholderReportGenerator: ReportGenerating {
-    func generateMarkdownReport(for checklist: Checklist, withState state: [String : ChecklistItemState]) -> String {
-        "## This is a preview report.\n- [x] Item 1\n- [ ] Item 2"
+/// An in-memory placeholder implementation of `ImagePersisting` for SwiftUI Previews.
+/// It simulates file storage using a dictionary and does not interact with the file system.
+class PlaceholderImagePersister: ImagePersisting {
+
+    /// Simulates a file system where the key is the full "path" (e.g., "ideaID/filename.png").
+    private var storage: [String: Data] = [:]
+    
+    /// Helper to create a unique storage key from the context and filename.
+    private func storageKey(for context: ChecklistContext, filename: String) -> String {
+        switch context {
+        case .tradeIdea(let id):
+            return "\(id.uuidString)/\(filename)"
+        case .preMarket(let date):
+            return "pre-market/\(date.description)/\(filename)"
+        }
+    }
+    
+    func saveImage(_ image: NSImage, for context: ChecklistContext) async throws -> String {
+        let filename = UUID().uuidString + ".png"
+        let key = storageKey(for: context, filename: filename)
+        
+        // We just store placeholder data, not the real image bytes.
+        storage[key] = Data()
+        print("Placeholder: Saved image to fake path: \(key)")
+        return filename
+    }
+
+    func loadImage(withFilename filename: String, for context: ChecklistContext) async -> NSImage? {
+        let key = storageKey(for: context, filename: filename)
+        
+        // If the key exists in our fake storage, return a system image as a placeholder.
+        if storage[key] != nil {
+            print("Placeholder: Loaded image from fake path: \(key)")
+            return NSImage(systemSymbolName: "photo.on.rectangle.angled", accessibilityDescription: "Placeholder Image")
+        } else {
+            return nil
+        }
+    }
+
+    func deleteImage(withFilename filename: String, for context: ChecklistContext) async throws {
+        let key = storageKey(for: context, filename: filename)
+        storage.removeValue(forKey: key)
+        print("Placeholder: Deleted image at fake path: \(key)")
+    }
+
+    func deleteAllImages(for context: ChecklistContext) async throws {
+        let prefix: String
+        switch context {
+        case .tradeIdea(let id):
+            prefix = "\(id.uuidString)/"
+        case .preMarket(let date):
+            prefix = "pre-market/\(date.description)/"
+        }
+        
+        // Remove all keys that start with the context's path prefix.
+        for key in storage.keys where key.hasPrefix(prefix) {
+            storage.removeValue(forKey: key)
+        }
+        print("Placeholder: Deleted all images for context: \(prefix)")
     }
 }
+
+
 
 class PlaceholderFileLocationProvider: FileLocationProviding {
 
@@ -227,5 +287,105 @@ class PlaceholderFileLocationProvider: FileLocationProviding {
         }
         
         return finalDirectoryURL
+    }
+}
+
+/// A placeholder that returns a static, sample report for the Pre-Market Checklist.
+class PlaceholderPreMarketReportGenerator: PreMarketReportGenerating {
+    func generateReport(for state: ChecklistState, withTemplate checklist: Checklist) -> String {
+        return """
+        # \(checklist.title) (Preview)
+        **Date:** \(state.lastModified.formatted(date: .long, time: .omitted))
+
+        ### Sample Section
+        - [x] This is a sample completed item.
+        - [ ] This is a sample pending item.
+        - > This is a sample note in a text field.
+
+        *Report generated by placeholder.*
+        """
+    }
+}
+
+/// A placeholder that returns a static, sample report for a Trade Idea.
+class PlaceholderTradeIdeaReportGenerator: TradeIdeaReportGenerating {
+    func generateReport(for idea: TradeIdea, withTemplate checklist: Checklist) async -> String {
+        return """
+        # \(checklist.title) for \(idea.ticker) (Preview)
+        **Status:** \(idea.status.rawValue.capitalized)
+        **Direction:** \(idea.direction.rawValue.capitalized)
+        **Created:** \(idea.createdAt.formatted(date: .abbreviated, time: .shortened))
+
+        ### Analysis
+        - ![Placeholder Image](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=)
+        - > These are sample notes from the placeholder.
+
+        *Report generated by placeholder.*
+        """
+    }
+}
+
+class PlaceholderTradeIdeaManager: TradeIdeaManaging {
+
+    /// An in-memory dictionary to act as a fake database for previews.
+    private var storage: [UUID: TradeIdea] = [:]
+
+    init() {
+        // Pre-populate the storage with some interesting sample data for the preview.
+        let sampleChecklistState = ChecklistState(lastModified: Date(), itemStates: [:])
+        
+        let idea1 = TradeIdea(id: UUID(), ticker: "AAPL", createdAt: Date(), direction: .bullish, status: .idea, decisionAt: nil, checklistState: sampleChecklistState)
+        let idea2 = TradeIdea(id: UUID(), ticker: "NVDA", createdAt: Date(), direction: .bearish, status: .taken, decisionAt: Date().addingTimeInterval(-3600), checklistState: sampleChecklistState)
+        let idea3 = TradeIdea(id: UUID(), ticker: "TSLA", createdAt: Date().addingTimeInterval(-7200), direction: .none, status: .rejected, decisionAt: Date().addingTimeInterval(-3000), checklistState: sampleChecklistState)
+        
+        // A trade idea from yesterday to test the date picker
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        let idea4 = TradeIdea(id: UUID(), ticker: "GOOG", createdAt: yesterday, direction: .bullish, status: .idea, decisionAt: nil, checklistState: sampleChecklistState)
+
+
+        self.storage = [
+            idea1.id: idea1,
+            idea2.id: idea2,
+            idea3.id: idea3,
+            idea4.id: idea4
+        ]
+    }
+
+    func fetchIdeas(for date: Date) async -> [TradeIdea] {
+        // Simulate fetching by filtering the in-memory storage.
+        let ideas = storage.values.filter {
+            Calendar.current.isDate($0.createdAt, inSameDayAs: date)
+        }
+        return ideas.sorted { $0.createdAt < $1.createdAt }
+    }
+
+    func saveIdea(_ idea: TradeIdea) async {
+        // Simulate saving by updating the dictionary.
+        storage[idea.id] = idea
+    }
+
+    func deleteIdea(_ ideaToDelete: TradeIdea) async {
+        // Simulate deleting by removing from the dictionary.
+        storage.removeValue(forKey: ideaToDelete.id)
+    }
+
+    func findOrCreateIdea(forTicker ticker: String, on date: Date) async -> TradeIdea {
+        // Simulate the find-or-create logic against the in-memory storage.
+        let ideasForDay = await fetchIdeas(for: date)
+        if let existingIdea = ideasForDay.first(where: { $0.ticker.uppercased() == ticker.uppercased() }) {
+            return existingIdea
+        } else {
+            let newIdea = TradeIdea(
+                id: UUID(),
+                ticker: ticker.uppercased(),
+                createdAt: Date(),
+                direction: .none,
+                status: .idea,
+                decisionAt: nil,
+                checklistState: ChecklistState(lastModified: Date(), itemStates: [:])
+            )
+            await saveIdea(newIdea)
+            return newIdea
+        }
     }
 }
