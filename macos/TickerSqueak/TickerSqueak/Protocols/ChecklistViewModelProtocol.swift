@@ -43,6 +43,8 @@ protocol ChecklistViewModelProtocol: ObservableObject {
     
     /// Collapses all collapsible sections in the checklist.
     func collapseAllSections()
+    
+    func binding(for itemID: String) -> Binding<ChecklistItemState>
 }
 
 /// A specialized ViewModel protocol for checklists that have a "New Day" workflow.
