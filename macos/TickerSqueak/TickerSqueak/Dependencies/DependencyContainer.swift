@@ -27,7 +27,7 @@ class DependencyContainer: AppDependencies {
     // MARK: - New Checklist Services
     let checklistTemplateProvider: ChecklistTemplateProviding
     let checklistStateManager: ChecklistStateManaging
-    let imagePersister: ImagePersisting
+    let imagePersister: TradeIdeaImagePersisting
     let reportGenerator: ReportGenerating
     let fileLocationProvider: FileLocationProviding
     // MARK: - Lifecycle

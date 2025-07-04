@@ -30,7 +30,7 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
     private let checklistName = "pre-market-checklist" // The file/key identifier
     private let templateProvider: ChecklistTemplateProviding
     private let stateManager: ChecklistStateManaging
-    private let imagePersister: ImagePersisting
+    private let imagePersister: TradeIdeaImagePersisting
     private let reportGenerator: ReportGenerating
     private let fileLocationProvider: FileLocationProviding
     

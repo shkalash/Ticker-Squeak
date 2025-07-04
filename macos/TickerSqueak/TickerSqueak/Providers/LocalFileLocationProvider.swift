@@ -6,15 +6,12 @@
 //
 
 
+// In LocalFileLocationProvider.swift
+
 import Foundation
 
-/// A concrete implementation of `FileLocationProviding` that resolves standard directory locations within the user's local file system.
-///
-/// This provider uses the app's `bundleIdentifier` to create a unique folder inside the user's `Library/Application Support` directory.
-/// It ensures that all required subdirectories (`Checklists`, `Media`, `Logs`) exist, creating them if they don't already exist.
 class LocalFileLocationProvider: FileLocationProviding {
 
-    /// Custom errors that this provider can throw.
     enum LocationError: Error, LocalizedError {
         case appSupportDirectoryNotFound
         case bundleIdentifierMissing
@@ -32,21 +29,21 @@ class LocalFileLocationProvider: FileLocationProviding {
         }
     }
 
-    // MARK: - Dependencies
 
     private let fileManager: FileManager
-    private let dateFormatter: DateFormatter
-
-    // MARK: - Initialization
+    
+    private let yearFormatter: DateFormatter
+    private let dayFormatter: DateFormatter
 
     init(fileManager: FileManager = .default) {
         self.fileManager = fileManager
-        // Formatter for creating daily folder names like "2025-07-04"
-        self.dateFormatter = DateFormatter()
-        self.dateFormatter.dateFormat = "MM-dd-yy"
+        
+        self.yearFormatter = DateFormatter()
+        self.yearFormatter.dateFormat = "yyyy"
+        
+        self.dayFormatter = DateFormatter()
+        self.dayFormatter.dateFormat = "MM-dd-yy"
     }
-
-    // MARK: - FileLocationProviding Conformance
 
     func getChecklistsDirectory() throws -> URL {
         return try getOrCreateAppDirectory(appending: "Checklists")
@@ -55,58 +52,46 @@ class LocalFileLocationProvider: FileLocationProviding {
     func getMediaDirectory() throws -> URL {
         return try getOrCreateAppDirectory(appending: "Media")
     }
-
-    func getPreMarketLogDirectory() throws -> URL {
-            // Creates and returns ".../Logs/pre-market/"
-            return try getOrCreateAppDirectory(appending: "Logs/pre-market")
-    }
     
+    func getPreMarketLogDirectory() throws -> URL {
+        return try getOrCreateAppDirectory(appending: "Logs/pre-market")
+    }
+
     func getTradesLogDirectory(for date: Date) throws -> URL {
-        // 1. Get the name of the daily folder (e.g., "2025-07-04").
-        let dailyFolderName = dateFormatter.string(from: date)
+        // 1. Get the year and day strings from the date.
+        let yearString = yearFormatter.string(from: date)
+        let dayString = dayFormatter.string(from: date)
         
-        // 2. Construct the full path including the daily folder.
-        let path = "Logs/trades/\(dailyFolderName)"
+        // 2. Construct the full nested path.
+        let path = "Logs/trades/\(yearString)/\(dayString)"
         
-        // 3. Use the helper to create the entire path if it doesn't exist and return the URL.
+        // 3. The helper will create all intermediate directories as needed.
         return try getOrCreateAppDirectory(appending: path)
     }
-
-    // MARK: - Private Helper
-
-    /// A generic helper function to find or create a specific subdirectory within the app's main Application Support folder.
+    
+    // The private helper remains the same and works perfectly for this.
     private func getOrCreateAppDirectory(appending pathComponent: String) throws -> URL {
-        // --- MODIFIED SECTION ---
-        // Wrap the entire logic in a do-catch block to report and re-throw errors.
         do {
-            // 1. Find the user's Application Support directory.
             guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
                 throw LocationError.appSupportDirectoryNotFound
             }
 
-            // 2. Get the app's unique bundle identifier to create a dedicated folder.
             guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
                 throw LocationError.bundleIdentifierMissing
             }
 
-            // 3. Construct the full path for our app's specific subdirectory.
-            let appDirectoryURL = appSupportURL.appendingPathComponent(bundleIdentifier)
-            let finalDirectoryURL = appDirectoryURL.appendingPathComponent(pathComponent)
+            let finalDirectoryURL = appSupportURL
+                .appendingPathComponent(bundleIdentifier)
+                .appendingPathComponent(pathComponent)
 
-            // 4. Check if the directory already exists. If not, create it.
             if !fileManager.fileExists(atPath: finalDirectoryURL.path) {
-                // withIntermediateDirectories: true will create the parent directories if they don't exist.
                 try fileManager.createDirectory(at: finalDirectoryURL, withIntermediateDirectories: true, attributes: nil)
             }
             
             return finalDirectoryURL
         } catch {
-            // 1. Report the error using the shared ErrorManager.
             ErrorManager.shared.report(error)
-            
-            // 2. Re-throw the error so the calling service knows the operation failed.
             throw error
         }
-        // --- END MODIFIED SECTION ---
     }
 }

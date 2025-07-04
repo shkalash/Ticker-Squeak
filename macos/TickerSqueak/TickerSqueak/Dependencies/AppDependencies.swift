@@ -21,7 +21,7 @@ protocol AppDependencies: ObservableObject {
     // MARK: - New Checklist Services
     var checklistTemplateProvider: ChecklistTemplateProviding { get }
     var checklistStateManager: ChecklistStateManaging { get }
-    var imagePersister: ImagePersisting { get }
+    var imagePersister: TradeIdeaImagePersisting { get }
     var reportGenerator: ReportGenerating { get }
     var fileLocationProvider: FileLocationProviding { get }
 }

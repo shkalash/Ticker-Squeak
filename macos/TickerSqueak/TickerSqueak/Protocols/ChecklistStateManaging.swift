@@ -9,7 +9,7 @@ import Foundation
 
 
 /// Represents the persisted state for a single checklist item.
-struct ChecklistItemState: Codable, Identifiable {
+struct ChecklistItemState: Codable, Identifiable , Equatable {
     let id: String // Corresponds to the ChecklistItem's ID
     var isChecked: Bool = false
     var userText: String = ""
@@ -17,7 +17,7 @@ struct ChecklistItemState: Codable, Identifiable {
 }
 
 /// Represents the complete, persisted state for a single checklist instance.
-struct ChecklistState: Codable {
+struct ChecklistState: Codable , Equatable {
     /// The date this checklist state was last modified.
     var lastModified: Date
     /// A dictionary mapping each item's ID to its individual state.

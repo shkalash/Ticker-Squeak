@@ -14,10 +14,10 @@ import AppKit
 /// Images are Base64-encoded and embedded directly into the report, making it portable.
 class MarkdownReportGenerator: ReportGenerating {
     
-    private let imagePersister: ImagePersisting
+    private let imagePersister: TradeIdeaImagePersisting
     
     // The generator now needs the image persister to load image data.
-    init(imagePersister: ImagePersisting) {
+    init(imagePersister: TradeIdeaImagePersisting) {
         self.imagePersister = imagePersister
     }
 

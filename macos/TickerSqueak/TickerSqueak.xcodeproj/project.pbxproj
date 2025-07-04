@@ -214,6 +214,11 @@
 			path = Checklists;
 			sourceTree = "<group>";
 		};
+		F6B508102E17FADA005953F2 /* TradeIdeas */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TradeIdeas;
+			sourceTree = "<group>";
+		};
 		F6DB08AC2E0CACE800ABE3FE /* Managers */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Managers;
@@ -275,6 +280,7 @@
 		F6EEE8F42E0ACCAE00E46FE6 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				F6B508102E17FADA005953F2 /* TradeIdeas */,
 				F6B507F32E174851005953F2 /* Checklists */,
 				F68BC3F92E0F0C79008D0D8C /* Charting */,
 				F68BC1AC2E0DD4A8008D0D8C /* DataMigrator.swift */,
@@ -438,6 +444,7 @@
 				F6B507FE2E174CBD005953F2 /* Providers */,
 				F6B507FF2E174CE7005953F2 /* Handlers */,
 				F6B508022E1751BF005953F2 /* Checklists */,
+				F6B508102E17FADA005953F2 /* TradeIdeas */,
 				F6DB08AC2E0CACE800ABE3FE /* Managers */,
 				F6DB08AD2E0CAD4700ABE3FE /* Protocols */,
 			);

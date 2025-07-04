@@ -15,7 +15,7 @@ class PreviewDependencyContainer: AppDependencies {
     var chartingService: ChartingService
     var checklistTemplateProvider: ChecklistTemplateProviding
     var checklistStateManager: ChecklistStateManaging
-    var imagePersister: ImagePersisting
+    var imagePersister: TradeIdeaImagePersisting
     var reportGenerator: ReportGenerating
     var fileLocationProvider: FileLocationProviding
     
@@ -171,7 +171,7 @@ class PlaceholderChecklistStateManager: ChecklistStateManaging {
     func saveState(_ state: ChecklistState, forChecklistName checklistName: String) async { storage[checklistName] = state }
 }
 
-class PlaceholderImagePersister: ImagePersisting {
+class PlaceholderImagePersister: TradeIdeaImagePersisting {
     
     func deleteImage(withFilename filename: String) async throws { }
     func saveImage(_ image: NSImage) async throws -> String { "preview-image.png" }
