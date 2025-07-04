@@ -35,6 +35,8 @@
 		F68BC40B2E0F4E81008D0D8C /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40A2E0F4E81008D0D8C /* ToastView.swift */; };
 		F68BC40D2E0FB64E008D0D8C /* ToastPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */; };
 		F698C2EA2E0700F6000CA939 /* Swifter in Frameworks */ = {isa = PBXBuildFile; productRef = F698C2E92E0700F6000CA939 /* Swifter */; };
+		F6B508012E175142005953F2 /* PreMarketChecklistViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508002E175142005953F2 /* PreMarketChecklistViewModel.swift */; };
+		F6B5080A2E175396005953F2 /* NSImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508092E175396005953F2 /* NSImage+Extensions.swift */; };
 		F6CE02222E0ACFDD0068E717 /* 4Notes.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E42E0ACCAE00E46FE6 /* 4Notes.aiff */; };
 		F6CE02232E0ACFDD0068E717 /* Awaken.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E52E0ACCAE00E46FE6 /* Awaken.aiff */; };
 		F6CE02242E0ACFDD0068E717 /* Bowl.aiff in Copy Audio */ = {isa = PBXBuildFile; fileRef = F6EEE8E62E0ACCAE00E46FE6 /* Bowl.aiff */; };
@@ -131,6 +133,8 @@
 		F68BC40A2E0F4E81008D0D8C /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		F68BC40C2E0FB64E008D0D8C /* ToastPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastPresenter.swift; sourceTree = "<group>"; };
 		F698C2D92E06FFAE000CA939 /* TickerSqueak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TickerSqueak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F6B508002E175142005953F2 /* PreMarketChecklistViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreMarketChecklistViewModel.swift; sourceTree = "<group>"; };
+		F6B508092E175396005953F2 /* NSImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Extensions.swift"; sourceTree = "<group>"; };
 		F6DB08AA2E0C2A3300ABE3FE /* SnoozeTimeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnoozeTimeEditorView.swift; sourceTree = "<group>"; };
 		F6DB08B02E0CAD6800ABE3FE /* TickerPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerPayload.swift; sourceTree = "<group>"; };
 		F6DB08BC2E0CB21E00ABE3FE /* PersistenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceKey.swift; sourceTree = "<group>"; };
@@ -188,6 +192,26 @@
 		F68BC3F92E0F0C79008D0D8C /* Charting */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Charting;
+			sourceTree = "<group>";
+		};
+		F6B507F32E174851005953F2 /* Checklists */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Checklists;
+			sourceTree = "<group>";
+		};
+		F6B507FE2E174CBD005953F2 /* Providers */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Providers;
+			sourceTree = "<group>";
+		};
+		F6B507FF2E174CE7005953F2 /* Handlers */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Handlers;
+			sourceTree = "<group>";
+		};
+		F6B508022E1751BF005953F2 /* Checklists */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Checklists;
 			sourceTree = "<group>";
 		};
 		F6DB08AC2E0CACE800ABE3FE /* Managers */ = {
@@ -251,6 +275,7 @@
 		F6EEE8F42E0ACCAE00E46FE6 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				F6B507F32E174851005953F2 /* Checklists */,
 				F68BC3F92E0F0C79008D0D8C /* Charting */,
 				F68BC1AC2E0DD4A8008D0D8C /* DataMigrator.swift */,
 				F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */,
@@ -278,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				F6EEE8F92E0ACCAE00E46FE6 /* NSSound.swift */,
+				F6B508092E175396005953F2 /* NSImage+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -318,6 +344,7 @@
 		F6EEE9142E0ACCAE00E46FE6 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				F6B508002E175142005953F2 /* PreMarketChecklistViewModel.swift */,
 				F68BC4022E0F0CB3008D0D8C /* ChartingSettingsViewModel.swift */,
 				F68BC2CF2E0EACE8008D0D8C /* HiddenTickersViewModel.swift */,
 				F68BC1B22E0EA2A1008D0D8C /* SnoozeListViewModel.swift */,
@@ -352,6 +379,7 @@
 		F6EEE91D2E0ACCAE00E46FE6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F6B508022E1751BF005953F2 /* Checklists */,
 				F67F90212E1062CE00186678 /* WebView */,
 				F68BC1B72E0EA2DF008D0D8C /* Lists */,
 				F6EEE8F82E0ACCAE00E46FE6 /* Dialogs */,
@@ -368,6 +396,8 @@
 				F68BC18A2E0D65AD008D0D8C /* Dependencies */,
 				F6EEE8EF2E0ACCAE00E46FE6 /* Audio */,
 				F6DB08AD2E0CAD4700ABE3FE /* Protocols */,
+				F6B507FE2E174CBD005953F2 /* Providers */,
+				F6B507FF2E174CE7005953F2 /* Handlers */,
 				F6DB08AC2E0CACE800ABE3FE /* Managers */,
 				F6EEE8F42E0ACCAE00E46FE6 /* Data */,
 				F6EEE8FB2E0ACCAE00E46FE6 /* Extensions */,
@@ -404,6 +434,10 @@
 				F68BC1B72E0EA2DF008D0D8C /* Lists */,
 				F68BC2D32E0ECE56008D0D8C /* Debug */,
 				F68BC3F92E0F0C79008D0D8C /* Charting */,
+				F6B507F32E174851005953F2 /* Checklists */,
+				F6B507FE2E174CBD005953F2 /* Providers */,
+				F6B507FF2E174CE7005953F2 /* Handlers */,
+				F6B508022E1751BF005953F2 /* Checklists */,
 				F6DB08AC2E0CACE800ABE3FE /* Managers */,
 				F6DB08AD2E0CAD4700ABE3FE /* Protocols */,
 			);
@@ -515,10 +549,12 @@
 				F68BC1A52E0D8F07008D0D8C /* ListSettingsView.swift in Sources */,
 				F68BC2D02E0EACE8008D0D8C /* HiddenTickersViewModel.swift in Sources */,
 				F6EEE93C2E0ACCAE00E46FE6 /* DesignMode.swift in Sources */,
+				F6B5080A2E175396005953F2 /* NSImage+Extensions.swift in Sources */,
 				F6DB08D82E0D265500ABE3FE /* SoundLibrary.swift in Sources */,
 				F68BC1972E0D76E9008D0D8C /* NotificationAudioSettingsViewModel.swift in Sources */,
 				F68BC1842E0D598B008D0D8C /* DialogView.swift in Sources */,
 				F68BC1B32E0EA2A1008D0D8C /* SnoozeListViewModel.swift in Sources */,
+				F6B508012E175142005953F2 /* PreMarketChecklistViewModel.swift in Sources */,
 				F68BC40D2E0FB64E008D0D8C /* ToastPresenter.swift in Sources */,
 				F6EEE93E2E0ACCAE00E46FE6 /* ErrorDialogView.swift in Sources */,
 				F68BC1882E0D5CF7008D0D8C /* PersistentFrame.swift in Sources */,

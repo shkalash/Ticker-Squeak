@@ -24,6 +24,12 @@ class DependencyContainer: AppDependencies {
     let notificationsHandler: NotificationHandling
     let tickerStore: TickerStoreManaging
     let chartingService: ChartingService
+    // MARK: - New Checklist Services
+    let checklistTemplateProvider: ChecklistTemplateProviding
+    let checklistStateManager: ChecklistStateManaging
+    let imagePersister: ImagePersisting
+    let reportGenerator: ReportGenerating
+    let fileLocationProvider: FileLocationProviding
     // MARK: - Lifecycle
     
     init() {
@@ -49,6 +55,16 @@ class DependencyContainer: AppDependencies {
 
         // Create the composite service that the app will use
         self.chartingService = CompositeChartingService(services: [tradingViewService, oneOptionService])
+        
+        // Foundational services that others depend on
+        fileLocationProvider = LocalFileLocationProvider()
+        
+        self.checklistTemplateProvider = LocalChecklistTemplateProvider(fileLocationProvider: fileLocationProvider)
+        self.checklistStateManager = DefaultChecklistStateManager(persistence: self.persistenceHandler)
+        self.imagePersister = FileSystemImagePersister(fileLocationProvider: fileLocationProvider)
+        
+        // Inject the imagePersister into the reportGenerator
+        self.reportGenerator = MarkdownReportGenerator(imagePersister: self.imagePersister)
         
         // 5. The main TickerStore, which coordinates many of the other services.
         self.tickerStore = TickerManager(

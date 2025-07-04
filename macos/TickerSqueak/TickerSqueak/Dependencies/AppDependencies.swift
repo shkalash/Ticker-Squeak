@@ -18,4 +18,10 @@ protocol AppDependencies: ObservableObject {
     var notificationsHandler: NotificationHandling { get }
     var tickerStore: TickerStoreManaging { get }
     var chartingService: ChartingService { get }
+    // MARK: - New Checklist Services
+    var checklistTemplateProvider: ChecklistTemplateProviding { get }
+    var checklistStateManager: ChecklistStateManaging { get }
+    var imagePersister: ImagePersisting { get }
+    var reportGenerator: ReportGenerating { get }
+    var fileLocationProvider: FileLocationProviding { get }
 }

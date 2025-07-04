@@ -1,0 +1,110 @@
+{
+  "title": "Pre-Market Checklist",
+  "sections": [
+    {
+      "title": "I. Workspace & System Check",
+      "items": [
+        {
+          "id": "pm_workspace_01",
+          "type": "checkbox",
+          "text": "Platforms Launched: OSP, TradingView, Web Browser."
+        },
+        {
+          "id": "pm_workspace_02",
+          "type": "checkbox",
+          "text": "Workspace Arranged: News, Calendar, Heatmap visible."
+        },
+        {
+          "id": "pm_workspace_03",
+          "type": "checkbox",
+          "text": "Alerts Active: Audio/Visual alerts enabled."
+        },
+        {
+          "id": "pm_workspace_04",
+          "type": "checkbox",
+          "text": "Mental Check: Core rules reviewed. Mind is calm and focused."
+        }
+      ]
+    },
+    {
+      "title": "II. Market Framework",
+      "items": [
+        {
+          "id": "pm_framework_01",
+          "type": "textInput",
+          "prompt": "Short-Term Trend (This Week):"
+        },
+        {
+          "id": "pm_framework_02",
+          "type": "textInput",
+          "prompt": "Medium-Term Trend (Next 2-3 Weeks):"
+        },
+        {
+          "id": "pm_framework_03",
+          "type": "textInput",
+          "prompt": "SPY Key Levels: Support:"
+        },
+        {
+          "id": "pm_framework_04",
+          "type": "textInput",
+          "prompt": "SPY Key Levels: Resistance:"
+        },
+        {
+          "id": "pm_framework_05",
+          "type": "textInput",
+          "prompt": "QQQ Key Levels: Support:"
+        },
+        {
+          "id": "pm_framework_06",
+          "type": "textInput",
+          "prompt": "QQQ Key Levels: Resistance:"
+        }
+      ]
+    },
+    {
+      "title": "III. Catalysts & Events",
+      "items": [
+        {
+          "id": "pm_catalysts_01",
+          "type": "textInput",
+          "prompt": "Key Morning News Headlines:"
+        },
+        {
+          "id": "pm_catalysts_02",
+          "type": "textInput",
+          "prompt": "Today's Economic Calendar (Note any key data releases & times):"
+        },
+        {
+          "id": "pm_catalysts_03",
+          "type": "textInput",
+          "prompt": "Today's Earnings Calendar (Note any key large-cap or sector-heavy reports):"
+        }
+      ]
+    },
+    {
+      "title": "IV. Daily Thesis & Focus List",
+      "items": [
+        {
+          "id": "pm_thesis_01",
+          "type": "textInput",
+          "prompt": "Primary Thesis:"
+        },
+        {
+          "id": "pm_thesis_02",
+          "type": "textInput",
+          "prompt": "Probabilities:"
+        },
+        {
+          "id": "pm_thesis_03",
+          "type": "textInput",
+          "prompt": "Final Pre-Market Comments:"
+        },
+        {
+          "id": "pm_thesis_04",
+          "type": "checkbox",
+          "text": "Build focus list"
+        }
+      ]
+    }
+  ]
+}

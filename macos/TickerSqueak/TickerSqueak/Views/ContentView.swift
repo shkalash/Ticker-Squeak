@@ -15,36 +15,37 @@ struct ContentView_Content: View {
         VStack(spacing: 0) {
             // Main navigation tab picker
             IconTabPicker(selection: $viewModel.selectedTab, options: [
-                PickerOption(label: "Tickers", imageName: "chart.bar", tag: 0),
-                PickerOption(label: "Hidden List", imageName: "timer", tag: 1),
-                PickerOption(label: "Snooze List", imageName: "moon.zzz", tag: 2),
-                PickerOption(label: "Ignore List", imageName: "eye.slash", tag: 3),
-                PickerOption(label: "Settings", imageName: "gearshape", tag: 4),
-//                PickerOption(label: "OneOption", imageName: "oneoption", tag: 5 , imageType: .asset)
+                PickerOption(label: "Pre-Market", imageName: "sunrise", tag: 0),
+                
+                PickerOption(label: "Tickers", imageName: "chart.bar", tag: 1),
+                PickerOption(label: "Hidden List", imageName: "timer", tag: 2),
+                PickerOption(label: "Snooze List", imageName: "moon.zzz", tag: 3),
+                PickerOption(label: "Ignore List", imageName: "eye.slash", tag: 4),
+                PickerOption(label: "Settings", imageName: "gearshape", tag: 5),
             ])
             
             Divider()
 
             switch viewModel.selectedTab {
+            // --- NEW CASE ADDED ---
             case 0:
+                PreMarketChecklistView_Content(dependencies: dependencies)
+            
+            // --- EXISTING CASES RE-NUMBERED ---
+            case 1:
                 TickerListView_Content(dependencies: dependencies, onTickerClicked: { ticker in
                     dependencies.chartingService.open(ticker: ticker)
                 })
-            case 1:
-                HiddenTickersView_Content(dependencies: dependencies)
             case 2:
-                SnoozeListView_Content(dependencies: dependencies)
+                HiddenTickersView_Content(dependencies: dependencies)
             case 3:
-                    IgnoreListView_Content(dependencies: dependencies)
+                SnoozeListView_Content(dependencies: dependencies)
             case 4:
-                    SettingsView_Content(dependencies: dependencies)
-                        .padding(.top , 3)
-                        .padding(.horizontal, 5)
-                //case 5:
-                    
-//                    WebView(url: URL(string:  "https://app.oneoption.com/option-stalker/chart/SPY?size=5m")!)
-//                    WebGridView()
-//                        .padding()
+                IgnoreListView_Content(dependencies: dependencies)
+            case 5:
+                SettingsView_Content(dependencies: dependencies)
+                    .padding(.top , 3)
+                    .padding(.horizontal, 5)
             default:
                 EmptyView()
             }
@@ -74,5 +75,5 @@ struct ContentView: View {
     
     return ContentView_Content(dependencies: previewDependencies)
         .environmentObject(previewDependencies)
-        .frame(width:600, height: 400)
+        .frame(width:600, height: 800)
 }

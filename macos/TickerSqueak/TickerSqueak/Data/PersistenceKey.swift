@@ -18,4 +18,7 @@ extension PersistenceKey {
     static var appSettings: PersistenceKey<AppSettings> { .init(name: "SavedAppSettings") }
     static var lastSnoozeClearDate: PersistenceKey<Date> { .init(name: "LastSnoozeClearDate") }
     static var snoozedTickers:PersistenceKey<[String]> { .init(name: "SnoozedTickers") }
+    static func checklistState(forName name: String) -> PersistenceKey<ChecklistState> {
+        .init(name: "ChecklistState_\(name)")
+    }
 }

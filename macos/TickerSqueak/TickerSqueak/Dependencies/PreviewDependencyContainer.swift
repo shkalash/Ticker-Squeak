@@ -3,8 +3,8 @@
 
 import Combine
 import UserNotifications
+import AppKit
 class PreviewDependencyContainer: AppDependencies {
-    
     var persistenceHandler: PersistenceHandling
     var settingsManager: SettingsManaging
     var ignoreManager: IgnoreManaging
@@ -13,6 +13,11 @@ class PreviewDependencyContainer: AppDependencies {
     var notificationsHandler: NotificationHandling
     var tickerStore: TickerStoreManaging
     var chartingService: ChartingService
+    var checklistTemplateProvider: ChecklistTemplateProviding
+    var checklistStateManager: ChecklistStateManaging
+    var imagePersister: ImagePersisting
+    var reportGenerator: ReportGenerating
+    var fileLocationProvider: FileLocationProviding
     
     init() {
         // Initialize with default placeholder implementations.
@@ -24,6 +29,11 @@ class PreviewDependencyContainer: AppDependencies {
         self.notificationsHandler = PlaceholderNotificationHandler()
         self.tickerStore = PlaceholderTickerStore()
         self.chartingService = CompositeChartingService(services: [OneOptionService(settingsManager: settingsManager) , TradingViewService(settingsManager: settingsManager)])
+        self.checklistTemplateProvider = PlaceholderChecklistTemplateProvider()
+        self.checklistStateManager = PlaceholderChecklistStateManager()
+        self.imagePersister = PlaceholderImagePersister()
+        self.reportGenerator = PlaceholderReportGenerator()
+        self.fileLocationProvider = PlaceholderFileLocationProvider()
     }
 }
 
@@ -140,4 +150,82 @@ class PlaceholderTickerStore: TickerStoreManaging {
     func clearAll() { subject.value.removeAll() }
     func hideTicker(id: String) { hiddenSubject.value.append(id) }
     func revealTicker(_ ticker: String) {hiddenSubject.value.removeAll { $0 == ticker }}
+    
+}
+// MARK: - New Placeholder Implementations for Checklist
+
+class PlaceholderChecklistTemplateProvider: ChecklistTemplateProviding {
+    func loadChecklistTemplate(forName name: String) async throws -> Checklist {
+        // Update this to load the real file from the app's bundle for a realistic preview.
+        guard let url = Bundle.main.url(forResource: name, withExtension: "json") else {
+            fatalError("Preview failed: could not find \(name).json in bundle.")
+        }
+        let data = try Data(contentsOf: url)
+        return try JSONDecoder().decode(Checklist.self, from: data)
+    }
+}
+
+class PlaceholderChecklistStateManager: ChecklistStateManaging {
+    private var storage: [String: ChecklistState] = [:]
+    func loadState(forChecklistName checklistName: String) async ->  ChecklistState? { storage[checklistName] }
+    func saveState(_ state: ChecklistState, forChecklistName checklistName: String) async { storage[checklistName] = state }
+}
+
+class PlaceholderImagePersister: ImagePersisting {
+    
+    func deleteImage(withFilename filename: String) async throws { }
+    func saveImage(_ image: NSImage) async throws -> String { "preview-image.png" }
+    func loadImage(withFilename filename: String) async -> NSImage? { NSImage(systemSymbolName: "photo.fill", accessibilityDescription: nil) }
+}
+
+class PlaceholderReportGenerator: ReportGenerating {
+    func generateMarkdownReport(for checklist: Checklist, withState state: [String : ChecklistItemState]) -> String {
+        "## This is a preview report.\n- [x] Item 1\n- [ ] Item 2"
+    }
+}
+
+class PlaceholderFileLocationProvider: FileLocationProviding {
+
+    private let fileManager: FileManager
+    private let rootTempURL: URL
+
+    init(fileManager: FileManager = .default) {
+        self.fileManager = fileManager
+        // Create a unique directory for this preview session to prevent state leakage between previews.
+        self.rootTempURL = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    }
+    
+    // The implementation is now identical to the real one, but uses our unique temp URL as the base.
+    // This makes it a true-to-life but safe "fake" implementation.
+    
+    func getChecklistsDirectory() throws -> URL {
+        return try getOrCreateTempDirectory(appending: "Checklists")
+    }
+
+    func getMediaDirectory() throws -> URL {
+        return try getOrCreateTempDirectory(appending: "Media")
+    }
+
+    func getPreMarketLogDirectory() throws -> URL {
+        return try getOrCreateTempDirectory(appending: "Logs/pre-market")
+    }
+
+    func getTradesLogDirectory(for date: Date) throws -> URL {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yy"
+        let dailyFolderName = dateFormatter.string(from: date)
+        let path = "Logs/trades/\(dailyFolderName)"
+        return try getOrCreateTempDirectory(appending: path)
+    }
+    
+    private func getOrCreateTempDirectory(appending pathComponent: String) throws -> URL {
+        let finalDirectoryURL = self.rootTempURL.appendingPathComponent(pathComponent)
+        
+        // No need to report errors to the user in a preview; if this fails, we want to know immediately.
+        if !fileManager.fileExists(atPath: finalDirectoryURL.path) {
+            try fileManager.createDirectory(at: finalDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+        }
+        
+        return finalDirectoryURL
+    }
 }

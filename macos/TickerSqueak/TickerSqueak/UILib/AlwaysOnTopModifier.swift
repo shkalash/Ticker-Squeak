@@ -38,11 +38,11 @@ struct AlwaysOnTopModifier: ViewModifier {
             // This level is higher than normal windows, even alerts and modal dialogs.
             // It will appear above the Dock and even the menu bar.
             // .statusBar is another high-level option.
-            window.level = .screenSaver
+            window.level = .statusBar
 
             // This ensures the window is visible on all Spaces, including when
             // another app is in full-screen mode.
-            window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+            window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .canJoinAllApplications, .auxiliary]
             
             // Optionally, you can make the window movable by its background.
             window.isMovableByWindowBackground = true
