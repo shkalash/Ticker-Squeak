@@ -13,7 +13,7 @@ class UserDefaultsPersistenceHandler: PersistenceHandling {
     private let encoder = JSONEncoder()
     private let decoder = JSONDecoder()
 
-    func save<T: Codable>(object: T?, for key: PersistenceKey<T>) {
+    func saveCodable<T: Codable>(object: T?, for key: PersistenceKey<T>) {
         if let object = object, let data = try? encoder.encode(object) {
             userDefaults.set(data, forKey: key.name)
         } else {
@@ -21,7 +21,7 @@ class UserDefaultsPersistenceHandler: PersistenceHandling {
         }
     }
 
-    func load<T: Codable>(for key: PersistenceKey<T>) -> T? {
+    func loadCodable<T: Codable>(for key: PersistenceKey<T>) -> T? {
         guard let data = userDefaults.data(forKey: key.name) else { return nil }
         return try? decoder.decode(T.self, from: data)
     }

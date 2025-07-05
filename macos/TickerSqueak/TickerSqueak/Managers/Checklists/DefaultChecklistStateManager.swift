@@ -16,7 +16,6 @@ class DefaultChecklistStateManager: ChecklistStateManaging {
     private let persistence: PersistenceHandling
 
     /// Initializes the state manager with a persistence handler.
-    /// In your app's startup code, you would pass an instance of `UserDefaultsPersistenceHandler`.
     init(persistence: PersistenceHandling) {
         self.persistence = persistence
     }
@@ -27,7 +26,7 @@ class DefaultChecklistStateManager: ChecklistStateManaging {
         let key = PersistenceKey<ChecklistState>.checklistState(forName: checklistName)
         
         // Use the `load(object:)` method for Codable types from your protocol.
-        return persistence.load(for: key)
+        return persistence.loadCodable(for: key)
     }
 
     /// Saves the current state by creating the correct `PersistenceKey` and calling the persistence service.
@@ -35,6 +34,6 @@ class DefaultChecklistStateManager: ChecklistStateManaging {
         let key = PersistenceKey<ChecklistState>.checklistState(forName: checklistName)
         
         // Use the `save(object:)` method for Codable types from your protocol.
-        persistence.save(object: state, for: key)
+        persistence.saveCodable(object: state, for: key)
     }
 }

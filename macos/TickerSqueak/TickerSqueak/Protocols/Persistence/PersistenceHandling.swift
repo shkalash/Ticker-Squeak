@@ -8,8 +8,8 @@
 
 protocol PersistenceHandling {
     /// For codeable objects
-    func save<T: Codable>(object: T?, for key: PersistenceKey<T>)
-    func load<T: Codable>(for key: PersistenceKey<T>) -> T?
+    func saveCodable<T: Codable>(object: T?, for key: PersistenceKey<T>)
+    func loadCodable<T: Codable>(for key: PersistenceKey<T>) -> T?
 
     /// For primitives and arrays
     func save<T>(value: T?, for key: PersistenceKey<T>)

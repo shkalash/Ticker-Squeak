@@ -61,8 +61,8 @@ class PlaceholderPersistenceHandler: PersistenceHandling {
     }
     
     private var storage: [String: Any] = [:]
-    func save<T: Codable>(object: T?, for key: PersistenceKey<T>) { storage[key.name] = object }
-    func load<T: Codable>(for key: PersistenceKey<T>) -> T? { storage[key.name] as? T }
+    func saveCodable<T: Codable>(object: T?, for key: PersistenceKey<T>) { storage[key.name] = object }
+    func loadCodable<T: Codable>(for key: PersistenceKey<T>) -> T? { storage[key.name] as? T }
 }
 
 class PlaceholderSettingsManager: SettingsManaging {

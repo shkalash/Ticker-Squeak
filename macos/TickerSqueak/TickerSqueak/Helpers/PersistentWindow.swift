@@ -51,7 +51,7 @@ struct PersistentWindowFrame: ViewModifier {
     }
     
     private func applySavedFrame(to window: NSWindow) {
-        if let windowState: WindowState = persistence.load(for: persistenceKey) {
+        if let windowState: WindowState = persistence.loadCodable(for: persistenceKey) {
             window.setFrame(windowState.frame, display: true)
         } else {
             // Provide a sensible default if no state is saved.
@@ -87,7 +87,7 @@ struct PersistentWindowFrame: ViewModifier {
     
     private func save(window: NSWindow) {
         let state = WindowState(frame: window.frame)
-        persistence.save(object: state, for: persistenceKey)
+        persistence.saveCodable(object: state, for: persistenceKey)
     }
 }
 

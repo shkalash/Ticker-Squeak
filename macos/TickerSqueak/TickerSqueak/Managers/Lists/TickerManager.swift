@@ -11,10 +11,6 @@ import Combine
 
 class TickerManager: TickerStoreManaging {
     
-    
-    
-    
-    
     // MARK: - Public Properties (from Protocol)
     
     var allTickers: AnyPublisher<[TickerItem], Never> {
@@ -80,7 +76,7 @@ class TickerManager: TickerStoreManaging {
             .dropFirst() // Don't save on initial load
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
             .sink { [weak self] listToSave in
-                self?.persistence.save(object: listToSave, for: .tickerItems)
+                self?.persistence.saveCodable(object: listToSave, for: .tickerItems)
             }
             .store(in: &cancellables)
             
@@ -102,7 +98,7 @@ class TickerManager: TickerStoreManaging {
     }
     
     private func loadFromPersistence() {
-        let loadedTickers: [TickerItem] = persistence.load(for: .tickerItems) ?? []
+        let loadedTickers: [TickerItem] = persistence.loadCodable(for: .tickerItems) ?? []
         self.tickerList = loadedTickers
         self.receivedTickers = Set(loadedTickers.map { $0.ticker })
     }
