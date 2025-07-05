@@ -11,7 +11,7 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
     @Published private(set) var checklist: Checklist?
     @Published private(set) var isLoading: Bool = false
     @Published var error: Error?
-    @Published var expandedSectionIDs: Set<UUID> = []
+    @Published var expandedSectionIDs: Set<String> = []
     @Published private(set) var refreshID = UUID()
     @Published var itemStates: [String: ChecklistItemState] = [:]
     @Published private(set) var checklistDate: Date?
@@ -47,12 +47,12 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
             if let savedState = await stateManager.loadState(forChecklistName: checklistName) {
                 self.itemStates = savedState.itemStates
                 self.checklistDate = savedState.lastModified
+                self.expandedSectionIDs = savedState.expandedSectionIDs
             } else {
-                // If not, create a new state and put it in the container.
                 self.itemStates = [:]
                 self.checklistDate = Date()
+                self.expandedSectionIDs = Set(loadedChecklist.sections.map { $0.id })
             }
-            self.expandedSectionIDs = Set(loadedChecklist.sections.map { $0.id })
         } catch {
             self.error = error
         }
@@ -60,12 +60,15 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
     
     private func updateAndSaveState(for itemID: String, with newState: ChecklistItemState) {
         itemStates[itemID] = newState
-        
         self.refreshID = UUID()
-        Task {
-            let stateToSave = ChecklistState(lastModified: self.checklistDate ?? Date(), itemStates: self.itemStates)
-            await stateManager.saveState(stateToSave, forChecklistName: checklistName)
+        Task{
+            await saveCurrentState()
         }
+    }
+    
+    private func saveCurrentState() async {
+        let stateToSave = ChecklistState(lastModified: self.checklistDate ?? Date(), itemStates: self.itemStates , expandedSectionIDs: self.expandedSectionIDs)
+        await stateManager.saveState(stateToSave, forChecklistName: checklistName)
     }
     
     // The binding now calls our new, robust update function.
@@ -110,7 +113,8 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
         await saveLogToDisk()
         self.itemStates = [:]
         self.checklistDate = Date()
-        let freshState = ChecklistState(lastModified: Date(), itemStates: [:])
+        expandAllSections()
+        let freshState = ChecklistState(lastModified: Date(), itemStates: [:] , expandedSectionIDs: self.expandedSectionIDs)
         await stateManager.saveState(freshState, forChecklistName: checklistName)
     }
     
@@ -144,12 +148,15 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
         }
     }
     
-    func bindingForSectionExpansion(for sectionID: UUID) -> Binding<Bool> {
+    func bindingForSectionExpansion(for sectionID: String) -> Binding<Bool> {
         Binding(
             get: { self.expandedSectionIDs.contains(sectionID) },
             set: { isExpanded in
                 if isExpanded { self.expandedSectionIDs.insert(sectionID) }
                 else { self.expandedSectionIDs.remove(sectionID) }
+                Task{
+                    await self.saveCurrentState()
+                }
             }
         )
     }
@@ -158,10 +165,16 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
         // and create a Set containing all of them.
         guard let checklist = checklist else { return }
         self.expandedSectionIDs = Set(checklist.sections.map { $0.id })
+        Task{
+            await saveCurrentState()
+        }
     }
 
     func collapseAllSections() {
         // To collapse all, we simply clear the set of expanded section IDs.
         self.expandedSectionIDs.removeAll()
+        Task{
+            await saveCurrentState()
+        }
     }
 }

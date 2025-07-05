@@ -19,7 +19,7 @@ protocol ChecklistViewModelProtocol: ObservableObject , PickerOptionsProviding {
     var itemStates: [String: ChecklistItemState] { get }
     var isLoading: Bool { get }
     var error: Error? { get set }
-    var expandedSectionIDs: Set<UUID> { get set }
+    var expandedSectionIDs: Set<String> { get set }
     
     // MARK: - Actions from the View
     

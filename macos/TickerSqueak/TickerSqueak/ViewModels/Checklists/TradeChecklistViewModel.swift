@@ -12,9 +12,18 @@ class TradeChecklistViewModel: TradeChecklistViewModelProtocol {
     @Published var itemStates: [String: ChecklistItemState]
     @Published private(set) var isLoading: Bool = false
     @Published var error: Error?
-    @Published var expandedSectionIDs: Set<UUID> = []
     @Published var tradeIdea: TradeIdea
 
+    var expandedSectionIDs: Set<String> {
+        get {
+            tradeIdea.checklistState.expandedSectionIDs
+        }
+        set {
+            tradeIdea.checklistState.expandedSectionIDs = newValue
+            saveCurrentState()
+        }
+    }
+    
     private let checklistName = "trade-checklist"
     private let tradeIdeaManager: TradeIdeaManaging
     private let templateProvider: ChecklistTemplateProviding
@@ -47,7 +56,6 @@ class TradeChecklistViewModel: TradeChecklistViewModelProtocol {
         do {
             let loadedChecklist : Checklist = try await templateProvider.loadJSONTemplate(forName: checklistName)
             self.checklist = loadedChecklist
-            self.expandedSectionIDs = Set()
         } catch { self.error = error }
     }
 
@@ -64,6 +72,10 @@ class TradeChecklistViewModel: TradeChecklistViewModelProtocol {
         // 4. Update the main tradeIdea object and save it in the background.
         self.tradeIdea.checklistState.itemStates = newStates
         self.tradeIdea.checklistState.lastModified = Date()
+        saveCurrentState()
+    }
+    
+    private func saveCurrentState() {
         Task {
             await tradeIdeaManager.saveIdea(self.tradeIdea)
         }
@@ -131,7 +143,7 @@ class TradeChecklistViewModel: TradeChecklistViewModelProtocol {
         Task { await tradeIdeaManager.saveIdea(self.tradeIdea) }
     }
     
-    func bindingForSectionExpansion(for sectionID: UUID) -> Binding<Bool> {
+    func bindingForSectionExpansion(for sectionID: String) -> Binding<Bool> {
         Binding(
             get: { self.expandedSectionIDs.contains(sectionID) },
             set: { isExpanded in

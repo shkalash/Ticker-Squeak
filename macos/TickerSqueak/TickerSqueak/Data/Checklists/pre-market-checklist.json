@@ -2,6 +2,7 @@
   "title": "Pre-Market Checklist",
   "sections": [
     {
+      "id": "pm_section_1",
       "title": "I. Workspace & System Check",
       "items": [
         {
@@ -27,6 +28,7 @@
       ]
     },
     {
+      "id": "pm_section_2",
       "title": "II. Market Framework",
       "items": [
         {
@@ -62,6 +64,7 @@
       ]
     },
     {
+      "id": "pm_section_3",
       "title": "III. Catalysts & Events",
       "items": [
         {
@@ -82,6 +85,7 @@
       ]
     },
     {
+      "id": "pm_section_4",
       "title": "IV. Daily Thesis & Focus List",
       "items": [
         {

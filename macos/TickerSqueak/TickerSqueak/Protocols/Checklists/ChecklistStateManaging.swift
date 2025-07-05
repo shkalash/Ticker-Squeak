@@ -23,6 +23,8 @@ struct ChecklistState: Codable , Equatable , Hashable{
     var lastModified: Date
     /// A dictionary mapping each item's ID to its individual state.
     var itemStates: [String: ChecklistItemState]
+    /// Persist the sections as they are visible to the user
+    var expandedSectionIDs: Set<String> = []
 }
 
 /// Defines an interface for loading and saving the user's progress on a checklist.

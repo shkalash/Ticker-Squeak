@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F60A56DB2E197F7000B7F252 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60A56DA2E197F7000B7F252 /* SessionStore.swift */; };
 		F64A37E02E13DC7D006CED86 /* AlwaysOnTopModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */; };
 		F68BC17E2E0D4B9A008D0D8C /* NotificationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */; };
 		F68BC1802E0D56F9008D0D8C /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC17F2E0D56F5008D0D8C /* Dialog.swift */; };
@@ -100,6 +101,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		F60A56DA2E197F7000B7F252 /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysOnTopModifier.swift; sourceTree = "<group>"; };
 		F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMethod.swift; sourceTree = "<group>"; };
 		F68BC17F2E0D56F5008D0D8C /* Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
@@ -159,6 +161,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		F60A56DC2E197FB700B7F252 /* PropertyWrappers */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PropertyWrappers;
+			sourceTree = "<group>";
+		};
 		F67F90212E1062CE00186678 /* WebView */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = WebView;
@@ -301,6 +308,7 @@
 				F6EEE8F32E0ACCAE00E46FE6 /* TickerItem.swift */,
 				F6DB08BC2E0CB21E00ABE3FE /* PersistenceKey.swift */,
 				F6DB08D72E0D265500ABE3FE /* SoundLibrary.swift */,
+				F60A56DA2E197F7000B7F252 /* SessionStore.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -417,6 +425,7 @@
 				F6EEE8F42E0ACCAE00E46FE6 /* Data */,
 				F6EEE8FB2E0ACCAE00E46FE6 /* Extensions */,
 				F6EEE8FF2E0ACCAE00E46FE6 /* Helpers */,
+				F60A56DC2E197FB700B7F252 /* PropertyWrappers */,
 				F6EEE9122E0ACCAE00E46FE6 /* UILib */,
 				F6EEE9142E0ACCAE00E46FE6 /* ViewModels */,
 				F6EEE91D2E0ACCAE00E46FE6 /* Views */,
@@ -444,6 +453,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F60A56DC2E197FB700B7F252 /* PropertyWrappers */,
 				F67F90212E1062CE00186678 /* WebView */,
 				F68BC18A2E0D65AD008D0D8C /* Dependencies */,
 				F68BC1B72E0EA2DF008D0D8C /* Lists */,
@@ -570,6 +580,7 @@
 				F6EEE93C2E0ACCAE00E46FE6 /* DesignMode.swift in Sources */,
 				F6B5080A2E175396005953F2 /* NSImage+Extensions.swift in Sources */,
 				F6DB08D82E0D265500ABE3FE /* SoundLibrary.swift in Sources */,
+				F60A56DB2E197F7000B7F252 /* SessionStore.swift in Sources */,
 				F68BC1842E0D598B008D0D8C /* DialogView.swift in Sources */,
 				F68BC40D2E0FB64E008D0D8C /* ToastPresenter.swift in Sources */,
 				F6EEE93E2E0ACCAE00E46FE6 /* ErrorDialogView.swift in Sources */,

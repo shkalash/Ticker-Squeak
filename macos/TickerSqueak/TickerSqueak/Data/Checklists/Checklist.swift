@@ -36,14 +36,9 @@ struct ChecklistItem: Identifiable {
 
 // Represents a section within the checklist, like "Market Analysis".
 struct ChecklistSection: Identifiable, Codable {
-    let id = UUID() // For SwiftUI Identifiable conformance. Not in JSON.
+    let id: String
     let title: String
     var items: [ChecklistItem]
-    
-    // Custom coding keys to ensure the 'id' property is ignored during JSON decoding/encoding.
-    private enum CodingKeys: String, CodingKey {
-        case title, items
-    }
 }
 
 
