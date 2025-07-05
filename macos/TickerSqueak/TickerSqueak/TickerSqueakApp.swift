@@ -22,6 +22,7 @@ struct TickerSqueakApp: App {
                 .onAppear{
                     // Server must be started on app run
                     dependencies.tickerProvider.start()
+                    DataMigrator.migrate(settingsManager: dependencies.settingsManager, ignoreManager: dependencies.ignoreManager)
                 }
             #if DEBUG
                 .withDebugOverlay()

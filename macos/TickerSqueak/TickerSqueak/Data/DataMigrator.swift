@@ -22,7 +22,7 @@ struct DataMigrator {
     // MARK: - Migration Flag
     
     /// A key to track whether this V2 migration has already been completed.
-    private static let migrationCompletedKey = "migrationToV2ArchitectureCompleted"
+    private static let migrationCompletedKey = "migrationToV3ArchitectureCompleted"
 
     /// Performs the data migration if it has not already been done.
     /// This should be called once at app startup from the DependencyContainer.
@@ -49,22 +49,6 @@ struct DataMigrator {
             }
         }
         
-        // 3. Migrate other individual settings into the AppSettings object
-        // Example: Migrating the server port
-        // let oldPort = UserDefaults.standard.integer(forKey: oldServerPortKey)
-        // if oldPort > 0 {
-        //     settingsManager.modify { $0.serverPort = oldPort }
-        //     didMigrateData = true
-        // }
-        
-        // Example: Migrating sound settings
-        // if let oldSound = UserDefaults.standard.string(forKey: oldAlertSoundKey) {
-        //     settingsManager.modify { $0.soundLibrary.setSound(for: .alert, to: oldSound) }
-        //     didMigrateData = true
-        // }
-        
-        // Add other migration tasks here...
-
         // 4. Mark the migration as complete so it never runs again.
         UserDefaults.standard.set(true, forKey: migrationCompletedKey)
         
