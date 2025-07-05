@@ -23,49 +23,74 @@ struct ChecklistItemRowView: View {
         
         // The switch handles the rendering for each item type.
         switch item.type {
-        case .checkbox(let text):
-            Toggle(isOn: stateBinding.isChecked) {
-                Text(text)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(Rectangle())
-            }
-            .toggleStyle(.checkbox)
-            .padding(.vertical, 4)
-            
-        case .textInput(let prompt):
-            VStack(alignment: .leading, spacing: 6) {
-                Text(prompt).font(.callout).foregroundColor(.secondary)
-                ScrollFriendlyTextEditor(text: stateBinding.userText)
-                    .font(.body)
-                    .frame(minHeight: 80)
-                    .padding(4)
-                    .background(Color(nsColor: .textBackgroundColor))
-                    .cornerRadius(6)
-                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.secondary.opacity(0.5)))
-            }
-            .padding(.vertical, 4)
-            .padding(.trailing, 40)
-            
-        case .image(let caption):
-            VStack(alignment: .leading, spacing: 6) {
-                Text(caption).font(.callout).foregroundColor(.secondary)
-                // We determine the correct context to pass to the image well.
-                if let context = imageContext {
-                    MultiImageWellView(
-                        imageFileNames: stateBinding.imageFileNames,
-                        context: context,
-                        onPaste: { images in
-                            Task { await viewModel.savePastedImages(images, forItemID: item.id) }
-                        },
-                        onDelete: { filename in
-                            viewModel.deletePastedImage(filename: filename, forItemID: item.id)
-                        }
-                    )
-                } else {
-                    Text("Context not available for images.").font(.caption).foregroundColor(.red)
+            case .checkbox(let text):
+                Toggle(isOn: stateBinding.isChecked) {
+                    Text(text)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
                 }
-            }
-            .padding(.vertical, 4)
+                .toggleStyle(.checkbox)
+                .padding(.vertical, 4)
+                
+            case .textInput(let prompt):
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(prompt).font(.callout).foregroundColor(.secondary)
+                    ScrollFriendlyTextEditor(text: stateBinding.userText)
+                        .font(.body)
+                        .frame(minHeight: 80)
+                        .padding(4)
+                        .background(Color(nsColor: .textBackgroundColor))
+                        .cornerRadius(6)
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.secondary.opacity(0.5)))
+                }
+                .padding(.vertical, 4)
+                .padding(.trailing, 40)
+                
+            case .image(let caption):
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(caption).font(.callout).foregroundColor(.secondary)
+                    // We determine the correct context to pass to the image well.
+                    if let context = imageContext {
+                        MultiImageWellView(
+                            imageFileNames: stateBinding.imageFileNames,
+                            context: context,
+                            onPaste: { images in
+                                Task { await viewModel.savePastedImages(images, forItemID: item.id) }
+                            },
+                            onDelete: { filename in
+                                viewModel.deletePastedImage(filename: filename, forItemID: item.id)
+                            }
+                        )
+                    } else {
+                        Text("Context not available for images.").font(.caption).foregroundColor(.red)
+                    }
+                }
+                .padding(.vertical, 4)
+                
+            case .picker(let prompt, let options):
+                Picker(
+                    prompt,
+                    selection: stateBinding.selectedOption
+                ) {
+                    Text("Select...").tag(String?.none)
+                    ForEach(options, id: \.self) { option in
+                        Text(option).tag(String?(option))
+                    }
+                }
+                .pickerStyle(.menu)
+                .padding(.vertical, 4)
+                
+            case .dynamicPicker(let prompt, let optionsKey):
+                let options = viewModel.options(for: optionsKey)
+                Picker(prompt, selection: stateBinding.selectedOption) {
+                    Text("Select...").tag(String?.none)
+                    ForEach(options, id: \.self) { option in
+                        Text(option).tag(String?(option))
+                    }
+                }
+                .pickerStyle(.menu)
+                .padding(.vertical, 4)
+        
         }
     }
     

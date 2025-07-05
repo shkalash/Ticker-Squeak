@@ -22,7 +22,8 @@ class TradeChecklistViewModel: TradeChecklistViewModelProtocol {
     private let reportGenerator: TradeIdeaReportGenerating
     private let chartingService: ChartingService
     private var cancellables = Set<AnyCancellable>()
-
+    private let pickerOptionsProvider: PickerOptionsProviding
+    
     init(tradeIdea: TradeIdea, dependencies: any AppDependencies) {
         self.tradeIdea = tradeIdea
         self.title = tradeIdea.ticker
@@ -33,18 +34,23 @@ class TradeChecklistViewModel: TradeChecklistViewModelProtocol {
         self.imagePersister = dependencies.imagePersister
         self.reportGenerator = dependencies.tradeIdeaReportGenerator
         self.chartingService = dependencies.chartingService
+        self.pickerOptionsProvider = dependencies.pickerOptionsProvider
         
         $itemStates
             .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
             .sink { [weak self] _ in self?.saveChanges() }
             .store(in: &cancellables)
     }
+    
+    func options(for key: String) -> [String] {
+        self.pickerOptionsProvider.options(for: key)
+    }
 
     func load() async {
         isLoading = true
         defer { isLoading = false }
         do {
-            let loadedChecklist = try await templateProvider.loadChecklistTemplate(forName: checklistName)
+            let loadedChecklist : Checklist = try await templateProvider.loadJSONTemplate(forName: checklistName)
             self.checklist = loadedChecklist
             self.expandedSectionIDs = Set()
         } catch { self.error = error }

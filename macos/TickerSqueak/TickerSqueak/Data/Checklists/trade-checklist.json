@@ -97,7 +97,7 @@
       "items": [
         { "id": "ti_plan_01", "type": "textInput", "prompt": "What is my confidence level?" },
         { "id": "ti_plan_02", "type": "textInput", "prompt": "What is my timeframe?" },
-        { "id": "ti_plan_03", "type": "textInput", "prompt": "What is the correct instrument for the trade?" },
+        { "id": "ti_plan_03", "type": "dynamicPicker", "prompt": "What is the correct instrument for the trade?" , "optionsKey": "trade_instruments" },
         { "id": "ti_plan_04", "type": "textInput", "prompt": "Do I have a scenario where I would add to the trade?" },
         { "id": "ti_plan_05", "type": "textInput", "prompt": "Should I scale in?" }
       ]

@@ -12,7 +12,7 @@ import SwiftUI
 
 /// Defines the base interface for a view model that drives any checklist view.
 @MainActor
-protocol ChecklistViewModelProtocol: ObservableObject {
+protocol ChecklistViewModelProtocol: ObservableObject , PickerOptionsProviding {
     // MARK: - Published State for the View
     var title: String { get }
     var checklist: Checklist? { get }

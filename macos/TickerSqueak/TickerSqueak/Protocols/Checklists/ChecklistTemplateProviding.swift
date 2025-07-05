@@ -12,5 +12,5 @@ protocol ChecklistTemplateProviding {
     /// - Parameter name: The base name of the JSON file without the extension.
     /// - Returns: A `Checklist` object representing the template.
     /// - Throws: An error if the file is not found or cannot be decoded.
-    func loadChecklistTemplate(forName name: String) async throws -> Checklist
+    func loadJSONTemplate<T>(forName name: String) async throws -> T where T: Decodable
 }

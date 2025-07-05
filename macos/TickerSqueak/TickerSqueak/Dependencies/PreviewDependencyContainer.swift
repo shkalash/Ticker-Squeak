@@ -8,22 +8,23 @@ import AppKit
 class PreviewDependencyContainer: AppDependencies {
     
     
-    var persistenceHandler: PersistenceHandling
-    var settingsManager: SettingsManaging
-    var ignoreManager: IgnoreManaging
-    var snoozeManager: SnoozeManaging
-    var tickerProvider: TickerProviding
-    var notificationsHandler: NotificationHandling
-    var tickerStore: TickerStoreManaging
-    var chartingService: ChartingService
-    var checklistTemplateProvider: ChecklistTemplateProviding
-    var checklistStateManager: ChecklistStateManaging
-    var imagePersister: ImagePersisting
-    var preMarketReportGenerator: PreMarketReportGenerating
-    var tradeIdeaReportGenerator: TradeIdeaReportGenerating
-    var fileLocationProvider: FileLocationProviding
-    var tradeIdeaManager: TradeIdeaManaging
-    var appCoordinator: any AppNavigationCoordinating
+    let persistenceHandler: PersistenceHandling
+    let settingsManager: SettingsManaging
+    let ignoreManager: IgnoreManaging
+    let snoozeManager: SnoozeManaging
+    let tickerProvider: TickerProviding
+    let notificationsHandler: NotificationHandling
+    let tickerStore: TickerStoreManaging
+    let chartingService: ChartingService
+    let checklistTemplateProvider: ChecklistTemplateProviding
+    let checklistStateManager: ChecklistStateManaging
+    let imagePersister: ImagePersisting
+    let preMarketReportGenerator: PreMarketReportGenerating
+    let tradeIdeaReportGenerator: TradeIdeaReportGenerating
+    let fileLocationProvider: FileLocationProviding
+    let tradeIdeaManager: TradeIdeaManaging
+    let appCoordinator: any AppNavigationCoordinating
+    let pickerOptionsProvider: PickerOptionsProviding
     
     init() {
         // Initialize with default placeholder implementations.
@@ -43,6 +44,7 @@ class PreviewDependencyContainer: AppDependencies {
         self.fileLocationProvider = PlaceholderFileLocationProvider()
         self.tradeIdeaManager = PlaceholderTradeIdeaManager()
         self.appCoordinator = PlaceholderAppCoordinator()
+        self.pickerOptionsProvider = PlaceholderPickerOptionsProvider()
     }
 }
 
@@ -166,13 +168,13 @@ class PlaceholderTickerStore: TickerStoreManaging {
 // MARK: - New Placeholder Implementations for Checklist
 
 class PlaceholderChecklistTemplateProvider: ChecklistTemplateProviding {
-    func loadChecklistTemplate(forName name: String) async throws -> Checklist {
+    func loadJSONTemplate<T>(forName name: String) async throws -> T where T : Decodable {
         // Update this to load the real file from the app's bundle for a realistic preview.
         guard let url = Bundle.main.url(forResource: name, withExtension: "json") else {
             fatalError("Preview failed: could not find \(name).json in bundle.")
         }
         let data = try Data(contentsOf: url)
-        return try JSONDecoder().decode(Checklist.self, from: data)
+        return try JSONDecoder().decode(T.self, from: data)
     }
 }
 
@@ -398,4 +400,8 @@ class PlaceholderAppCoordinator: AppNavigationCoordinating {
     @Published var tradeIdeaTickerToNavigate: String?
     func requestNavigation(toTicker ticker: String) { self.tradeIdeaTickerToNavigate = ticker }
     func clearTradeIdeaNavigationRequest() { self.tradeIdeaTickerToNavigate = nil }
+}
+
+class PlaceholderPickerOptionsProvider: PickerOptionsProviding {
+    func options(for key: String) -> [String] { ["Preview Option 1", "Preview Option 2"] }
 }

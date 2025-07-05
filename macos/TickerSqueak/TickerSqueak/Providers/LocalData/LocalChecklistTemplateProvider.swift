@@ -51,29 +51,32 @@ class LocalChecklistTemplateProvider: ChecklistTemplateProviding {
     // MARK: - ChecklistTemplateProviding Conformance
 
     /// Asynchronously loads and decodes a checklist template from a given file name.
-    func loadChecklistTemplate(forName name: String) async throws -> Checklist {
+    func loadJSONTemplate<T>(forName name: String) async throws -> T where T: Decodable{
         do {
             // 1. Get the URL where the user's checklist should be.
             let userChecklistURL = try fileLocationProvider.getChecklistsDirectory()
                 .appendingPathComponent(name)
                 .appendingPathExtension("json")
-
+            #if DEBUG
+                // in debug mode, we want to use the latest template at all times
+                if fileManager.fileExists(atPath: userChecklistURL.path) {
+                    try? fileManager.removeItem(at: userChecklistURL)
+                }
+                try copyDefaultTemplate(forName: name, to: userChecklistURL)
+            #else
             // 2. If the user's checklist doesn't exist, create it from the bundled default.
             if !fileManager.fileExists(atPath: userChecklistURL.path) {
                 try copyDefaultTemplate(forName: name, to: userChecklistURL)
             }
-
+            #endif
             // 3. Read the data from the file URL.
             let data = try Data(contentsOf: userChecklistURL)
 
             // 4. Decode the data into a Checklist object and return it.
-            let checklist = try decoder.decode(Checklist.self, from: data)
-            return checklist
+            let template = try decoder.decode(T.self, from: data)
+            return template
             
         } catch {
-            // --- MODIFIED SECTION ---
-            // Any error thrown in the `do` block will be caught here.
-            
             // 1. Report the error using the shared ErrorManager.
             // This will trigger the dialog presentation for the user.
             ErrorManager.shared.report(error)
@@ -81,7 +84,6 @@ class LocalChecklistTemplateProvider: ChecklistTemplateProviding {
             // 2. Re-throw the error so the caller (e.g., the ViewModel) knows the operation failed
             // and can update its state accordingly (e.g., stop a loading indicator).
             throw error
-            // --- END MODIFIED SECTION ---
         }
     }
 

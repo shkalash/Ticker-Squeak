@@ -13,6 +13,8 @@ enum ChecklistItemType {
     case checkbox(text: String)
     case textInput(prompt: String)
     case image(caption: String)
+    case picker(prompt: String, options: [String])
+    case dynamicPicker(prompt: String, optionsKey: String)
 }
 
 
@@ -28,6 +30,7 @@ struct ChecklistItem: Identifiable {
     var isChecked: Bool = false
     var userText: String = ""
     var imageFileNames: [String] = [] // Supports multiple images
+    var selectedOptions: String = ""
 }
 
 
@@ -36,7 +39,7 @@ struct ChecklistSection: Identifiable, Codable {
     let id = UUID() // For SwiftUI Identifiable conformance. Not in JSON.
     let title: String
     var items: [ChecklistItem]
-
+    
     // Custom coding keys to ensure the 'id' property is ignored during JSON decoding/encoding.
     private enum CodingKeys: String, CodingKey {
         case title, items
@@ -57,7 +60,7 @@ extension ChecklistItem: Codable {
     
     // Define all possible keys present in the JSON for any item type.
     private enum CodingKeys: String, CodingKey {
-        case id, type, text, prompt, caption
+        case id, type, text, prompt, caption , options, optionsKey
     }
     
     // Custom decoder to transform JSON data into our Swift objects.
@@ -70,22 +73,30 @@ extension ChecklistItem: Codable {
         
         // Use the 'typeString' to decide how to decode the rest of the object.
         switch typeString {
-        case "checkbox":
-            let text = try container.decode(String.self, forKey: .text)
-            self.type = .checkbox(text: text)
-        case "textInput":
-            let prompt = try container.decode(String.self, forKey: .prompt)
-            self.type = .textInput(prompt: prompt)
-        case "image":
-            let caption = try container.decode(String.self, forKey: .caption)
-            self.type = .image(caption: caption)
-        default:
-            // If we encounter an unknown type in the JSON, we throw an error.
-            throw DecodingError.dataCorruptedError(
-                forKey: .type,
-                in: container,
-                debugDescription: "Invalid item type received: \(typeString)"
-            )
+            case "checkbox":
+                let text = try container.decode(String.self, forKey: .text)
+                self.type = .checkbox(text: text)
+            case "textInput":
+                let prompt = try container.decode(String.self, forKey: .prompt)
+                self.type = .textInput(prompt: prompt)
+            case "image":
+                let caption = try container.decode(String.self, forKey: .caption)
+                self.type = .image(caption: caption)
+            case "picker":
+                let prompt = try container.decode(String.self, forKey: .prompt)
+                let options = try container.decode([String].self, forKey: .options)
+                self.type = .picker(prompt: prompt, options: options)
+            case "dynamicPicker":
+                let prompt = try container.decode(String.self, forKey: .prompt)
+                let key = try container.decode(String.self, forKey: .optionsKey)
+                self.type = .dynamicPicker(prompt: prompt, optionsKey: key)
+            default:
+                // If we encounter an unknown type in the JSON, we throw an error.
+                throw DecodingError.dataCorruptedError(
+                    forKey: .type,
+                    in: container,
+                    debugDescription: "Invalid item type received: \(typeString)"
+                )
         }
     }
     
@@ -96,15 +107,23 @@ extension ChecklistItem: Codable {
         try container.encode(id, forKey: .id)
         
         switch type {
-        case .checkbox(let text):
-            try container.encode("checkbox", forKey: .type)
-            try container.encode(text, forKey: .text)
-        case .textInput(let prompt):
-            try container.encode("textInput", forKey: .type)
-            try container.encode(prompt, forKey: .prompt)
-        case .image(let caption):
-            try container.encode("image", forKey: .type)
-            try container.encode(caption, forKey: .caption)
+            case .checkbox(let text):
+                try container.encode("checkbox", forKey: .type)
+                try container.encode(text, forKey: .text)
+            case .textInput(let prompt):
+                try container.encode("textInput", forKey: .type)
+                try container.encode(prompt, forKey: .prompt)
+            case .image(let caption):
+                try container.encode("image", forKey: .type)
+                try container.encode(caption, forKey: .caption)
+            case .picker(let prompt, let options):
+                try container.encode("picker", forKey: .type)
+                try container.encode(prompt, forKey: .prompt)
+                try container.encode(options, forKey: .options)
+            case .dynamicPicker(let prompt, let optionsKey):
+                try container.encode("dynamicPicker", forKey: .type)
+                try container.encode(prompt, forKey: .prompt)
+                try container.encode(optionsKey, forKey: .optionsKey)
         }
     }
 }

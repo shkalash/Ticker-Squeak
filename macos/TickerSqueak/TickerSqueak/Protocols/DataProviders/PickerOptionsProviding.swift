@@ -7,6 +7,7 @@
 
 
 /// Defines a contract for a service that provides lists of options for dynamic pickers.
+@MainActor
 protocol PickerOptionsProviding {
     /// Returns the array of string options for a given key.
     func options(for key: String) -> [String]

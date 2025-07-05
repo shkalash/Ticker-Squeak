@@ -1,0 +1,15 @@
+{
+  "trade_instruments": [
+    "Options",
+    "Debit Spread",
+    "Credit Spread",
+    "Iron Condor",
+    "Butterfly"
+  ],
+  "confidence_levels": [
+    "High",
+    "Medium",
+    "Spec",
+    "Gamble"
+  ]
+}

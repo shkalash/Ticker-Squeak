@@ -14,6 +14,7 @@ struct ChecklistItemState: Codable, Identifiable , Equatable , Hashable{
     var isChecked: Bool = false
     var userText: String = ""
     var imageFileNames: [String] = []
+    var selectedOption: String? = nil
 }
 
 /// Represents the complete, persisted state for a single checklist instance.

@@ -19,7 +19,6 @@ protocol AppDependencies: ObservableObject {
     var notificationsHandler: NotificationHandling { get }
     var tickerStore: TickerStoreManaging { get }
     var chartingService: ChartingService { get }
-    // MARK: - New Checklist Services
     var checklistTemplateProvider: ChecklistTemplateProviding { get }
     var checklistStateManager: ChecklistStateManaging { get }
     var imagePersister: ImagePersisting { get }
@@ -27,5 +26,6 @@ protocol AppDependencies: ObservableObject {
     var tradeIdeaReportGenerator: TradeIdeaReportGenerating { get }
     var fileLocationProvider: FileLocationProviding { get }
     var tradeIdeaManager: TradeIdeaManaging { get }
-    var appCoordinator: any AppNavigationCoordinating { get } 
+    var appCoordinator: any AppNavigationCoordinating { get }
+    var pickerOptionsProvider: PickerOptionsProviding { get }
 }

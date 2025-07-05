@@ -5,7 +5,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 @MainActor
-class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
+class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
     
     @Published private(set) var title: String = "Pre-Market Checklist"
     @Published private(set) var checklist: Checklist?
@@ -21,20 +21,25 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
     private let imagePersister: ImagePersisting
     private let reportGenerator: PreMarketReportGenerating
     private let fileLocationProvider: FileLocationProviding
-    
+    let pickerOptionsProvider: PickerOptionsProviding
     init(dependencies: any AppDependencies) {
         self.templateProvider = dependencies.checklistTemplateProvider
         self.stateManager = dependencies.checklistStateManager
         self.imagePersister = dependencies.imagePersister
         self.reportGenerator = dependencies.preMarketReportGenerator
         self.fileLocationProvider = dependencies.fileLocationProvider
+        self.pickerOptionsProvider = dependencies.pickerOptionsProvider
+    }
+    
+    func options(for key: String) -> [String] {
+        self.pickerOptionsProvider.options(for: key)
     }
     
     func load() async {
         isLoading = true
         defer { isLoading = false }
         do {
-            let loadedChecklist = try await templateProvider.loadChecklistTemplate(forName: checklistName)
+            let loadedChecklist : Checklist = try await templateProvider.loadJSONTemplate(forName: checklistName)
             self.checklist = loadedChecklist
             self.title = loadedChecklist.title
             
@@ -100,7 +105,7 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
     func generateAndExportReport() async {
         guard let checklist = checklist, let date = checklistDate else { return }
         let currentState = ChecklistState(lastModified: date, itemStates: itemStates)
-        let reportContent = reportGenerator.generateReport(for: currentState, withTemplate: checklist)
+        let reportContent = await reportGenerator.generateReport(for: currentState, withTemplate: checklist)
         
         let dateFormatter = DateFormatter(); dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: date)
@@ -112,7 +117,7 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol {
     private func saveLogToDisk() async {
         guard let checklist = self.checklist, let date = self.checklistDate else { return }
         let currentState = ChecklistState(lastModified: date, itemStates: itemStates)
-        let reportContent = reportGenerator.generateReport(for: currentState, withTemplate: checklist)
+        let reportContent = await reportGenerator.generateReport(for: currentState, withTemplate: checklist)
         
         let dateFormatter = DateFormatter(); dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: date)

@@ -29,9 +29,10 @@ class DependencyContainer: AppDependencies {
     let imagePersister: ImagePersisting
     let fileLocationProvider: FileLocationProviding
     let tradeIdeaManager: TradeIdeaManaging
-    var preMarketReportGenerator: PreMarketReportGenerating
-    var tradeIdeaReportGenerator: TradeIdeaReportGenerating
-    var appCoordinator: any AppNavigationCoordinating
+    let preMarketReportGenerator: PreMarketReportGenerating
+    let tradeIdeaReportGenerator: TradeIdeaReportGenerating
+    let appCoordinator: any AppNavigationCoordinating
+    let pickerOptionsProvider: PickerOptionsProviding
     // MARK: - Lifecycle
     
     init() {
@@ -65,10 +66,8 @@ class DependencyContainer: AppDependencies {
         self.checklistStateManager = DefaultChecklistStateManager(persistence: self.persistenceHandler)
         self.imagePersister = FileSystemImagePersister(fileLocationProvider: fileLocationProvider)
         
-        // The pre-market generator has no dependencies.
-        self.preMarketReportGenerator = MarkdownPreMarketReportGenerator()
+        self.preMarketReportGenerator = MarkdownPreMarketReportGenerator(imagePersister: imagePersister)
         
-        // The trade idea generator depends on the image persister.
         self.tradeIdeaReportGenerator = MarkdownTradeIdeaReportGenerator(imagePersister: imagePersister)
         
         // 5. The main TickerStore, which coordinates many of the other services.
@@ -84,5 +83,7 @@ class DependencyContainer: AppDependencies {
         self.tradeIdeaManager = FileBasedTradeIdeaManager(fileLocationProvider: fileLocationProvider, imagePersister: imagePersister)
         
         self.appCoordinator = AppCoordinator()
+        
+        self.pickerOptionsProvider = LocalPickerOptionsProvider(templatePrivder: checklistTemplateProvider) 
     }
 }
