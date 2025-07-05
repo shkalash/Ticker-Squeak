@@ -55,8 +55,7 @@ class AppNotificationHandler: NotificationHandling {
     func requestPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { [weak self] granted, error in
             if !granted {
-                // TODO: shouldn't be an error just a modal warning.
-                ErrorManager.shared.report(AppError.notificationPermissionDenied)
+                ErrorManager.shared.report(AppError.notificationPermissionDenied , level: .warning)
                 self?.removeDesktopNotifications()
             }
             if let error = error {
