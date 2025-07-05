@@ -9,12 +9,13 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
     
     @Published private(set) var title: String = "Pre-Market Checklist"
     @Published private(set) var checklist: Checklist?
-    @Published var itemStates: [String: ChecklistItemState] = [:]
-    @Published private(set) var checklistDate: Date?
     @Published private(set) var isLoading: Bool = false
     @Published var error: Error?
     @Published var expandedSectionIDs: Set<UUID> = []
-
+    @Published private(set) var refreshID = UUID()
+    @Published var itemStates: [String: ChecklistItemState] = [:]
+    @Published private(set) var checklistDate: Date?
+    
     private let checklistName = "pre-market-checklist"
     private let templateProvider: ChecklistTemplateProviding
     private let stateManager: ChecklistStateManaging
@@ -47,6 +48,7 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
                 self.itemStates = savedState.itemStates
                 self.checklistDate = savedState.lastModified
             } else {
+                // If not, create a new state and put it in the container.
                 self.itemStates = [:]
                 self.checklistDate = Date()
             }
@@ -56,12 +58,22 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
         }
     }
     
-    func updateItemState(itemID: String, newState: ChecklistItemState) {
+    private func updateAndSaveState(for itemID: String, with newState: ChecklistItemState) {
         itemStates[itemID] = newState
+        
+        self.refreshID = UUID()
         Task {
             let stateToSave = ChecklistState(lastModified: self.checklistDate ?? Date(), itemStates: self.itemStates)
             await stateManager.saveState(stateToSave, forChecklistName: checklistName)
         }
+    }
+    
+    // The binding now calls our new, robust update function.
+    func binding(for itemID: String) -> Binding<ChecklistItemState> {
+        Binding(
+            get: { self.itemStates[itemID] ?? ChecklistItemState(id: itemID) },
+            set: { newState in self.updateAndSaveState(for: itemID, with: newState) }
+        )
     }
 
     func savePastedImages(_ images: [NSImage], forItemID itemID: String) async {
@@ -78,13 +90,13 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
         guard !newFilenames.isEmpty else { return }
         var currentState = binding(for: itemID).wrappedValue
         currentState.imageFileNames.append(contentsOf: newFilenames)
-        updateItemState(itemID: itemID, newState: currentState)
+        updateAndSaveState(for: itemID, with: currentState)
     }
     
     func deletePastedImage(filename: String, forItemID itemID: String) {
         var currentState = binding(for: itemID).wrappedValue
         currentState.imageFileNames.removeAll { $0 == filename }
-        updateItemState(itemID: itemID, newState: currentState)
+        updateAndSaveState(for: itemID, with: currentState)
         
         // Add safety check for the date before creating the context
         guard let date = self.checklistDate else { return }
@@ -130,13 +142,6 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
         } catch {
             ErrorManager.shared.report(error)
         }
-    }
-    
-    func binding(for itemID: String) -> Binding<ChecklistItemState> {
-        Binding(
-            get: { self.itemStates[itemID] ?? ChecklistItemState(id: itemID) },
-            set: { newState in self.updateItemState(itemID: itemID, newState: newState) }
-        )
     }
     
     func bindingForSectionExpansion(for sectionID: UUID) -> Binding<Bool> {

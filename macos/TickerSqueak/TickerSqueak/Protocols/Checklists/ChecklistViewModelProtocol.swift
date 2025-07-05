@@ -26,9 +26,6 @@ protocol ChecklistViewModelProtocol: ObservableObject , PickerOptionsProviding {
     /// Loads the checklist template and its most recent state.
     func load() async
     
-    /// Updates the state for a single checklist item and triggers a save.
-    func updateItemState(itemID: String, newState: ChecklistItemState)
-    
     /// Handles pasting new images, persisting them, and updating the state.
     func savePastedImages(_ images: [NSImage], forItemID itemID: String) async
     

@@ -18,24 +18,23 @@ struct ChecklistItemRowView: View {
     var tradeIdea: TradeIdea? = nil
    
     var body: some View {
-        // Get the state binding for this specific item from the ViewModel.
-        let stateBinding = viewModel.binding(for: item.id)
         
         // The switch handles the rendering for each item type.
         switch item.type {
             case .checkbox(let text):
-                Toggle(isOn: stateBinding.isChecked) {
+                
+                Toggle(isOn: viewModel.binding(for: item.id).isChecked) {
                     Text(text)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .contentShape(Rectangle())
                 }
+                .contentShape(Rectangle())
                 .toggleStyle(.checkbox)
                 .padding(.vertical, 4)
                 
             case .textInput(let prompt):
                 VStack(alignment: .leading, spacing: 6) {
                     Text(prompt).font(.callout).foregroundColor(.secondary)
-                    ScrollFriendlyTextEditor(text: stateBinding.userText)
+                    ScrollFriendlyTextEditor(text: viewModel.binding(for: item.id).userText)
                         .font(.body)
                         .frame(minHeight: 80)
                         .padding(4)
@@ -52,7 +51,7 @@ struct ChecklistItemRowView: View {
                     // We determine the correct context to pass to the image well.
                     if let context = imageContext {
                         MultiImageWellView(
-                            imageFileNames: stateBinding.imageFileNames,
+                            imageFileNames: viewModel.binding(for: item.id).imageFileNames,
                             context: context,
                             onPaste: { images in
                                 Task { await viewModel.savePastedImages(images, forItemID: item.id) }
@@ -70,7 +69,7 @@ struct ChecklistItemRowView: View {
             case .picker(let prompt, let options):
                 Picker(
                     prompt,
-                    selection: stateBinding.selectedOption
+                    selection: viewModel.binding(for: item.id).selectedOption
                 ) {
                     Text("Select...").tag(String?.none)
                     ForEach(options, id: \.self) { option in
@@ -82,7 +81,7 @@ struct ChecklistItemRowView: View {
                 
             case .dynamicPicker(let prompt, let optionsKey):
                 let options = viewModel.options(for: optionsKey)
-                Picker(prompt, selection: stateBinding.selectedOption) {
+                Picker(prompt, selection: viewModel.binding(for: item.id).selectedOption) {
                     Text("Select...").tag(String?.none)
                     ForEach(options, id: \.self) { option in
                         Text(option).tag(String?(option))

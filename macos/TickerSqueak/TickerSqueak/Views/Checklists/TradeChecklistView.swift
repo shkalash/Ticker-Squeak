@@ -23,10 +23,8 @@ struct TradeChecklistView_Content: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            // The new custom header you described.
             ChecklistHeaderView(viewModel: viewModel)
             
-            // The body of the checklist, which is nearly identical to the pre-market view.
             if viewModel.isLoading {
                 Spacer()
                 ProgressView("Loading Template...")
@@ -34,12 +32,10 @@ struct TradeChecklistView_Content: View {
             } else if let checklist = viewModel.checklist {
                 List {
                     ForEach(checklist.sections) { section in
-                        // Use the same reusable CollapsibleSectionView
                         CollapsibleSectionView(
                             title: section.title,
                             isExpanded: viewModel.bindingForSectionExpansion(for: section.id)
                         ) {
-                            // Its content is a list of the same reusable ChecklistItemRowView
                             ForEach(section.items) { item in
                                 ChecklistItemRowView(item: item, viewModel: viewModel, tradeIdea: viewModel.tradeIdea)
                             }

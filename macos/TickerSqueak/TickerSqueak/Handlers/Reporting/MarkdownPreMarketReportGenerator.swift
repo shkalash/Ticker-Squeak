@@ -23,7 +23,7 @@ class MarkdownPreMarketReportGenerator: BaseMarkdownReporter , PreMarketReportGe
             report += "### \(section.title)\n"
             for item in section.items {
                 let itemState = state.itemStates[item.id] ?? ChecklistItemState(id: item.id)
-                let context = ChecklistContext.preMarket(date: state.lastModified) // TODO: verify this is the correct context
+                let context = ChecklistContext.preMarket(date: state.lastModified)
                 await generateItemMarkdown(item: item, context:context , itemState: itemState, report: &report)
             }
         }

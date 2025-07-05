@@ -35,11 +35,6 @@ class TradeChecklistViewModel: TradeChecklistViewModelProtocol {
         self.reportGenerator = dependencies.tradeIdeaReportGenerator
         self.chartingService = dependencies.chartingService
         self.pickerOptionsProvider = dependencies.pickerOptionsProvider
-        
-        $itemStates
-            .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
-            .sink { [weak self] _ in self?.saveChanges() }
-            .store(in: &cancellables)
     }
     
     func options(for key: String) -> [String] {
@@ -56,14 +51,36 @@ class TradeChecklistViewModel: TradeChecklistViewModelProtocol {
         } catch { self.error = error }
     }
 
-    func updateItemState(itemID: String, newState: ChecklistItemState) {
-        itemStates[itemID] = newState
+    private func updateAndSaveChanges(for itemID: String, with newState: ChecklistItemState) {
+        // 1. Create a mutable copy.
+        var newStates = self.itemStates
+        
+        // 2. Modify the copy.
+        newStates[itemID] = newState
+        
+        // 3. Assign the new dictionary back to the @Published property to trigger the UI update.
+        self.itemStates = newStates
+        
+        // 4. Update the main tradeIdea object and save it in the background.
+        self.tradeIdea.checklistState.itemStates = newStates
+        self.tradeIdea.checklistState.lastModified = Date()
+        Task {
+            await tradeIdeaManager.saveIdea(self.tradeIdea)
+        }
+    }
+    
+    // The binding now calls our new, robust update function.
+    func binding(for itemID: String) -> Binding<ChecklistItemState> {
+        Binding(
+            get: { self.itemStates[itemID] ?? ChecklistItemState(id: itemID) },
+            set: { newState in self.updateAndSaveChanges(for: itemID, with: newState) }
+        )
     }
     
     func deletePastedImage(filename: String, forItemID itemID: String) {
         var currentState = binding(for: itemID).wrappedValue
         currentState.imageFileNames.removeAll { $0 == filename }
-        updateItemState(itemID: itemID, newState: currentState)
+        updateAndSaveChanges(for: itemID, with: currentState)
         
         Task {
             let context = ChecklistContext.tradeIdea(id: self.tradeIdea.id)
@@ -98,7 +115,7 @@ class TradeChecklistViewModel: TradeChecklistViewModelProtocol {
         guard !newFilenames.isEmpty else { return }
         var currentState = binding(for: itemID).wrappedValue
         currentState.imageFileNames.append(contentsOf: newFilenames)
-        updateItemState(itemID: itemID, newState: currentState)
+        updateAndSaveChanges(for: itemID, with: currentState)
     }
 
     func generateAndExportReport() async {
@@ -112,13 +129,6 @@ class TradeChecklistViewModel: TradeChecklistViewModelProtocol {
         self.tradeIdea.checklistState.itemStates = self.itemStates
         self.tradeIdea.checklistState.lastModified = Date()
         Task { await tradeIdeaManager.saveIdea(self.tradeIdea) }
-    }
-    
-    func binding(for itemID: String) -> Binding<ChecklistItemState> {
-        Binding(
-            get: { self.itemStates[itemID] ?? ChecklistItemState(id: itemID) },
-            set: { newState in self.updateItemState(itemID: itemID, newState: newState) }
-        )
     }
     
     func bindingForSectionExpansion(for sectionID: UUID) -> Binding<Bool> {

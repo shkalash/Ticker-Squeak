@@ -74,13 +74,12 @@ struct PreMarketChecklistView_Content: View {
                             title: section.title,
                             isExpanded: viewModel.bindingForSectionExpansion(for: section.id)
                         ) {
-                            // Its content is a list of the new reusable ChecklistItemRowView
                             ForEach(section.items) { item in
                                 ChecklistItemRowView(item: item, viewModel: viewModel)
                             }
                         }
                     }
-                }
+                }.id(viewModel.refreshID)
                 
             } else if viewModel.error != nil {
                 VStack {

@@ -40,10 +40,10 @@ class BaseMarkdownReporter {
                 }
                 report += "\n"
             }
-            case .picker(prompt: let prompt, options: let options):
+            case .picker(prompt: let prompt, options: _):
                 let selectedOption = itemState.selectedOption
                 generateOptionMarkdown(prompt: prompt, option: selectedOption ?? "" , report: &report)
-            case .dynamicPicker(prompt: let prompt, optionsKey: let optionsKey):
+            case .dynamicPicker(prompt: let prompt, optionsKey: _):
                 let selectedOption = itemState.selectedOption
                 generateOptionMarkdown(prompt: prompt, option: selectedOption ?? "" , report: &report)
         }
