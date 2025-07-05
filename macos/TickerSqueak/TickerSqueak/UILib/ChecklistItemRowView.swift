@@ -16,7 +16,7 @@ struct ChecklistItemRowView: View {
     
     // For the Trade Idea context, which is optional
     var tradeIdea: TradeIdea? = nil
-    
+   
     var body: some View {
         // Get the state binding for this specific item from the ViewModel.
         let stateBinding = viewModel.binding(for: item.id)
@@ -35,7 +35,7 @@ struct ChecklistItemRowView: View {
         case .textInput(let prompt):
             VStack(alignment: .leading, spacing: 6) {
                 Text(prompt).font(.callout).foregroundColor(.secondary)
-                TextEditor(text: stateBinding.userText)
+                ScrollFriendlyTextEditor(text: stateBinding.userText)
                     .font(.body)
                     .frame(minHeight: 80)
                     .padding(4)

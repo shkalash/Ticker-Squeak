@@ -27,6 +27,7 @@
 		F6B3AF372E18503100F2DB91 /* MultiImageWellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B3AF362E18503100F2DB91 /* MultiImageWellView.swift */; };
 		F6B3AF3B2E18658B00F2DB91 /* CollapsibleSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B3AF3A2E18658B00F2DB91 /* CollapsibleSectionView.swift */; };
 		F6B3AF3D2E1865A300F2DB91 /* ChecklistItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B3AF3C2E1865A300F2DB91 /* ChecklistItemRowView.swift */; };
+		F6B3AF4C2E18FD5700F2DB91 /* ScrollFriendlyTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B3AF4B2E18FD5700F2DB91 /* ScrollFriendlyTextEditor.swift */; };
 		F6B5080A2E175396005953F2 /* NSImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508092E175396005953F2 /* NSImage+Extensions.swift */; };
 		F6B508912E180A3C005953F2 /* NSSavePanel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508902E180A3C005953F2 /* NSSavePanel+Extension.swift */; };
 		F6B508952E180E70005953F2 /* MultiClickButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B508942E180E70005953F2 /* MultiClickButton.swift */; };
@@ -119,6 +120,7 @@
 		F6B3AF362E18503100F2DB91 /* MultiImageWellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiImageWellView.swift; sourceTree = "<group>"; };
 		F6B3AF3A2E18658B00F2DB91 /* CollapsibleSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollapsibleSectionView.swift; sourceTree = "<group>"; };
 		F6B3AF3C2E1865A300F2DB91 /* ChecklistItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistItemRowView.swift; sourceTree = "<group>"; };
+		F6B3AF4B2E18FD5700F2DB91 /* ScrollFriendlyTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollFriendlyTextEditor.swift; sourceTree = "<group>"; };
 		F6B508092E175396005953F2 /* NSImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Extensions.swift"; sourceTree = "<group>"; };
 		F6B508902E180A3C005953F2 /* NSSavePanel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSSavePanel+Extension.swift"; sourceTree = "<group>"; };
 		F6B508942E180E70005953F2 /* MultiClickButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiClickButton.swift; sourceTree = "<group>"; };
@@ -346,9 +348,10 @@
 		F6EEE9122E0ACCAE00E46FE6 /* UILib */ = {
 			isa = PBXGroup;
 			children = (
+				F6EEE90E2E0ACCAE00E46FE6 /* Toast */,
+				F6B3AF4B2E18FD5700F2DB91 /* ScrollFriendlyTextEditor.swift */,
 				F6B3AF3C2E1865A300F2DB91 /* ChecklistItemRowView.swift */,
 				F6B3AF3A2E18658B00F2DB91 /* CollapsibleSectionView.swift */,
-				F6EEE90E2E0ACCAE00E46FE6 /* Toast */,
 				F6B3AF362E18503100F2DB91 /* MultiImageWellView.swift */,
 				F6B508962E180EB3005953F2 /* StatusButton.swift */,
 				F6B508942E180E70005953F2 /* MultiClickButton.swift */,
@@ -542,6 +545,7 @@
 				F6EEE9282E0ACCAE00E46FE6 /* WindowAccessor.swift in Sources */,
 				F6EEE9292E0ACCAE00E46FE6 /* ContentView.swift in Sources */,
 				F68BC1992E0D76FF008D0D8C /* NotificationAudioSettingsView.swift in Sources */,
+				F6B3AF4C2E18FD5700F2DB91 /* ScrollFriendlyTextEditor.swift in Sources */,
 				F6B3AF3B2E18658B00F2DB91 /* CollapsibleSectionView.swift in Sources */,
 				F6B508952E180E70005953F2 /* MultiClickButton.swift in Sources */,
 				F6B3AF372E18503100F2DB91 /* MultiImageWellView.swift in Sources */,
