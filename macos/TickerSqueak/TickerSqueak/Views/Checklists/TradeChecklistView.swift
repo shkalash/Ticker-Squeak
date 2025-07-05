@@ -102,6 +102,14 @@ private struct ChecklistHeaderView: View {
                 Image(systemName: "chart.bar.xaxis")
                 Text("Chart")
             }
+            
+            Button {
+                Task { await viewModel.generateAndExportReport() }
+            } label: {
+                Image(systemName: "square.and.arrow.up")
+                Text("Export")
+            }
+            .disabled(viewModel.isLoading || viewModel.checklist == nil)
         }
         .padding()
     }
