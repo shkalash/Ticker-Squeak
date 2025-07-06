@@ -25,4 +25,8 @@ protocol TradeIdeaManaging {
     /// The date check should ignore the time component.
     /// Returns a tuple with the idea and indicating if the idea was newly created.
     func findOrCreateIdea(forTicker ticker: String, on date: Date) async -> (idea: TradeIdea, wasCreated: Bool)
+    
+    /// Fetches the set of dates within a given month/year that contain trade ideas.
+    func fetchDatesWithIdeas(forMonth month: Date) async -> Set<Date>
+    
 }

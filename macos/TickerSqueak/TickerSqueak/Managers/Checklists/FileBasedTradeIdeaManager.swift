@@ -82,6 +82,40 @@ class FileBasedTradeIdeaManager: TradeIdeaManaging {
         }
     }
 
+    func fetchDatesWithIdeas(forMonth month: Date) async -> Set<Date> {
+        let calendar = Calendar.current
+        let yearFormatter = DateFormatter()
+        yearFormatter.dateFormat = "yyyy"
+
+        let dayFormatter = DateFormatter()
+        dayFormatter.dateFormat = "MM-dd-yy" // Must match your folder naming convention
+
+        do {
+            // 1. Get the URL for the .../trades/{year}/ directory
+            let yearURL = try fileLocationProvider.getTradesLogDirectory(forYear: month)
+
+            // 2. Get the names of all the daily folders inside that year's folder
+            let dailyFolderNames = try fileManager.contentsOfDirectory(atPath: yearURL.path)
+            
+            // 3. Convert folder names back to dates and filter for the correct month
+            let datesInMonth = dailyFolderNames.compactMap { folderName -> Date? in
+                guard let date = dayFormatter.date(from: folderName) else {
+                    return nil
+                }
+                // Ensure the parsed date belongs to the requested month before including it
+                return calendar.isDate(date, equalTo: month, toGranularity: .month) ? date : nil
+            }
+            
+            // 4. Return a Set to ensure all dates are unique
+            return Set(datesInMonth)
+            
+        } catch {
+            // If the year directory doesn't exist or we can't read it,
+            // it simply means there are no ideas for that month. Return an empty set.
+            return []
+        }
+    }
+    
     func deleteIdea(_ ideaToDelete: TradeIdea) async {
         do {
             // 1. Delete the TradeIdea's JSON file.

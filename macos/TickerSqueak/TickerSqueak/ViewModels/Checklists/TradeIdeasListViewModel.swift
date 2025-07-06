@@ -9,40 +9,65 @@ class TradeIdeasListViewModel: ObservableObject {
     @Published var ideas: [TradeIdea] = []
     @Published var selectedDate: Date = Date() {
         didSet {
-            // Use a property observer. This is simpler and safer than a .sink in init.
             guard !Calendar.current.isDate(oldValue, inSameDayAs: selectedDate) else { return }
-            Task { await self.loadIdeas() }
+            Task { await self.loadIdeasForSelectedDate() }
         }
     }
     @Published var isLoading: Bool = false
     @Published var navigationRequest: TradeIdea?
 
+    @Published var displayedMonth: Date = Date() {
+        didSet {
+            guard !Calendar.current.isDate(oldValue, equalTo: displayedMonth, toGranularity: .month) else { return }
+            Task { await self.fetchDatesForDisplayedMonth() }
+        }
+    }
+    @Published private(set) var datesWithIdeas: Set<Date> = []
+    
+    
     // MARK: - Private Dependencies & State
     private let tradeIdeaManager: TradeIdeaManaging
     private let appCoordinator: any AppNavigationCoordinating
-    private var isHandlingNavigationRequest = false // The state guard to prevent race conditions
+    private var isHandlingNavigationRequest = false
 
     init(dependencies: any AppDependencies) {
         self.tradeIdeaManager = dependencies.tradeIdeaManager
         self.appCoordinator = dependencies.appCoordinator
-        // The .sink subscription is removed from here to prevent the race condition.
     }
 
     // MARK: - Intents from the View
 
     /// The single entry point for the view when it first appears.
     func onAppear() async {
-        await loadIdeas()
+        // Load both the ideas for the selected day AND the marked dates for the displayed month.
+        await loadIdeasForSelectedDate()
+        await fetchDatesForDisplayedMonth()
         await handleInitialNavigationRequest()
+    }
+    
+    func goToToday() {
+        // To avoid unnecessary reloads, only act if we aren't already on today.
+        guard !Calendar.current.isDateInToday(selectedDate) else { return }
+        
+        let today = Date()
+        // Setting both properties ensures that if the calendar popover is open,
+        // it will also jump back to the correct month. The `didSet` observers
+        // will handle reloading the data.
+        self.displayedMonth = today
+        self.selectedDate = today
     }
 
     /// This method is now ONLY responsible for fetching data. It no longer creates ideas.
-    func loadIdeas() async {
+    private func loadIdeasForSelectedDate() async {
         isLoading = true
-        self.ideas = await tradeIdeaManager.fetchIdeas(for: selectedDate)
-            .sorted { $0.createdAt < $1.createdAt }
+        self.ideas = await tradeIdeaManager.fetchIdeas(for: selectedDate).sorted { $0.createdAt > $1.createdAt }
         isLoading = false
     }
+    
+    private func fetchDatesForDisplayedMonth() async {
+        self.datesWithIdeas = await tradeIdeaManager.fetchDatesWithIdeas(forMonth: displayedMonth)
+    }
+
 
     /// This method handles the one-time navigation request from another tab.
     private func handleInitialNavigationRequest() async {
@@ -60,7 +85,7 @@ class TradeIdeasListViewModel: ObservableObject {
         if !Calendar.current.isDateInToday(selectedDate) {
             selectedDate = Date()
             // Wait for the reload to finish before navigating.
-            await loadIdeas()
+            await loadIdeasForSelectedDate()
         } else if result.wasCreated {
             // If it was newly created for today, just append it locally to the UI.
             self.ideas.append(result.idea)

@@ -276,6 +276,15 @@ class PlaceholderFileLocationProvider: FileLocationProviding {
     func getPreMarketLogDirectory() throws -> URL {
         return try getOrCreateTempDirectory(appending: "Logs/pre-market")
     }
+    
+    func getTradesLogDirectory(forYear year:Date) throws -> URL{
+        let yearFormatter = DateFormatter()
+        yearFormatter.dateFormat = "yyyy"
+        let yearString = yearFormatter.string(from: year)
+        // 2. Construct the full nested path.
+        let path = "Logs/trades/\(yearString)"
+        return try getOrCreateTempDirectory(appending: path)
+    }
 
     func getTradesLogDirectory(for date: Date) throws -> URL {
         let dateFormatter = DateFormatter()
@@ -365,7 +374,26 @@ class PlaceholderTradeIdeaManager: TradeIdeaManaging {
         }
         return ideas.sorted { $0.createdAt < $1.createdAt }
     }
-
+    
+    func fetchDatesWithIdeas(forMonth month: Date) async -> Set<Date> {
+        let calendar = Calendar.current
+        
+        // 1. Filter the in-memory ideas to find those within the same month and year.
+        let ideasInMonth = storage.values.filter { idea in
+            return calendar.isDate(idea.createdAt, equalTo: month, toGranularity: .month)
+        }
+        
+        // 2. Map the results to just their dates.
+        let dates = ideasInMonth.map { $0.createdAt }
+        
+        // 3. Normalize each date to the start of its day to ensure uniqueness.
+        //    For example, two trades on July 6th at 10 AM and 2 PM become one entry for July 6th.
+        let uniqueDays = dates.map { calendar.startOfDay(for: $0) }
+        
+        // 4. Return a Set of the unique days.
+        return Set(uniqueDays)
+    }
+    
     func saveIdea(_ idea: TradeIdea) async {
         // Simulate saving by updating the dictionary.
         storage[idea.id] = idea

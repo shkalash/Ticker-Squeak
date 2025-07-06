@@ -14,7 +14,7 @@ struct TradeIdeasListView_Content: View {
     
     @StateObject private var viewModel: TradeIdeasListViewModel
     
-    // State for the "New Idea" sheet and programmatic navigation
+    @State private var showingCalendar = false
     @State private var isShowingNewIdeaSheet = false
     @State private var navigationPath = NavigationPath()
     
@@ -31,10 +31,28 @@ struct TradeIdeasListView_Content: View {
             VStack(spacing: 0) {
                 // Toolbar for date picking and creating new ideas
                 HStack {
-                    DatePicker("Date:", selection: $viewModel.selectedDate, displayedComponents: .date)
-                        .datePickerStyle(.compact)
-                        .fixedSize()
-                    
+                        Button {
+                            showingCalendar = true
+                        } label: {
+                            HStack {
+                                Text(viewModel.selectedDate.formatted(Date.FormatStyle()
+                                    .month(.defaultDigits)
+                                    .day(.defaultDigits)
+                                    .year(.twoDigits)))
+                                Image(systemName: "calendar")
+                            }
+                        }
+                        .popover(isPresented: $showingCalendar, arrowEdge: .bottom) {
+                            CalendarView(selectedDate: $viewModel.selectedDate, viewModel: viewModel)
+                        }
+                    Button {
+                        viewModel.goToToday()
+                    } label: {
+                        GoToTodayIcon().offset(x:0 , y: 2)
+                    }
+                    .help("Go to Today")
+                    // Disable the button if the currently selected date is already today.
+                   .disabled(Calendar.current.isDateInToday(viewModel.selectedDate))
                     Spacer()
                     
                     Button {

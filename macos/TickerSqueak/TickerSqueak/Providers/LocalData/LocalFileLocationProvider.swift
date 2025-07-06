@@ -56,6 +56,16 @@ class LocalFileLocationProvider: FileLocationProviding {
     func getPreMarketLogDirectory() throws -> URL {
         return try getOrCreateAppDirectory(appending: "Logs/pre-market")
     }
+    
+    func getTradesLogDirectory(forYear year:Date) throws -> URL {
+        let yearString = yearFormatter.string(from: year)
+        
+        // 2. Construct the full nested path.
+        let path = "Logs/trades/\(yearString)"
+        
+        // 3. The helper will create all intermediate directories as needed.
+        return try getOrCreateAppDirectory(appending: path)
+    }
 
     func getTradesLogDirectory(for date: Date) throws -> URL {
         // 1. Get the year and day strings from the date.

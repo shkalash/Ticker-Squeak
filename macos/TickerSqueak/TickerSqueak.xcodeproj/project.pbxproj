@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		F60A56DB2E197F7000B7F252 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60A56DA2E197F7000B7F252 /* SessionStore.swift */; };
 		F64A37E02E13DC7D006CED86 /* AlwaysOnTopModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */; };
+		F65322492E1A5A7500767E1E /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65322482E1A5A7500767E1E /* CalendarView.swift */; };
+		F653224D2E1A688B00767E1E /* GoToTodayIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653224C2E1A688B00767E1E /* GoToTodayIcon.swift */; };
 		F68BC17E2E0D4B9A008D0D8C /* NotificationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */; };
 		F68BC1802E0D56F9008D0D8C /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC17F2E0D56F5008D0D8C /* Dialog.swift */; };
 		F68BC1842E0D598B008D0D8C /* DialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1832E0D598B008D0D8C /* DialogView.swift */; };
@@ -103,6 +105,8 @@
 /* Begin PBXFileReference section */
 		F60A56DA2E197F7000B7F252 /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysOnTopModifier.swift; sourceTree = "<group>"; };
+		F65322482E1A5A7500767E1E /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		F653224C2E1A688B00767E1E /* GoToTodayIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToTodayIcon.swift; sourceTree = "<group>"; };
 		F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMethod.swift; sourceTree = "<group>"; };
 		F68BC17F2E0D56F5008D0D8C /* Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
 		F68BC1832E0D598B008D0D8C /* DialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogView.swift; sourceTree = "<group>"; };
@@ -356,6 +360,8 @@
 		F6EEE9122E0ACCAE00E46FE6 /* UILib */ = {
 			isa = PBXGroup;
 			children = (
+				F653224C2E1A688B00767E1E /* GoToTodayIcon.swift */,
+				F65322482E1A5A7500767E1E /* CalendarView.swift */,
 				F6EEE90E2E0ACCAE00E46FE6 /* Toast */,
 				F6B3AF4B2E18FD5700F2DB91 /* ScrollFriendlyTextEditor.swift */,
 				F6B3AF3C2E1865A300F2DB91 /* ChecklistItemRowView.swift */,
@@ -565,6 +571,7 @@
 				F6B508972E180EB3005953F2 /* StatusButton.swift in Sources */,
 				F6EEE9312E0ACCAE00E46FE6 /* TickerItem.swift in Sources */,
 				F68BC40B2E0F4E81008D0D8C /* ToastView.swift in Sources */,
+				F653224D2E1A688B00767E1E /* GoToTodayIcon.swift in Sources */,
 				F6EEE9322E0ACCAE00E46FE6 /* IconTabPicker.swift in Sources */,
 				F68BC1AD2E0DD4A8008D0D8C /* DataMigrator.swift in Sources */,
 				F6B508912E180A3C005953F2 /* NSSavePanel+Extension.swift in Sources */,
@@ -585,6 +592,7 @@
 				F68BC40D2E0FB64E008D0D8C /* ToastPresenter.swift in Sources */,
 				F6EEE93E2E0ACCAE00E46FE6 /* ErrorDialogView.swift in Sources */,
 				F68BC1882E0D5CF7008D0D8C /* PersistentFrame.swift in Sources */,
+				F65322492E1A5A7500767E1E /* CalendarView.swift in Sources */,
 				F68BC19D2E0D7BEA008D0D8C /* NotificationSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
