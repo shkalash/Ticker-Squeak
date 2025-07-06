@@ -98,11 +98,19 @@ class FileBasedTradeIdeaManager: TradeIdeaManaging {
             
             // 3. Convert folder names back to dates and filter for the correct month
             let datesInMonth = dailyFolderNames.compactMap { folderName -> Date? in
-                guard let date = dayFormatter.date(from: folderName) else {
+                guard let date = dayFormatter.date(from: folderName),
+                      calendar.isDate(date, equalTo: month, toGranularity: .month) else {
                     return nil
                 }
-                // Ensure the parsed date belongs to the requested month before including it
-                return calendar.isDate(date, equalTo: month, toGranularity: .month) ? date : nil
+                
+                //  Check if the daily folder is actually empty.
+                let dailyFolderURL = yearURL.appendingPathComponent(folderName)
+                guard let contents = try? fileManager.contentsOfDirectory(atPath: dailyFolderURL.path) else {
+                     return nil
+                }
+                
+                // Only return the date if the folder contains files.
+                return contents.isEmpty ? nil : date
             }
             
             // 4. Return a Set to ensure all dates are unique
