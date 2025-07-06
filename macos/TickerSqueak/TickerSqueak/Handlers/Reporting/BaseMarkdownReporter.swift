@@ -32,9 +32,8 @@ class BaseMarkdownReporter {
             } else {
                 // Load and embed each image using Base64 encoding.
                 for filename in itemState.imageFileNames {
-                    if let image = await imagePersister.loadImage(withFilename: filename, for: context),
-                       let pngData = image.pngData() {
-                        let base64String = pngData.base64EncodedString()
+                    if let imageData = await imagePersister.loadImageData(withFilename: filename, for: context){
+                        let base64String = imageData.base64EncodedString()
                         report += "![Screenshot](data:image/png;base64,\(base64String))\n"
                     }
                 }

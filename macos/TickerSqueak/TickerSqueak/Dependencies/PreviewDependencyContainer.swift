@@ -214,17 +214,17 @@ class PlaceholderImagePersister: ImagePersisting {
         return filename
     }
 
-    func loadImage(withFilename filename: String, for context: ChecklistContext) async -> NSImage? {
-        let key = storageKey(for: context, filename: filename)
-        
-        // If the key exists in our fake storage, return a system image as a placeholder.
-        if storage[key] != nil {
-            print("Placeholder: Loaded image from fake path: \(key)")
-            return NSImage(systemSymbolName: "photo.on.rectangle.angled", accessibilityDescription: "Placeholder Image")
-        } else {
-            return nil
+    func loadImageData(withFilename filename: String, for context: ChecklistContext) async -> Data? {
+            let key = storageKey(for: context, filename: filename)
+            
+            // If the key exists, return some placeholder data.
+            if storage[key] != nil {
+                // We can return the data for a 1x1 pixel PNG for testing.
+                return Data(base64Encoded: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=")
+            } else {
+                return nil
+            }
         }
-    }
 
     func deleteImage(withFilename filename: String, for context: ChecklistContext) async throws {
         let key = storageKey(for: context, filename: filename)

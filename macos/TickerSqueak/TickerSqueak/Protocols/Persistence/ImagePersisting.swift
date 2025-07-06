@@ -14,8 +14,8 @@ protocol ImagePersisting {
     /// Saves an NSImage within a given context and returns a unique filename.
     func saveImage(_ image: NSImage, for context: ChecklistContext) async throws -> String
     
-    /// Loads an NSImage from a given context using its filename.
-    func loadImage(withFilename filename: String, for context: ChecklistContext) async -> NSImage?
+    /// Loads the raw Data of an image from persistent storage.
+    func loadImageData(withFilename filename: String, for context: ChecklistContext) async -> Data?
     
     /// Deletes a specific image file from a given context.
     func deleteImage(withFilename filename: String, for context: ChecklistContext) async throws

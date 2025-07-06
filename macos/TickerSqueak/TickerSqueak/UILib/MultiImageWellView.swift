@@ -106,8 +106,10 @@ struct MultiImageWellView: View {
     private func loadImagesFromDisk() async {
         let imagePersister = dependencies.imagePersister
         for filename in imageFileNames where loadedImages[filename] == nil {
-            if let image = await imagePersister.loadImage(withFilename: filename, for: context) {
-                loadedImages[filename] = image
+            if let data = await imagePersister.loadImageData(withFilename: filename, for: context) {
+                if let image = NSImage(data: data) {
+                    loadedImages[filename] = image
+                }
             }
         }
     }

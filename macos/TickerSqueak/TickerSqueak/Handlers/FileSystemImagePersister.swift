@@ -60,13 +60,14 @@ class FileSystemImagePersister: ImagePersisting {
         }
     }
 
-    func loadImage(withFilename filename: String, for context: ChecklistContext) async -> NSImage? {
+    func loadImageData(withFilename filename: String, for context: ChecklistContext) async -> Data? {
         do {
             let directoryURL = try getOrCreateDirectory(for: context)
             let fileURL = directoryURL.appendingPathComponent(filename)
-            return NSImage(contentsOf: fileURL)
+            return try Data(contentsOf: fileURL)
         } catch {
-            ErrorManager.shared.report(error)
+            // It's not a critical error if the file doesn't exist, so we don't report it.
+            // We just return nil.
             return nil
         }
     }
