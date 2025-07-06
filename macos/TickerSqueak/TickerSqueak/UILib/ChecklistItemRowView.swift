@@ -97,8 +97,8 @@ struct ChecklistItemRowView: View {
     private var imageContext: ChecklistContext? {
         if let idea = tradeIdea {
             return .tradeIdea(id: idea.id)
-        } else if let preMarketViewModel = viewModel as? PreMarketChecklistViewModel, let date = preMarketViewModel.checklistDate {
-            return .preMarket(date: date)
+        } else if let preMarketViewModel = viewModel as? PreMarketChecklistViewModel {
+            return .preMarket(date: preMarketViewModel.selectedDate)
         }
         return nil
     }

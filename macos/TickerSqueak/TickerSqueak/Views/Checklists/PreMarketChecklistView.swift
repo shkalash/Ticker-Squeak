@@ -7,7 +7,7 @@ import UniformTypeIdentifiers
 struct PreMarketChecklistView_Content: View {
     
     @StateObject private var viewModel: PreMarketChecklistViewModel
-    
+    @State private var showingCalendar: Bool = false
     init(dependencies: any AppDependencies) {
         _viewModel = StateObject(wrappedValue: PreMarketChecklistViewModel(dependencies: dependencies))
     }
@@ -16,15 +16,34 @@ struct PreMarketChecklistView_Content: View {
         VStack(spacing: 0) {
             // Header
             HStack(alignment: .firstTextBaseline) {
-                VStack(alignment: .leading) {
-                    Text(viewModel.title).font(.title2).fontWeight(.bold)
-                    
-                    if let date = viewModel.checklistDate {
-                        Text(date.formatted(date: .long, time: .omitted))
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+                Text(viewModel.title).font(.title2).fontWeight(.bold)
+            }
+            HStack() {
+                Button {
+                    showingCalendar = true
+                } label: {
+                    HStack {
+                        Text(viewModel.selectedDate.formatted(Date.FormatStyle()
+                            .month(.defaultDigits)
+                            .day(.defaultDigits)
+                            .year(.twoDigits)))
+                        Image(systemName: "calendar")
                     }
                 }
+                .popover(isPresented: $showingCalendar, arrowEdge: .bottom) {
+                    CalendarView(
+                        provider: viewModel,
+                        displayMode: .enableWithEntry // Disables days without log files
+                    )
+                }
+                Button {
+                    viewModel.goToToday()
+                } label: {
+                    GoToTodayIcon().offset(x:0 , y: 2)
+                }
+                .help("Go to Today")
+                // Disable the button if the currently selected date is already today.
+                .disabled(Calendar.current.isDateInToday(viewModel.selectedDate))
                 
                 Spacer()
                 
@@ -44,13 +63,13 @@ struct PreMarketChecklistView_Content: View {
                 
                 Spacer()
                 
-                Button {
-                    Task { await viewModel.startNewDay() }
-                } label: {
-                    Image(systemName: "forward.fill")
-                    Text("New Day")
-                }
-                .disabled(viewModel.isLoading || viewModel.checklist == nil)
+//                Button {
+//                    Task { await viewModel.startNewDay() }
+//                } label: {
+//                    Image(systemName: "forward.fill")
+//                    Text("New Day")
+//                }
+//                .disabled(viewModel.isLoading || viewModel.checklist == nil)
                 
                 Button {
                     Task { await viewModel.generateAndExportReport() }
@@ -79,7 +98,7 @@ struct PreMarketChecklistView_Content: View {
                             }
                         }
                     }
-                }.id(viewModel.refreshID)
+                }
                 
             } else if viewModel.error != nil {
                 VStack {
@@ -97,10 +116,7 @@ struct PreMarketChecklistView_Content: View {
             }
         }
         .task {
-            // Load data when the view first appears.
-            if viewModel.checklist == nil {
-                await viewModel.load()
-            }
+            await viewModel.load()
         }
     }
 }

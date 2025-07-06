@@ -17,7 +17,7 @@ protocol FileLocationProviding {
     func getMediaDirectory() throws -> URL
     
     /// Returns the URL for the directory where pre-market logs are stored (e.g., `.../Logs/pre-market/`).
-    func getPreMarketLogDirectory() throws -> URL
+    func getPreMarketLogDirectory(forMonth date: Date) throws -> URL
     
     /// Returns the URL for the yearly subdirectory where trade logs
     /// This method is responsible for creating the daily folder if it doesn't exist.

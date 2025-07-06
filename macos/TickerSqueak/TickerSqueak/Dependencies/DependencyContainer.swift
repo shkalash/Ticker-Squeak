@@ -25,7 +25,7 @@ class DependencyContainer: AppDependencies {
     let tickerStore: TickerStoreManaging
     let chartingService: ChartingService
     let checklistTemplateProvider: ChecklistTemplateProviding
-    let checklistStateManager: ChecklistStateManaging
+    let preMarketLogManager: any PreMarketLogManaging
     let imagePersister: ImagePersisting
     let fileLocationProvider: FileLocationProviding
     let tradeIdeaManager: TradeIdeaManaging
@@ -63,7 +63,7 @@ class DependencyContainer: AppDependencies {
         fileLocationProvider = LocalFileLocationProvider()
         
         self.checklistTemplateProvider = LocalChecklistTemplateProvider(fileLocationProvider: fileLocationProvider)
-        self.checklistStateManager = DefaultChecklistStateManager(persistence: self.persistenceHandler)
+        self.preMarketLogManager = FileBasedPreMarketLogManager(fileLocationProvider: fileLocationProvider)
         self.imagePersister = FileSystemImagePersister(fileLocationProvider: fileLocationProvider)
         
         self.preMarketReportGenerator = MarkdownPreMarketReportGenerator(imagePersister: imagePersister)
@@ -86,4 +86,5 @@ class DependencyContainer: AppDependencies {
         
         self.pickerOptionsProvider = LocalPickerOptionsProvider(templatePrivder: checklistTemplateProvider) 
     }
+    
 }

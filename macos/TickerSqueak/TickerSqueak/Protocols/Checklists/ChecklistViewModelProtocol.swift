@@ -17,14 +17,10 @@ protocol ChecklistViewModelProtocol: ObservableObject , PickerOptionsProviding {
     var title: String { get }
     var checklist: Checklist? { get }
     var itemStates: [String: ChecklistItemState] { get }
-    var isLoading: Bool { get }
     var error: Error? { get set }
     var expandedSectionIDs: Set<String> { get set }
     
     // MARK: - Actions from the View
-    
-    /// Loads the checklist template and its most recent state.
-    func load() async
     
     /// Handles pasting new images, persisting them, and updating the state.
     func savePastedImages(_ images: [NSImage], forItemID itemID: String) async
@@ -41,13 +37,13 @@ protocol ChecklistViewModelProtocol: ObservableObject , PickerOptionsProviding {
     /// Collapses all collapsible sections in the checklist.
     func collapseAllSections()
     
+    /// Provides custom binding for checklist states
     func binding(for itemID: String) -> Binding<ChecklistItemState>
 }
 
-/// A specialized ViewModel protocol for checklists that have a "New Day" workflow.
 @MainActor
-protocol PreMarketChecklistViewModelProtocol: ChecklistViewModelProtocol {
-    func startNewDay() async
+protocol PreMarketChecklistViewModelProtocol: ChecklistViewModelProtocol, MonthlyHistoryProvider , AsyncLoadedViewModel {
+//    func startNewDay() async
 }
 
 /// A specialized ViewModel protocol for the Trade Idea checklist.

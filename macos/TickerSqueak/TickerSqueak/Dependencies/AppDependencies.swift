@@ -20,7 +20,7 @@ protocol AppDependencies: ObservableObject {
     var tickerStore: TickerStoreManaging { get }
     var chartingService: ChartingService { get }
     var checklistTemplateProvider: ChecklistTemplateProviding { get }
-    var checklistStateManager: ChecklistStateManaging { get }
+    var preMarketLogManager: any PreMarketLogManaging { get }
     var imagePersister: ImagePersisting { get }
     var preMarketReportGenerator: PreMarketReportGenerating { get }
     var tradeIdeaReportGenerator: TradeIdeaReportGenerating { get }

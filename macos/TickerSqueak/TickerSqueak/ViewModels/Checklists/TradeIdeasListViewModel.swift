@@ -3,7 +3,8 @@ import Combine
 import SwiftUI
 
 @MainActor
-class TradeIdeasListViewModel: ObservableObject {
+class TradeIdeasListViewModel: ObservableObject , MonthlyHistoryProvider, AsyncLoadedViewModel{
+    
 
     // MARK: - Published Properties
     @Published var ideas: [TradeIdea] = []
@@ -15,18 +16,16 @@ class TradeIdeasListViewModel: ObservableObject {
     }
     @Published var isLoading: Bool = false
     @Published var navigationRequest: TradeIdea?
-
+    @Published private(set) var datesWithEntry: Set<Date> = []
     @Published var displayedMonth: Date = Date() {
         didSet {
             guard !Calendar.current.isDate(oldValue, equalTo: displayedMonth, toGranularity: .month) else { return }
             Task { await self.fetchDatesForDisplayedMonth() }
         }
     }
-    @Published private(set) var datesWithIdeas: Set<Date> = []
-    
     
     // MARK: - Private Dependencies & State
-    private let tradeIdeaManager: TradeIdeaManaging
+    private let tradeIdeaManager: any TradeIdeaManaging
     private let appCoordinator: any AppNavigationCoordinating
     private var isHandlingNavigationRequest = false
 
@@ -35,39 +34,30 @@ class TradeIdeasListViewModel: ObservableObject {
         self.appCoordinator = dependencies.appCoordinator
     }
 
-    // MARK: - Intents from the View
-
     /// The single entry point for the view when it first appears.
-    func onAppear() async {
-        // Load both the ideas for the selected day AND the marked dates for the displayed month.
+    func load() async {
         await loadIdeasForSelectedDate()
-        await fetchDatesForDisplayedMonth()
         await handleInitialNavigationRequest()
     }
-    
-    func goToToday() {
-        // To avoid unnecessary reloads, only act if we aren't already on today.
-        guard !Calendar.current.isDateInToday(selectedDate) else { return }
-        
-        let today = Date()
-        // Setting both properties ensures that if the calendar popover is open,
-        // it will also jump back to the correct month. The `didSet` observers
-        // will handle reloading the data.
-        self.displayedMonth = today
-        self.selectedDate = today
-    }
 
-    /// This method is now ONLY responsible for fetching data. It no longer creates ideas.
     private func loadIdeasForSelectedDate() async {
         isLoading = true
         self.ideas = await tradeIdeaManager.fetchIdeas(for: selectedDate).sorted { $0.createdAt > $1.createdAt }
+        // After loading ideas, also refresh the calendar highlights
+        await fetchDatesForDisplayedMonth()
         isLoading = false
     }
     
     private func fetchDatesForDisplayedMonth() async {
-        self.datesWithIdeas = await tradeIdeaManager.fetchDatesWithIdeas(forMonth: displayedMonth)
+        self.datesWithEntry = await tradeIdeaManager.fetchDatesWithEntries(forMonth: displayedMonth)
     }
-
+    
+    func goToToday() {
+        guard !Calendar.current.isDateInToday(selectedDate) else { return }
+        self.selectedDate = Date()
+        self.displayedMonth = Date()
+    }
+    
 
     /// This method handles the one-time navigation request from another tab.
     private func handleInitialNavigationRequest() async {

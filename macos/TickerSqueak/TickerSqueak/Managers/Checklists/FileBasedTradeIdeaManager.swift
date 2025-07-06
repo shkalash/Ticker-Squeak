@@ -11,7 +11,6 @@ import Foundation
 /// A concrete implementation of `TradeIdeaManaging` that uses the local file system as its backing store.
 /// Each `TradeIdea` is saved as a separate JSON file within a dated folder structure.
 class FileBasedTradeIdeaManager: TradeIdeaManaging {
-
     // MARK: - Dependencies
     private let fileLocationProvider: FileLocationProviding
     private let imagePersister: ImagePersisting
@@ -82,7 +81,7 @@ class FileBasedTradeIdeaManager: TradeIdeaManaging {
         }
     }
 
-    func fetchDatesWithIdeas(forMonth month: Date) async -> Set<Date> {
+    func fetchDatesWithEntries(forMonth month: Date) async -> Set<Date> {
         let calendar = Calendar.current
         let yearFormatter = DateFormatter()
         yearFormatter.dateFormat = "yyyy"

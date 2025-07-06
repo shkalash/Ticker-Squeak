@@ -53,8 +53,14 @@ class LocalFileLocationProvider: FileLocationProviding {
         return try getOrCreateAppDirectory(appending: "Media")
     }
     
-    func getPreMarketLogDirectory() throws -> URL {
-        return try getOrCreateAppDirectory(appending: "Logs/pre-market")
+    func getPreMarketLogDirectory(forMonth date: Date) throws -> URL {
+        let yearString = yearFormatter.string(from: date)
+        // A new formatter for the month number (e.g., "07")
+        let monthFormatter = DateFormatter(); monthFormatter.dateFormat = "MM"
+        let monthString = monthFormatter.string(from: date)
+        
+        let path = "pre-market-logs/\(yearString)/\(monthString)"
+        return try getOrCreateAppDirectory(appending: path)
     }
     
     func getTradesLogDirectory(forYear year:Date) throws -> URL {

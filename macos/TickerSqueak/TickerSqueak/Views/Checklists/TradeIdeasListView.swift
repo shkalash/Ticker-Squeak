@@ -43,7 +43,10 @@ struct TradeIdeasListView_Content: View {
                             }
                         }
                         .popover(isPresented: $showingCalendar, arrowEdge: .bottom) {
-                            CalendarView(selectedDate: $viewModel.selectedDate, viewModel: viewModel)
+                            CalendarView(
+                                    provider: viewModel,
+                                    displayMode: .highlight // Keeps all days enabled
+                                )
                         }
                     Button {
                         viewModel.goToToday()
@@ -113,7 +116,7 @@ struct TradeIdeasListView_Content: View {
                 }
             }
             .task {
-                        await viewModel.onAppear()
+                await viewModel.load()
             }
         }
     }

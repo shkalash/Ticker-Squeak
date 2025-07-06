@@ -17,12 +17,12 @@ class PreviewDependencyContainer: AppDependencies {
     let tickerStore: TickerStoreManaging
     let chartingService: ChartingService
     let checklistTemplateProvider: ChecklistTemplateProviding
-    let checklistStateManager: ChecklistStateManaging
+    var preMarketLogManager: any PreMarketLogManaging
     let imagePersister: ImagePersisting
     let preMarketReportGenerator: PreMarketReportGenerating
     let tradeIdeaReportGenerator: TradeIdeaReportGenerating
     let fileLocationProvider: FileLocationProviding
-    let tradeIdeaManager: TradeIdeaManaging
+    let tradeIdeaManager: any TradeIdeaManaging
     let appCoordinator: any AppNavigationCoordinating
     let pickerOptionsProvider: PickerOptionsProviding
     
@@ -37,7 +37,7 @@ class PreviewDependencyContainer: AppDependencies {
         self.tickerStore = PlaceholderTickerStore()
         self.chartingService = CompositeChartingService(services: [OneOptionService(settingsManager: settingsManager) , TradingViewService(settingsManager: settingsManager)])
         self.checklistTemplateProvider = PlaceholderChecklistTemplateProvider()
-        self.checklistStateManager = PlaceholderChecklistStateManager()
+        self.preMarketLogManager = PlaceholderPreMarketLogManager()
         self.imagePersister = PlaceholderImagePersister()
         self.preMarketReportGenerator = PlaceholderPreMarketReportGenerator()
         self.tradeIdeaReportGenerator = PlaceholderTradeIdeaReportGenerator()
@@ -252,6 +252,8 @@ class PlaceholderImagePersister: ImagePersisting {
 
 
 class PlaceholderFileLocationProvider: FileLocationProviding {
+    
+    
 
     private let fileManager: FileManager
     private let rootTempURL: URL
@@ -273,8 +275,15 @@ class PlaceholderFileLocationProvider: FileLocationProviding {
         return try getOrCreateTempDirectory(appending: "Media")
     }
 
-    func getPreMarketLogDirectory() throws -> URL {
-        return try getOrCreateTempDirectory(appending: "Logs/pre-market")
+    func getPreMarketLogDirectory(forMonth date: Date) throws -> URL {
+        let yearFormatter = DateFormatter()
+        let yearString = yearFormatter.string(from: date)
+        // A new formatter for the month number (e.g., "07")
+        let monthFormatter = DateFormatter(); monthFormatter.dateFormat = "MM"
+        let monthString = monthFormatter.string(from: date)
+        
+        let path = "pre-market-logs/\(yearString)/\(monthString)"
+        return try getOrCreateTempDirectory(appending: path)
     }
     
     func getTradesLogDirectory(forYear year:Date) throws -> URL{
@@ -342,7 +351,6 @@ class PlaceholderTradeIdeaReportGenerator: TradeIdeaReportGenerating {
 }
 
 class PlaceholderTradeIdeaManager: TradeIdeaManaging {
-
     /// An in-memory dictionary to act as a fake database for previews.
     private var storage: [UUID: TradeIdea] = [:]
 
@@ -375,7 +383,7 @@ class PlaceholderTradeIdeaManager: TradeIdeaManaging {
         return ideas.sorted { $0.createdAt < $1.createdAt }
     }
     
-    func fetchDatesWithIdeas(forMonth month: Date) async -> Set<Date> {
+    func fetchDatesWithEntries(forMonth month: Date) async -> Set<Date> {
         let calendar = Calendar.current
         
         // 1. Filter the in-memory ideas to find those within the same month and year.
@@ -432,4 +440,11 @@ class PlaceholderAppCoordinator: AppNavigationCoordinating {
 
 class PlaceholderPickerOptionsProvider: PickerOptionsProviding {
     func options(for key: String) -> [String] { ["Preview Option 1", "Preview Option 2"] }
+}
+
+class PlaceholderPreMarketLogManager: PreMarketLogManaging {
+    // Implement simple in-memory versions of the methods for previews
+    func saveLog(_ state: ChecklistState) async {}
+    func loadLog(for date: Date) async -> ChecklistState? { return nil }
+    func fetchDatesWithEntries(forMonth month: Date) async -> Set<Date> { return Set() }
 }

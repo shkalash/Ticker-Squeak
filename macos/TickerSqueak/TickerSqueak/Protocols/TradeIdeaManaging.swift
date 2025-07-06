@@ -9,7 +9,7 @@
 import Foundation
 
 /// Defines the contract for a service that manages the creation, persistence, and retrieval of `TradeIdea` objects.
-protocol TradeIdeaManaging {
+protocol TradeIdeaManaging : HistoryProvider{
 
     /// Fetches all saved trade ideas for a specific calendar day.
     func fetchIdeas(for date: Date) async -> [TradeIdea]
@@ -25,8 +25,5 @@ protocol TradeIdeaManaging {
     /// The date check should ignore the time component.
     /// Returns a tuple with the idea and indicating if the idea was newly created.
     func findOrCreateIdea(forTicker ticker: String, on date: Date) async -> (idea: TradeIdea, wasCreated: Bool)
-    
-    /// Fetches the set of dates within a given month/year that contain trade ideas.
-    func fetchDatesWithIdeas(forMonth month: Date) async -> Set<Date>
     
 }
