@@ -7,80 +7,30 @@ import UniformTypeIdentifiers
 struct PreMarketChecklistView_Content: View {
     
     @StateObject private var viewModel: PreMarketChecklistViewModel
-    @State private var showingCalendar: Bool = false
+    
     init(dependencies: any AppDependencies) {
         _viewModel = StateObject(wrappedValue: PreMarketChecklistViewModel(dependencies: dependencies))
     }
     
     var body: some View {
+        
         VStack(spacing: 0) {
-            // Header
-            HStack(alignment: .firstTextBaseline) {
-                Text(viewModel.title).font(.title2).fontWeight(.bold)
+            ViewThatFits(in: .horizontal) {
+                // Attempt 1: The ideal single-line layout
+                HStack() {
+                    Text(viewModel.title).font(.title2).fontWeight(.bold)
+                    HeaderToolbar(viewModel: viewModel)
+                }
+                .padding()
+                
+                // Attempt 2: The fallback two-line layout
+                VStack(spacing: 0) {
+                    Text(viewModel.title).font(.title2).fontWeight(.bold).padding(.top)
+                    HStack{
+                        HeaderToolbar(viewModel: viewModel)
+                    }.padding()
+                }
             }
-            HStack() {
-                Button {
-                    showingCalendar = true
-                } label: {
-                    HStack {
-                        Text(viewModel.selectedDate.formatted(Date.FormatStyle()
-                            .month(.defaultDigits)
-                            .day(.defaultDigits)
-                            .year(.twoDigits)))
-                        Image(systemName: "calendar")
-                    }
-                }
-                .popover(isPresented: $showingCalendar, arrowEdge: .bottom) {
-                    CalendarView(
-                        provider: viewModel,
-                        displayMode: .enableWithEntry // Disables days without log files
-                    )
-                }
-                Button {
-                    viewModel.goToToday()
-                } label: {
-                    GoToTodayIcon().offset(x:0 , y: 2)
-                }
-                .help("Go to Today")
-                // Disable the button if the currently selected date is already today.
-                .disabled(Calendar.current.isDateInToday(viewModel.selectedDate))
-                
-                Spacer()
-                
-                Button(action: viewModel.expandAllSections) {
-                    Image(systemName: "chevron.down.square")
-                }
-                .help("Expand All Sections")
-                // Disable if the checklist isn't loaded or if all sections are already expanded
-                .disabled(viewModel.checklist == nil || viewModel.expandedSectionIDs.count == viewModel.checklist?.sections.count)
-                
-                Button(action: viewModel.collapseAllSections) {
-                    Image(systemName: "chevron.up.square")
-                }
-                .help("Collapse All Sections")
-                // Disable if no sections are expanded
-                .disabled(viewModel.expandedSectionIDs.isEmpty)
-                
-                Spacer()
-                
-//                Button {
-//                    Task { await viewModel.startNewDay() }
-//                } label: {
-//                    Image(systemName: "forward.fill")
-//                    Text("New Day")
-//                }
-//                .disabled(viewModel.isLoading || viewModel.checklist == nil)
-                
-                Button {
-                    Task { await viewModel.generateAndExportReport() }
-                } label: {
-                    Image(systemName: "square.and.arrow.up")
-                    Text("Export")
-                }
-                .disabled(viewModel.isLoading || viewModel.checklist == nil)
-            }
-            .padding()
-            
             // Main content area
             if viewModel.isLoading {
                 Spacer()
@@ -121,6 +71,61 @@ struct PreMarketChecklistView_Content: View {
     }
 }
 
+private struct HeaderToolbar : View {
+    @ObservedObject var viewModel: PreMarketChecklistViewModel
+    @State private var showingCalendar: Bool = false
+    var body: some View {
+        Button {
+            showingCalendar = true
+        } label: {
+            HStack {
+                Text(viewModel.selectedDate.formatted(Date.FormatStyle()
+                    .month(.defaultDigits)
+                    .day(.defaultDigits)
+                    .year(.twoDigits)))
+                Image(systemName: "calendar")
+            }
+        }
+        .popover(isPresented: $showingCalendar, arrowEdge: .bottom) {
+            CalendarView(
+                provider: viewModel,
+                displayMode: .enableWithEntry // Disables days without log files
+            )
+        }
+        Button {
+            viewModel.goToToday()
+        } label: {
+            GoToTodayIcon().offset(x:0 , y: 2)
+        }
+        .help("Go to Today")
+        // Disable the button if the currently selected date is already today.
+        .disabled(Calendar.current.isDateInToday(viewModel.selectedDate))
+        
+        Button(action: viewModel.expandAllSections) {
+            Image(systemName: "chevron.down.square")
+        }
+        .help("Expand All Sections")
+        // Disable if the checklist isn't loaded or if all sections are already expanded
+        .disabled(viewModel.checklist == nil || viewModel.expandedSectionIDs.count == viewModel.checklist?.sections.count)
+        
+        Button(action: viewModel.collapseAllSections) {
+            Image(systemName: "chevron.up.square")
+        }
+        .help("Collapse All Sections")
+        // Disable if no sections are expanded
+        .disabled(viewModel.expandedSectionIDs.isEmpty)
+        
+        Spacer()
+        
+        Button {
+            Task { await viewModel.generateAndExportReport() }
+        } label: {
+            Image(systemName: "square.and.arrow.up")
+            Text("Export")
+        }
+        .disabled(viewModel.isLoading || viewModel.checklist == nil)
+    }
+}
 
 // Loader view and Preview remain the same
 struct PreMarketChecklistView: View {
@@ -133,5 +138,5 @@ struct PreMarketChecklistView: View {
 #Preview {
     let previewDependencies = PreviewDependencyContainer()
     PreMarketChecklistView_Content(dependencies: previewDependencies)
-        .frame(width: 450, height: 700)
+        .frame(width: 600, height: 700)
 }
