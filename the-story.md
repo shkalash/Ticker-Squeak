@@ -6,6 +6,8 @@ But the chat room and discord channel provide an immense resource, as other trad
 
 But as the dynamic and fast paced environment of day trading dictates, manually scrolling back, finding those tickers, and starting to look at the charts, seemed to me like an inefficient usage of time. 
 
+***(Disclaimer - Though GenAI was used extensively throughout the project, this document was written solely by myself)***
+
 #### Episode I - The Ticker Menace
 
 The original idea was simple. Develop a browser extension that will read the pages of interest, and provide notifications over http when a ticker is called out. With the help of ChatGPT, I Analyzed the websites produced [TickerSqueakBrowserExtension](https://github.com/shkalash/Ticker-Squeak/tree/main/TickerSqueakBrowserExtension), which covered all the bases needed to hook into the websites, find the tickers as they are posted, do some basic filtering (only send tickers from the current day) and send those off to the localhost at a selected port.
