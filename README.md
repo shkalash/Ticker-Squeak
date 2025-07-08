@@ -27,6 +27,29 @@ The system consists of two main components:
 
 [How this came to be? The story behind Ticker Squeak](./the-story.md)
 
+#### Screenshots 📸
+
+<a href="macos/ScreenShots/premarket.png">
+  <img src="macos/ScreenShots/premarket.png" width="400">
+</a>
+
+<a href="macos/ScreenShots/main.png">
+  <img src="macos/ScreenShots/main.png" width="580">
+</a>
+
+<a href="macos/ScreenShots/tradelist.png">
+  <img src="macos/ScreenShots/tradelist.png" width="400">
+</a>
+
+<a href="macos/ScreenShots/tradeidea1.png">
+  <img src="macos/ScreenShots/tradeidea1.png" width="400">
+</a>
+
+<a href="macos/ScreenShots/tradeidea2.png">
+  <img src="macos/ScreenShots/tradeidea2.png" width="400">
+</a>
+
+
 ### Roadmap
 
 * **Customizable Templates:** Allow users to create and edit their own templates for the pre-market routine and trade idea logs.
