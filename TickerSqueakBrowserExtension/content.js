@@ -1,10 +1,4 @@
-console.log("[Ticker Squeak] content.js loaded");
-
-// --- START: New York Time Logic ---
-// Get the current date string in YYYY-MM-DD format for the 'America/New_York' timezone.
-const NY_CURRENT_DATE_STRING = new Date().toLocaleDateString('en-CA', {
-    timeZone: 'America/New_York',
-});
+//console.log("[Ticker Squeak] DEBUG version loaded. All steps will be logged.");
 
 /**
  * Checks if a given Date object corresponds to the current day in New York.
@@ -13,14 +7,16 @@ const NY_CURRENT_DATE_STRING = new Date().toLocaleDateString('en-CA', {
  */
 function isFromCurrentDayInNY(messageDate) {
     if (!messageDate || isNaN(messageDate)) {
-        return false; // Invalid date passed
+        //console.log("[Ticker Squeak] isFromCurrentDayInNY: received invalid date.");
+        return false;
     }
-    const messageNYDateString = messageDate.toLocaleDateString('en-CA', {
-        timeZone: 'America/New_York',
-    });
-    return messageNYDateString === NY_CURRENT_DATE_STRING;
+    const currentNYDateString = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const messageNYDateString = messageDate.toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const isMatch = messageNYDateString === currentNYDateString;
+    
+    //console.log(`[Ticker Squeak] Timestamp Check -> Message NY Date: ${messageNYDateString}, Current NY Date: ${currentNYDateString}, Match: ${isMatch}`);
+    return isMatch;
 }
-// --- END: New York Time Logic ---
 
 let whitelist = [];
 let isPageActive = true;
@@ -29,14 +25,8 @@ window.addEventListener("beforeunload", () => {
   isPageActive = false;
 });
 
-// Listener for requests from the popup for channel info
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === "getChannelInfo") {
-    // ... this logic remains the same as your original file
-  }
-});
-
 function notifyServer(ticker, highPriority = false) {
+  //console.log(`[Ticker Squeak] SUCCESS: Notifying server for ticker: ${ticker}, High Priority: ${highPriority}`);
   chrome.runtime.sendMessage({
     type: "notifyTicker",
     ticker,
@@ -46,74 +36,108 @@ function notifyServer(ticker, highPriority = false) {
 
 function parseTickers(text) {
     if (!text) return [];
-    // UPDATED REGEX: The lookahead now includes comma, period, and question mark.
-    const tickerRegex = /(?:^|\s)(\$?[A-Z]{1,5}!?)(?=[\s,.?]|$)/g;
+    //console.log(`[Ticker Squeak] Parsing text for tickers: "${text}"`);
+    const tickerRegex = /(?:^|[\s,])(\$?[A-Z]{1,5}!?)(?=[\s,.?]|$)/g;
     const matches = [...text.matchAll(tickerRegex)];
 
-    return matches.map(match => {
-        const rawMatch = match[1];
+    if (matches.length === 0) {
+        return [];
+    }
+
+    const rawFinds = matches.map(match => match[1]);
+    //console.log(`[Ticker Squeak] Regex found raw tickers: ${rawFinds.join(', ')}`);
+
+    return rawFinds.map(rawMatch => {
         const highPriority = rawMatch.endsWith("!");
         const ticker = rawMatch.replace(/^\$/, "").replace(/!$/, "");
-        return { ticker, highPriority };
-    });
+        if (ticker) {
+            return { ticker, highPriority };
+        }
+        return null;
+    }).filter(Boolean); // Removes any null entries
 }
 
 /**
- * Parses a "h:mm:ss AM/PM" timestamp from OneOption into a Date object.
- * @param {string} timeString The timestamp string, e.g., "3:09:41 PM".
+ * Parses a OneOption timestamp, now with support for the "Ytd, " prefix.
+ * @param {string} timeString The timestamp string.
  * @returns {Date | null} A Date object representing the time, or null if parsing fails.
  */
 function parseOneOptionTimestamp(timeString) {
     const now = new Date();
-    const match = timeString.match(/(\d{1,2}):(\d{2}):(\d{2})\s(AM|PM)/);
+    let isYesterday = false;
 
+    // Check for the "Ytd, " prefix.
+    if (timeString.startsWith("Ytd, ")) {
+        isYesterday = true;
+        timeString = timeString.substring(5); // Remove prefix for parsing
+    }
+
+    const match = timeString.match(/(\d{1,2}):(\d{2}):(\d{2})\s(AM|PM)/);
     if (!match) return null;
 
     let [_, hours, minutes, seconds, period] = match;
     hours = parseInt(hours, 10);
-
     if (period === 'PM' && hours < 12) hours += 12;
     if (period === 'AM' && hours === 12) hours = 0;
-
+    
     const messageDate = new Date();
     messageDate.setHours(hours, parseInt(minutes, 10), parseInt(seconds, 10), 0);
 
-    if (messageDate > now) {
+    // Set the date correctly based on "Ytd" or current time
+    if (isYesterday) {
+        messageDate.setDate(now.getDate() - 1);
+    } else if (messageDate > now) {
+        // Handles edge case of viewing yesterday's message after midnight
         messageDate.setDate(now.getDate() - 1);
     }
+
     return messageDate;
 }
 
 function startDiscordObserver() {
   function observe(container) {
-    console.log("[Ticker Squeak] Discord container found, starting observer.");
     const observer = new MutationObserver(mutations => {
+      //console.log(`[Ticker Squeak] Discord observer fired with ${mutations.length} mutations.`);
       for (const mutation of mutations) {
         mutation.addedNodes.forEach(node => {
           if (!(node instanceof HTMLElement) || !node.matches("li[id^='chat-messages-']")) return;
+          //console.log("[Ticker Squeak] Found new message node:", node);
 
           const timeElement = node.querySelector("time[datetime]");
-          if (!timeElement) return; // Cannot verify date, skip
+          if (!timeElement) {
+            //console.log("[Ticker Squeak] SKIPPING: No time element found in message node.");
+            return;
+          }
 
           const messageTime = new Date(timeElement.getAttribute('datetime'));
+          //console.log(`[Ticker Squeak] Found message time: ${messageTime.toISOString()}`);
           if (!isFromCurrentDayInNY(messageTime)) {
-              return; // Skip if message is not from current NY day
+              //console.log("[Ticker Squeak] SKIPPING: Message is not from current NY day.");
+              return;
           }
 
           const messageContent = node.querySelector('[id^="message-content-"]');
           if (messageContent) {
             const text = messageContent.innerText || messageContent.textContent;
-            if (!text) return;
+            if (!text) {
+                //console.log("[Ticker Squeak] SKIPPING: Message node has no text content.");
+                return;
+            }
             const tickers = parseTickers(text);
-            
+            if (tickers.length === 0) {
+                //console.log("[Ticker Squeak] No tickers found in message.");
+            }
             tickers.forEach(({ ticker, highPriority }) => {
               notifyServer(ticker, highPriority);
             });
+          } else {
+            //console.log("[Ticker Squeak] SKIPPING: No message content element found.");
           }
         });
       }
     });
     observer.observe(container, { childList: true, subtree: true });
+    //console.log("[Ticker Squeak] Discord observer is now observing the container.");
   }
 
   function waitForMessagesContainer(retries = 40, delay = 500) {
@@ -122,64 +146,73 @@ function startDiscordObserver() {
       observe(container);
     } else if (retries > 0) {
       setTimeout(() => waitForMessagesContainer(retries - 1, delay), delay);
-    } else {
-      console.warn("[Ticker Squeak] Could not find Discord messages container.");
     }
   }
-
   waitForMessagesContainer();
 }
 
 function startOneOptionObserver() {
-  console.log("[Ticker Squeak] Starting OneOption MutationObserver");
   const container = document.querySelector("#public > div > div.messages.main-chat.fixed-top");
-  if (!container) {
-    console.warn("[Ticker Squeak] OneOption messages container not found.");
-    return;
-  }
+  if (!container) return;
 
   const observer = new MutationObserver(() => {
+    //console.log("[Ticker Squeak] OneOption observer fired.");
     container.querySelectorAll("a[data-symbol]").forEach(el => {
-      const messageElement = el.closest('div.message');
-      if (!messageElement) return;
-
-      const timeElement = messageElement.querySelector("div.m-time");
-      if (!timeElement) return;
-
-      const messageTime = parseOneOptionTimestamp(timeElement.textContent);
-      if (!isFromCurrentDayInNY(messageTime)) {
-          return; // Skip if message is not from current NY day
-      }
-
       const sym = el.getAttribute("data-symbol");
+      //console.log(`[Ticker Squeak] Found potential OneOption ticker element for: ${sym}`);
+      
+      // The correct parent message selector is '.m-item'.
+      const messageElement = el.closest('.m-item');
+
+      if (!messageElement) {
+          //console.log(`[Ticker Squeak] SKIPPING ${sym}: Could not find parent message element (tried .m-item).`);
+          return;
+      }
+      const timeElement = messageElement.querySelector("div.m-time");
+      if (!timeElement) {
+          //console.log(`[Ticker Squeak] SKIPPING ${sym}: Could not find time element in parent.`);
+          return;
+      }
+      const timeString = timeElement.textContent;
+      const messageTime = parseOneOptionTimestamp(timeString);
+      //console.log(`[Ticker Squeak] Found OneOption time string: "${timeString}", Parsed: ${messageTime?.toISOString()}`);
+      if (!isFromCurrentDayInNY(messageTime)) {
+          //console.log(`[Ticker Squeak] SKIPPING ${sym}: Message is not from current NY day.`);
+          return;
+      }
       if (sym && /^[A-Z]{1,6}$/.test(sym)) {
         notifyServer(sym);
       }
     });
   });
-
   observer.observe(container, { childList: true, subtree: true });
+  //console.log("[Ticker Squeak] OneOption observer is now observing the container.");
 }
 
 function init() {
+  //console.log("[Ticker Squeak] init() called.");
   try {
     chrome.storage.local.get(["whitelistedChannels"], (result) => {
       whitelist = result.whitelistedChannels || [];
+      //console.log(`[Ticker Squeak] Whitelist loaded with ${whitelist.length} channels.`);
 
       if (location.hostname.includes("discord.com")) {
+        //console.log("[Ticker Squeak] On Discord page.");
         if (!whitelist.some(channel => location.href.startsWith(channel.url))) {
-          console.log("[Ticker Squeak] Discord channel not whitelisted, skipping scan.");
+          //console.log("[Ticker Squeak] SKIPPING: Discord channel is not whitelisted:", location.href);
           return;
         }
+        //console.log("[Ticker Squeak] Discord channel IS whitelisted. Starting observer.");
         startDiscordObserver();
       }
 
       if (location.hostname.includes("oneoption.com")) {
+        //console.log("[Ticker Squeak] On OneOption page. Starting observer.");
         startOneOptionObserver();
       }
     });
   } catch (err) {
-    console.warn("[Ticker Squeak] Storage load failed:", err);
+    console.error("[Ticker Squeak] CRITICAL ERROR in init():", err);
   }
 }
 
