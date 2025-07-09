@@ -48,7 +48,7 @@ struct PreMarketChecklistView_Content: View {
                             }
                         }
                     }
-                }
+                }.id(viewModel.refreshUUID)
                 
             } else if viewModel.error != nil {
                 VStack {

@@ -28,7 +28,7 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
     }
     /// The set of dates in the displayed month that have a saved log.
     @Published private(set) var datesWithEntry: Set<Date> = []
-    
+    @Published private(set) var refreshUUID: UUID = UUID()
     private let checklistName = "pre-market-checklist"
     private let templateProvider: ChecklistTemplateProviding
     private let preMarketLogManager: any PreMarketLogManaging
@@ -100,6 +100,9 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
             
             // After saving, refresh the marked dates in the calendar.
             await fetchDatesWithEntries(forMonth: self.displayedMonth)
+            DispatchQueue.main.async {
+                self.refreshUUID = UUID()
+            }
         }
     }
     
@@ -144,15 +147,6 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
         }
     }
     
-//    func startNewDay() async {
-//        goToToday()
-//        self.itemStates = [:]
-//        self.selectedDate = Date()
-//        expandAllSections()
-//        let freshState = ChecklistState(lastModified: Date(), itemStates: [:] , expandedSectionIDs: self.expandedSectionIDs)
-//        await preMarketLogManager.saveLog(freshState)
-//    }
-    
     func generateAndExportReport() async {
         guard let checklist = checklist  else { return }
         let currentState = ChecklistState(lastModified: selectedDate, itemStates: itemStates)
@@ -164,25 +158,7 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
 
         NSSavePanel.present(withContent: reportContent, suggestedFilename: filename)
     }
-    
-//    private func saveLogToDisk() async {
-//        guard let checklist = self.checklist, let date = self.checklistDate else { return }
-//        let currentState = ChecklistState(lastModified: date, itemStates: itemStates)
-//        let reportContent = await reportGenerator.generateReport(for: currentState, withTemplate: checklist)
-//        
-//        let dateFormatter = DateFormatter(); dateFormatter.dateFormat = "yyyy-MM-dd"
-//        let dateString = dateFormatter.string(from: date)
-//        let filename = "PreMarket-\(dateString).md"
-//        
-//        do {
-//            let directoryURL = try fileLocationProvider.getPreMarketLogDirectory()
-//            let fileURL = directoryURL.appendingPathComponent(filename)
-//            try reportContent.write(to: fileURL, atomically: true, encoding: .utf8)
-//        } catch {
-//            ErrorManager.shared.report(error)
-//        }
-//    }
-    
+
     func bindingForSectionExpansion(for sectionID: String) -> Binding<Bool> {
         Binding(
             get: { self.expandedSectionIDs.contains(sectionID) },
