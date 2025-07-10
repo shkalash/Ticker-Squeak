@@ -85,8 +85,14 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
     }
     
     private func updateAndSaveState(for itemID: String, with newState: ChecklistItemState) {
+        let checkboxChanged = itemStates[itemID]?.isChecked != newState.isChecked
         itemStates[itemID] = newState
         saveCurrentState()
+        if (checkboxChanged){
+            DispatchQueue.main.async {
+                self.refreshUUID = UUID()
+            }
+        }
     }
     
     private func saveCurrentState() {
@@ -100,9 +106,7 @@ class PreMarketChecklistViewModel: PreMarketChecklistViewModelProtocol{
             
             // After saving, refresh the marked dates in the calendar.
             await fetchDatesWithEntries(forMonth: self.displayedMonth)
-            DispatchQueue.main.async {
-                self.refreshUUID = UUID()
-            }
+            
         }
     }
     
