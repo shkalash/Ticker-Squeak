@@ -12,7 +12,15 @@ import AppKit
 struct TickerSqueakApp: App {
     let windowName = "io.shkalash.TickerSqueak"
     private let dependencies = DependencyContainer()
+    private let pm = ExtendedPowerManager()
     @StateObject private var dialogManager = DialogManager.shared
+    // Create the app delegate
+    @NSApplicationDelegateAdaptor(TickerSqueakAppDelegate.self) var appDelegate
+    
+    init() {
+        // Pass the power manager to the app delegate
+        appDelegate.setPowerManager(pm)
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -23,16 +31,19 @@ struct TickerSqueakApp: App {
                     // Server must be started on app run
                     dependencies.tickerProvider.start()
                     DataMigrator.migrate(settingsManager: dependencies.settingsManager, ignoreManager: dependencies.ignoreManager)
+                    pm.preventAllSleep()
                 }
             #if DEBUG
                 .withDebugOverlay()
                 .environmentObject(dependencies)
             #endif
         }
+        
         // Define the new, secondary window for our web view
         Window("Floating SPY", id: "floating-spy") {
             FloatingWebView()
         }
     }
+    
 }
 

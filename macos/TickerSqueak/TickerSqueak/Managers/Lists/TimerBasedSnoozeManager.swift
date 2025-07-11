@@ -31,6 +31,23 @@ class TimerBasedSnoozeManager: SnoozeManaging {
         // Load the initial snoozed list
         self.internalSnoozedTickers = Set(persistence.load(for: .snoozedTickers) ?? [])
         
+        // Load the last time we cleared
+        let lastCleared = persistence.load(for: .lastSnoozeClearDate) ?? Date()
+        
+        // check if right now is past the supposed next clear date , if we have any snoozedTickers
+        if !internalSnoozedTickers.isEmpty{
+            let calendar = Calendar.current
+            let clearTime = settingsManager.currentSettings.snoozeClearTime
+            let clearComponents = calendar.dateComponents([.hour, .minute], from: clearTime)
+            if let nextClearFromLastCleared = calendar.nextDate(after: lastCleared, matching: clearComponents, matchingPolicy: .nextTime){
+                if Date() >= nextClearFromLastCleared {
+                    clearSnoozeList()
+                    print("[Snooze] Time to clear snoozed tickers - last cleared: \(lastCleared), should have cleared by: \(nextClearFromLastCleared)")
+                }
+            }
+        }
+        
+        
         // Save the list whenever it changes
         $internalSnoozedTickers
             .dropFirst()

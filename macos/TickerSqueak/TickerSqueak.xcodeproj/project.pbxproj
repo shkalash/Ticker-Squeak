@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		F60A56DB2E197F7000B7F252 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60A56DA2E197F7000B7F252 /* SessionStore.swift */; };
+		F6271B252E20EE46000F9863 /* TickerSqueakAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6271B242E20EE46000F9863 /* TickerSqueakAppDelegate.swift */; };
+		F6271B272E20EE58000F9863 /* SignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6271B262E20EE58000F9863 /* SignalHandler.swift */; };
 		F64A37E02E13DC7D006CED86 /* AlwaysOnTopModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */; };
 		F65322492E1A5A7500767E1E /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65322482E1A5A7500767E1E /* CalendarView.swift */; };
 		F653224D2E1A688B00767E1E /* GoToTodayIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653224C2E1A688B00767E1E /* GoToTodayIcon.swift */; };
@@ -104,6 +106,8 @@
 
 /* Begin PBXFileReference section */
 		F60A56DA2E197F7000B7F252 /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
+		F6271B242E20EE46000F9863 /* TickerSqueakAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TickerSqueakAppDelegate.swift; sourceTree = "<group>"; };
+		F6271B262E20EE58000F9863 /* SignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignalHandler.swift; sourceTree = "<group>"; };
 		F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysOnTopModifier.swift; sourceTree = "<group>"; };
 		F65322482E1A5A7500767E1E /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		F653224C2E1A688B00767E1E /* GoToTodayIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToTodayIcon.swift; sourceTree = "<group>"; };
@@ -421,6 +425,8 @@
 		F6EEE9212E0ACCAE00E46FE6 /* TickerSqueak */ = {
 			isa = PBXGroup;
 			children = (
+				F6271B262E20EE58000F9863 /* SignalHandler.swift */,
+				F6271B242E20EE46000F9863 /* TickerSqueakAppDelegate.swift */,
 				F68BC2D32E0ECE56008D0D8C /* Debug */,
 				F68BC18A2E0D65AD008D0D8C /* Dependencies */,
 				F6EEE8EF2E0ACCAE00E46FE6 /* Audio */,
@@ -564,6 +570,7 @@
 				F6B3AF4C2E18FD5700F2DB91 /* ScrollFriendlyTextEditor.swift in Sources */,
 				F6B3AF3B2E18658B00F2DB91 /* CollapsibleSectionView.swift in Sources */,
 				F6B508952E180E70005953F2 /* MultiClickButton.swift in Sources */,
+				F6271B252E20EE46000F9863 /* TickerSqueakAppDelegate.swift in Sources */,
 				F6B3AF372E18503100F2DB91 /* MultiImageWellView.swift in Sources */,
 				F68BC17E2E0D4B9A008D0D8C /* NotificationMethod.swift in Sources */,
 				F6EEE92D2E0ACCAE00E46FE6 /* AppError.swift in Sources */,
@@ -594,6 +601,7 @@
 				F68BC1882E0D5CF7008D0D8C /* PersistentFrame.swift in Sources */,
 				F65322492E1A5A7500767E1E /* CalendarView.swift in Sources */,
 				F68BC19D2E0D7BEA008D0D8C /* NotificationSettingsView.swift in Sources */,
+				F6271B272E20EE58000F9863 /* SignalHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
