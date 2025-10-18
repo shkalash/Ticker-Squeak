@@ -2,6 +2,9 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TickerSqueak.TC2000Bridge.App
@@ -148,7 +151,7 @@ namespace TickerSqueak.TC2000Bridge.App
 			var focused = await _controller.FocusAsync();
 			if (!focused) { UpdateStatus("Failed to focus TC2000"); return; }
 			var typed = await _controller.TypeSymbolAsync(symbol);
-			UpdateStatus(typed ? $"Typed {symbol}" : "Failed to type symbol");
+			UpdateStatus(typed ? $"Local test typed {symbol}" : "Local test failed");
 		}
 
 		private void btnHealth_Click(object sender, EventArgs e)
@@ -156,6 +159,25 @@ namespace TickerSqueak.TC2000Bridge.App
 			var ip = GetLocalIPv4() ?? "127.0.0.1";
 			var url = $"http://{ip}:{(int)numPort.Value}/health";
 			try { Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true }); } catch { }
+		}
+
+		private async void btnTestEndpoint_Click(object? sender, EventArgs e)
+		{
+			var symbol = (txtSymbol.Text ?? "").Trim();
+			if (string.IsNullOrWhiteSpace(symbol)) { UpdateStatus("Symbol required"); return; }
+			var ip = GetLocalIPv4() ?? "127.0.0.1";
+			var url = $"http://{ip}:{(int)numPort.Value}/tc2000/open";
+			try
+			{
+				using var http = new HttpClient();
+				var resp = await http.PostAsJsonAsync(url, new { symbol });
+				var ok = resp.IsSuccessStatusCode;
+				UpdateStatus(ok ? $"Endpoint test sent {symbol}" : $"Endpoint test failed: {(int)resp.StatusCode}");
+			}
+			catch (Exception ex)
+			{
+				UpdateStatus($"Endpoint test error: {ex.Message}");
+			}
 		}
 
 		private void MainForm_Resize(object? sender, EventArgs e)

@@ -36,6 +36,7 @@ namespace TickerSqueak.TC2000Bridge.App
             btnStop = new Button();
             btnSave = new Button();
             btnTest = new Button();
+            btnTestEndpoint = new Button();
             btnHealth = new Button();
             lblStatus = new Label();
             chkStartMin = new CheckBox();
@@ -55,7 +56,7 @@ namespace TickerSqueak.TC2000Bridge.App
             // numPort
             // 
             numPort.Location = new Point(186, 26);
-            numPort.Margin = new Padding(6, 6, 6, 6);
+            numPort.Margin = new Padding(6);
             numPort.Maximum = new decimal(new int[] { 65535, 0, 0, 0 });
             numPort.Minimum = new decimal(new int[] { 1024, 0, 0, 0 });
             numPort.Name = "numPort";
@@ -76,7 +77,7 @@ namespace TickerSqueak.TC2000Bridge.App
             // txtSymbol
             // 
             txtSymbol.Location = new Point(186, 100);
-            txtSymbol.Margin = new Padding(6, 6, 6, 6);
+            txtSymbol.Margin = new Padding(6);
             txtSymbol.Name = "txtSymbol";
             txtSymbol.Size = new Size(219, 39);
             txtSymbol.TabIndex = 6;
@@ -85,7 +86,7 @@ namespace TickerSqueak.TC2000Bridge.App
             // btnStart
             // 
             btnStart.Location = new Point(22, 259);
-            btnStart.Margin = new Padding(6, 6, 6, 6);
+            btnStart.Margin = new Padding(6);
             btnStart.Name = "btnStart";
             btnStart.Size = new Size(139, 53);
             btnStart.TabIndex = 7;
@@ -96,7 +97,7 @@ namespace TickerSqueak.TC2000Bridge.App
             // btnStop
             // 
             btnStop.Location = new Point(173, 259);
-            btnStop.Margin = new Padding(6, 6, 6, 6);
+            btnStop.Margin = new Padding(6);
             btnStop.Name = "btnStop";
             btnStop.Size = new Size(139, 53);
             btnStop.TabIndex = 8;
@@ -107,7 +108,7 @@ namespace TickerSqueak.TC2000Bridge.App
             // btnSave
             // 
             btnSave.Location = new Point(438, 18);
-            btnSave.Margin = new Padding(6, 6, 6, 6);
+            btnSave.Margin = new Padding(6);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(139, 53);
             btnSave.TabIndex = 9;
@@ -117,22 +118,33 @@ namespace TickerSqueak.TC2000Bridge.App
             // 
             // btnTest
             // 
-            btnTest.Location = new Point(428, 93);
-            btnTest.Margin = new Padding(6, 6, 6, 6);
+            btnTest.Location = new Point(22, 181);
+            btnTest.Margin = new Padding(6);
             btnTest.Name = "btnTest";
-            btnTest.Size = new Size(223, 53);
+            btnTest.Size = new Size(182, 53);
             btnTest.TabIndex = 10;
-            btnTest.Text = "Test TC2000";
+            btnTest.Text = "Test Locally";
             btnTest.UseVisualStyleBackColor = true;
             btnTest.Click += btnTest_Click;
             // 
+            // btnTestEndpoint
+            // 
+            btnTestEndpoint.Location = new Point(216, 181);
+            btnTestEndpoint.Margin = new Padding(6);
+            btnTestEndpoint.Name = "btnTestEndpoint";
+            btnTestEndpoint.Size = new Size(205, 53);
+            btnTestEndpoint.TabIndex = 11;
+            btnTestEndpoint.Text = "Test Endpoint";
+            btnTestEndpoint.UseVisualStyleBackColor = true;
+            btnTestEndpoint.Click += btnTestEndpoint_Click;
+            // 
             // btnHealth
             // 
-            btnHealth.Location = new Point(22, 176);
-            btnHealth.Margin = new Padding(6, 6, 6, 6);
+            btnHealth.Location = new Point(433, 181);
+            btnHealth.Margin = new Padding(6);
             btnHealth.Name = "btnHealth";
-            btnHealth.Size = new Size(260, 53);
-            btnHealth.TabIndex = 11;
+            btnHealth.Size = new Size(204, 53);
+            btnHealth.TabIndex = 12;
             btnHealth.Text = "Open Health";
             btnHealth.UseVisualStyleBackColor = true;
             btnHealth.Click += btnHealth_Click;
@@ -144,17 +156,17 @@ namespace TickerSqueak.TC2000Bridge.App
             lblStatus.Margin = new Padding(6, 0, 6, 0);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(78, 32);
-            lblStatus.TabIndex = 12;
+            lblStatus.TabIndex = 13;
             lblStatus.Text = "Status";
             // 
             // chkStartMin
             // 
             chkStartMin.AutoSize = true;
             chkStartMin.Location = new Point(22, 413);
-            chkStartMin.Margin = new Padding(6, 6, 6, 6);
+            chkStartMin.Margin = new Padding(6);
             chkStartMin.Name = "chkStartMin";
             chkStartMin.Size = new Size(214, 36);
-            chkStartMin.TabIndex = 13;
+            chkStartMin.TabIndex = 14;
             chkStartMin.Text = "Start Minimized";
             chkStartMin.UseVisualStyleBackColor = true;
             // 
@@ -162,10 +174,11 @@ namespace TickerSqueak.TC2000Bridge.App
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(694, 493);
+            ClientSize = new Size(660, 493);
             Controls.Add(chkStartMin);
             Controls.Add(lblStatus);
             Controls.Add(btnHealth);
+            Controls.Add(btnTestEndpoint);
             Controls.Add(btnTest);
             Controls.Add(btnSave);
             Controls.Add(btnStop);
@@ -175,7 +188,7 @@ namespace TickerSqueak.TC2000Bridge.App
             Controls.Add(numPort);
             Controls.Add(lblPort);
             FormBorderStyle = FormBorderStyle.FixedDialog;
-            Margin = new Padding(6, 6, 6, 6);
+            Margin = new Padding(6);
             MaximizeBox = false;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
@@ -197,6 +210,7 @@ namespace TickerSqueak.TC2000Bridge.App
 		private System.Windows.Forms.Button btnStop;
 		private System.Windows.Forms.Button btnSave;
 		private System.Windows.Forms.Button btnTest;
+		private System.Windows.Forms.Button btnTestEndpoint;
 		private System.Windows.Forms.Button btnHealth;
 		private System.Windows.Forms.Label lblStatus;
 		private System.Windows.Forms.CheckBox chkStartMin;
