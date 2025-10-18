@@ -16,3 +16,8 @@ Package.resolved
 node_modules
 [Bb]uild/
 .idea/
+
+.vs/
+.vscode/
+bin/
+obj/
