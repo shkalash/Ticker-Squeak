@@ -17,9 +17,6 @@ class AppNotificationHandler: NotificationHandling {
     }
     private let authorizationStatusSubject = CurrentValueSubject<UNAuthorizationStatus, Never>(.notDetermined)
     
-    private let OPEN_CHART_ACTION_IDENTIFIER = "OPEN_CHART"
-    private let TICKER_ALERT_CATEGORY_IDENTIFIER = "TICKER_ALERT"
-
     // MARK: - Private Properties
     private let settingsManager: SettingsManaging
     private var cancellables = Set<AnyCancellable>()
@@ -47,16 +44,9 @@ class AppNotificationHandler: NotificationHandling {
     }
     
     private func setupNotificationCategories() {
-        // Create a custom action that doesn't activate the app (no .foreground option)
-        let openChartAction = UNNotificationAction(
-            identifier: OPEN_CHART_ACTION_IDENTIFIER,
-            title: "Open Chart",
-            options: [] // No .foreground - this keeps the app in the background
-        )
-        
         let category = UNNotificationCategory(
-            identifier: TICKER_ALERT_CATEGORY_IDENTIFIER,
-            actions: [openChartAction],
+            identifier: TickerNotificationAction.categoryIdentifier,
+            actions: allActions,
             intentIdentifiers: [],
             options: []
         )
@@ -117,8 +107,8 @@ class AppNotificationHandler: NotificationHandling {
         content.title = isHighPriority ? "‼️ Ticker Alert ‼️" : "Ticker Alert"
         content.body = ticker
         content.sound = nil
-        content.userInfo = ["ticker": ticker]
-        content.categoryIdentifier = TICKER_ALERT_CATEGORY_IDENTIFIER // Attach the category with custom actions
+        content.userInfo = [TickerNotificationAction.tickerUserInfoKey: ticker]
+        content.categoryIdentifier = TickerNotificationAction.categoryIdentifier
         let sound = settingsManager.currentSettings.soundLibrary.getSound(for: isHighPriority ?  .highPriorityAlert : .alert)
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)

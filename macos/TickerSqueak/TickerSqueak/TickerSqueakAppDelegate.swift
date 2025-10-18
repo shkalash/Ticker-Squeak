@@ -15,6 +15,7 @@ class TickerSqueakAppDelegate: NSObject, NSApplicationDelegate, UNUserNotificati
     private var powerManager: ExtendedPowerManager?
     private var chartingService: ChartingService?
     private var tickerStore: TickerStoreManaging?
+    private var snoozeManager: SnoozeManaging?
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Setup signal handlers when app finishes launching
@@ -46,36 +47,45 @@ class TickerSqueakAppDelegate: NSObject, NSApplicationDelegate, UNUserNotificati
     }
     
     // Call this to set dependencies for notification handling
-    func setDependencies(chartingService: ChartingService, tickerStore: TickerStoreManaging) {
-        self.chartingService = chartingService
-        self.tickerStore = tickerStore
+    @MainActor func setDependencies(_ container: any AppDependencies) {
+        self.chartingService = container.chartingService
+        self.tickerStore = container.tickerStore
+        self.snoozeManager = container.snoozeManager
     }
     
     // MARK: - UNUserNotificationCenterDelegate
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        // Only handle our custom action - this prevents app activation
-        guard response.actionIdentifier == "OPEN_CHART" else {
+        guard let ticker = response.notification.request.content.userInfo[TickerNotificationAction.tickerUserInfoKey] as? String else {
             completionHandler()
             return
         }
         
-        // Extract the ticker from the notification's userInfo
-        guard let ticker = response.notification.request.content.userInfo["ticker"] as? String else {
-            completionHandler()
-            return
+        switch response.actionIdentifier {
+        case TickerNotificationAction.openChart:
+            handleOpenChart(ticker: ticker)
+            
+        case TickerNotificationAction.snooze:
+            handleSnooze(ticker: ticker)
+            
+        default:
+            break
         }
         
-        // Mark the ticker as read in the ticker store
+        completionHandler()
+    }
+    
+    private func handleOpenChart(ticker: String) {
         Task { @MainActor in
             tickerStore?.markAsRead(id: ticker)
         }
         
-        // Open the chart using the charting service
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
             self?.chartingService?.open(ticker: ticker)
         }
-        
-        completionHandler()
+    }
+    
+    private func handleSnooze(ticker: String) {
+        snoozeManager?.setSnooze(for: ticker, isSnoozed: true)
     }
 }

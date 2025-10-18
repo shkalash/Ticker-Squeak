@@ -21,7 +21,7 @@ struct TickerSqueakApp: App {
         // Pass the power manager to the app delegate
         appDelegate.setPowerManager(pm)
         // Pass dependencies for notification handling
-        appDelegate.setDependencies(chartingService: dependencies.chartingService, tickerStore: dependencies.tickerStore)
+        appDelegate.setDependencies(dependencies)
     }
     var body: some Scene {
         WindowGroup {
