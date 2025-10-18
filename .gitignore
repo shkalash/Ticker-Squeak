@@ -20,4 +20,5 @@ node_modules
 .vs/
 .vscode/
 bin/
-obj/
+TickerSqueakTC2000Bridge/src/TickerSqueak.TC2000Bridge.App/Properties/PublishProfiles/
+TickerSqueakTC2000Bridge/src/TickerSqueak.TC2000Bridge.App/obj/
