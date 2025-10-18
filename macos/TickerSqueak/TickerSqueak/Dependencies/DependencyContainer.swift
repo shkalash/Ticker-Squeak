@@ -55,9 +55,10 @@ class DependencyContainer: AppDependencies {
         // Create the individual charting services
         let tradingViewService = TradingViewService(settingsManager: self.settingsManager)
         let oneOptionService = OneOptionService(settingsManager: self.settingsManager)
+        let tc2000Service = TC2000BridgeService(settingsManager: self.settingsManager)
 
         // Create the composite service that the app will use
-        self.chartingService = CompositeChartingService(services: [tradingViewService, oneOptionService])
+        self.chartingService = CompositeChartingService(services: [tradingViewService, oneOptionService, tc2000Service])
         
         // Foundational services that others depend on
         fileLocationProvider = LocalFileLocationProvider()
