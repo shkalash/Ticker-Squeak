@@ -30,14 +30,29 @@ class TradingViewService: ChartingService {
             return
         }
         
-        // 2. Activate the app and wait for it to be focused
-        app.activate(options: [.activateAllWindows])
+        // Get the app's URL
+        guard let appURL = app.bundleURL else {
+            ErrorManager.shared.report(AppError.generalError(description: "Could not find TradingView app URL."))
+            return
+        }
         
-        waitForAppToFocus(app) { [self] in
-            // 3. Once focused, optionally send the tab switch command
-            sendTabSwitchIfNeeded { [self] in
-                // 4. After the tab switch, begin typing the ticker sequentially
-                typeSequentially(ticker: ticker.uppercased(), index: 0)
+        // 2. Activate using NSWorkspace with configuration (works better from background)
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.activates = true
+        configuration.addsToRecentItems = false
+        
+        NSWorkspace.shared.openApplication(at: appURL, configuration: configuration) { [weak self] app, error in
+            if let error = error {
+                ErrorManager.shared.report(error)
+                return
+            }
+            
+            guard let self = self else { return }
+        
+            // send the tab switch command
+            self.sendTabSwitchIfNeeded {
+                // begin typing the ticker sequentially
+                self.typeSequentially(ticker: ticker.uppercased(), index: 0)
             }
         }
     }

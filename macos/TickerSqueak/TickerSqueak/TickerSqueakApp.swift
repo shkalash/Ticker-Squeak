@@ -20,6 +20,8 @@ struct TickerSqueakApp: App {
     init() {
         // Pass the power manager to the app delegate
         appDelegate.setPowerManager(pm)
+        // Pass dependencies for notification handling
+        appDelegate.setDependencies(dependencies)
     }
     var body: some Scene {
         WindowGroup {
@@ -32,6 +34,8 @@ struct TickerSqueakApp: App {
                     dependencies.tickerProvider.start()
                     DataMigrator.migrate(settingsManager: dependencies.settingsManager, ignoreManager: dependencies.ignoreManager)
                     pm.preventAllSleep()
+                    // Set the notification delegate to enable click handling
+                    (dependencies.notificationsHandler as? AppNotificationHandler)?.setNotificationDelegate(appDelegate)
                 }
             #if DEBUG
                 .withDebugOverlay()

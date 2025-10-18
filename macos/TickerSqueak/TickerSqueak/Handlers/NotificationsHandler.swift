@@ -24,6 +24,9 @@ class AppNotificationHandler: NotificationHandling {
     init(settingsManager: SettingsManaging) {
         self.settingsManager = settingsManager
         
+        // Register notification categories with custom actions
+        setupNotificationCategories()
+        
         // When the app starts, immediately check the current status.
         checkNotificationPermissionStatus()
 
@@ -34,6 +37,21 @@ class AppNotificationHandler: NotificationHandling {
                 self?.checkNotificationPermissionStatus()
             }
             .store(in: &cancellables)
+    }
+    
+    func setNotificationDelegate(_ delegate: UNUserNotificationCenterDelegate) {
+        UNUserNotificationCenter.current().delegate = delegate
+    }
+    
+    private func setupNotificationCategories() {
+        let category = UNNotificationCategory(
+            identifier: TickerNotificationAction.categoryIdentifier,
+            actions: allActions,
+            intentIdentifiers: [],
+            options: []
+        )
+        
+        UNUserNotificationCenter.current().setNotificationCategories([category])
     }
     
         
@@ -89,6 +107,8 @@ class AppNotificationHandler: NotificationHandling {
         content.title = isHighPriority ? "‼️ Ticker Alert ‼️" : "Ticker Alert"
         content.body = ticker
         content.sound = nil
+        content.userInfo = [TickerNotificationAction.tickerUserInfoKey: ticker]
+        content.categoryIdentifier = TickerNotificationAction.categoryIdentifier
         let sound = settingsManager.currentSettings.soundLibrary.getSound(for: isHighPriority ?  .highPriorityAlert : .alert)
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
