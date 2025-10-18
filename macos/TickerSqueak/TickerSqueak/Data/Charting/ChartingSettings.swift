@@ -15,4 +15,7 @@ struct ChartingSettings: Codable, Equatable {
     
     /// The settings for the OneOption integration.
     var oneOption = OneOptionSettings.default
+    
+    /// The settings for the TC2000 Bridge integration.
+    var tc2000 = TC2000Settings.default
 }

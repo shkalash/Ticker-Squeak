@@ -16,3 +16,9 @@ Package.resolved
 node_modules
 [Bb]uild/
 .idea/
+
+.vs/
+.vscode/
+bin/
+TickerSqueakTC2000Bridge/src/TickerSqueak.TC2000Bridge.App/Properties/PublishProfiles/
+TickerSqueakTC2000Bridge/src/TickerSqueak.TC2000Bridge.App/obj/

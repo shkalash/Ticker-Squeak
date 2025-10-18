@@ -11,4 +11,5 @@
 enum ChartingProvider {
     case tradingView
     case oneOption
+    case tc2000
 }
