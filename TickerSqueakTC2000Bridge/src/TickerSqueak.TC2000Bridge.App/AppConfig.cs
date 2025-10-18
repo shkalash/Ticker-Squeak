@@ -9,5 +9,8 @@ namespace TickerSqueak.TC2000Bridge.App
 
 		[JsonPropertyName("startMinimized")]
 		public bool StartMinimized { get; set; } = false;
+
+		[JsonPropertyName("launchAtStartup")]
+		public bool LaunchAtStartup { get; set; } = false;
 	}
 }

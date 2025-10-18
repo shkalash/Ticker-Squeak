@@ -40,6 +40,7 @@ namespace TickerSqueak.TC2000Bridge.App
             btnHealth = new Button();
             lblStatus = new Label();
             chkStartMin = new CheckBox();
+            chkLaunchAtStartup = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)numPort).BeginInit();
             SuspendLayout();
             // 
@@ -162,7 +163,7 @@ namespace TickerSqueak.TC2000Bridge.App
             // chkStartMin
             // 
             chkStartMin.AutoSize = true;
-            chkStartMin.Location = new Point(22, 413);
+            chkStartMin.Location = new Point(284, 389);
             chkStartMin.Margin = new Padding(6);
             chkStartMin.Name = "chkStartMin";
             chkStartMin.Size = new Size(214, 36);
@@ -170,11 +171,23 @@ namespace TickerSqueak.TC2000Bridge.App
             chkStartMin.Text = "Start Minimized";
             chkStartMin.UseVisualStyleBackColor = true;
             // 
+            // chkLaunchAtStartup
+            // 
+            chkLaunchAtStartup.AutoSize = true;
+            chkLaunchAtStartup.Location = new Point(22, 389);
+            chkLaunchAtStartup.Margin = new Padding(6);
+            chkLaunchAtStartup.Name = "chkLaunchAtStartup";
+            chkLaunchAtStartup.Size = new Size(230, 36);
+            chkLaunchAtStartup.TabIndex = 13;
+            chkLaunchAtStartup.Text = "Launch at startup";
+            chkLaunchAtStartup.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(660, 493);
+            Controls.Add(chkLaunchAtStartup);
             Controls.Add(chkStartMin);
             Controls.Add(lblStatus);
             Controls.Add(btnHealth);
@@ -214,5 +227,6 @@ namespace TickerSqueak.TC2000Bridge.App
 		private System.Windows.Forms.Button btnHealth;
 		private System.Windows.Forms.Label lblStatus;
 		private System.Windows.Forms.CheckBox chkStartMin;
+		private System.Windows.Forms.CheckBox chkLaunchAtStartup;
 	}
 }

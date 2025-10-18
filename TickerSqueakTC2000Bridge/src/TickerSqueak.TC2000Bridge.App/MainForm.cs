@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace TickerSqueak.TC2000Bridge.App
 {
@@ -20,6 +21,9 @@ namespace TickerSqueak.TC2000Bridge.App
 		private bool _startMinimized;
 		private bool _isExiting;
 		private int _savedPort;
+
+		private const string RunKeyPath = @"Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+		private const string RunValueName = "TickerSqueak.TC2000Bridge";
 
 		public MainForm()
 		{
@@ -42,6 +46,8 @@ namespace TickerSqueak.TC2000Bridge.App
 			_savedPort = cfg.Port;
 			numPort.Value = Math.Min(Math.Max(cfg.Port, 1024), 65535);
 			chkStartMin.Checked = cfg.StartMinimized;
+			chkLaunchAtStartup.Checked = cfg.LaunchAtStartup;
+			ApplyLaunchAtStartup(cfg.LaunchAtStartup);
 			_startMinimized = cfg.StartMinimized;
 			btnSave.Enabled = false; // disabled until port changes
 
@@ -55,6 +61,7 @@ namespace TickerSqueak.TC2000Bridge.App
 			// Wire UI events
 			numPort.ValueChanged += (_, __) => btnSave.Enabled = (int)numPort.Value != _savedPort;
 			chkStartMin.CheckedChanged += chkStartMin_CheckedChanged;
+			chkLaunchAtStartup.CheckedChanged += chkLaunchAtStartup_CheckedChanged;
 
 			this.Shown += async (_, __) =>
 			{
@@ -68,6 +75,34 @@ namespace TickerSqueak.TC2000Bridge.App
 			};
 
 			UpdateStatus();
+		}
+
+		private void chkLaunchAtStartup_CheckedChanged(object? sender, EventArgs e)
+		{
+			var enable = chkLaunchAtStartup.Checked;
+			ApplyLaunchAtStartup(enable);
+			var cfg = _settings.Load();
+			cfg.LaunchAtStartup = enable;
+			_settings.Save(cfg);
+		}
+
+		private void ApplyLaunchAtStartup(bool enable)
+		{
+			try
+			{
+				using var key = Registry.CurrentUser.OpenSubKey(RunKeyPath, writable: true) ?? Registry.CurrentUser.CreateSubKey(RunKeyPath);
+				if (key == null) return;
+				if (enable)
+				{
+					var exe = Application.ExecutablePath;
+					key.SetValue(RunValueName, '"' + exe + '"');
+				}
+				else
+				{
+					key.DeleteValue(RunValueName, throwOnMissingValue: false);
+				}
+			}
+			catch { }
 		}
 
 		private void chkStartMin_CheckedChanged(object? sender, EventArgs e)
