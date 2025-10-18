@@ -2,7 +2,7 @@ Ticker Squeak is a productivity tool for traders that captures stock ticker symb
 
 ### How It Works
 
-The system consists of two main components:
+The system consists of two main components , and a bridging utilty:
 
 1.  A **Browser Extension** (`TickerSqueakBrowserExtension`) that:
     * Monitors designated websites (e.g., OneOption chat, Discord).
@@ -17,15 +17,21 @@ The system consists of two main components:
         * **Ignore:** Permanently block specific tickers from appearing in the feed.
         * **Hide:** Temporarily hide a ticker for a defined short period.
         * **Snooze:** Hide a ticker for the remainder of the trading day.
-    * Provides quick-launch integration to open a ticker's chart in **Option Stalker Pro** and **TradingView**.
+    * Provides quick-launch integration to open a ticker's chart in **Option Stalker Pro** , **TradingView** , and **TC2000**.
     * Integrates trading strategy and preparation tools:
         * **Pre-Market Routine:** Provides a template to prepare for the trading day.
         * **Trade Idea Log:** Offers a template to systematically assess the viability of a potential trade.
         * **Local Storage & Export:** Data from both templates is stored locally for review within the app and can be exported as Markdown files.
 
+3. The TC2000Bridge utility is a simple .net app that listens on the windows VM for calls and enables integration with TC2000 charting software.
+
 ### The Story
 
 [How this came to be? The story behind Ticker Squeak](./the-story.md)
+
+### User Manual
+
+[Detailed user manual available](./manual.md)
 
 #### Screenshots 📸
 

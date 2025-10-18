@@ -115,3 +115,23 @@ This tab is for configuring automation with your charting software.
     * **Enable TradingView Automation**: Toggle to enable or disable integration with TradingView. This requires special **Accessibility permissions** from macOS.
     * **Permissions**: If access has not been granted, an icon and a button will appear, allowing you to open the system prompt to grant permission. The app will reflect when access is granted.
     * **Tab Switching**: When enabled, you can configure the automation to switch to a specific tab within TradingView.
+* **TC2000 Integration**
+    * **Enable TC2000 Bridge**: Turns the integration on or off.
+    * **Host**: Windows VM IP address (default `10.211.55.3`).
+    * **Port**: Bridge port (default `5055`).
+    * **Test Connection**: Verifies connectivity. If it fails, check that the VM is reachable and the bridge app and TC2000 are running.
+
+#### Windows Bridge (on the VM)
+
+The app comes bundled a small daemon bridge utility that listens on the VM for integration calls for TC2000.
+Launch the bridge on your VM and apply desired settings if you wish to use the TC2000 integration
+
+- **Launch at startup**: Automatically run when you sign in to Windows.
+- **Start minimized**: Run in the system tray.
+- **Start/Stop**: Controls the bridge server.
+- **Test Locally**: Focuses TC2000 and types the symbol shown in the app.
+- **Test Endpoint**: Sends the same command the Mac app uses, to validate end‑to‑end.
+- **Open Health**: Quick connectivity check.
+- **Tray**: Left‑click opens, right‑click shows Open/Quit.
+
+Networking tip: Use a bridged network in the VM so your Mac can reach the Windows IP directly, and allow the chosen port through Windows Defender Firewall (Private networks). First server run will request permission to set firewall rules automatically. 
