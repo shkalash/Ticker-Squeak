@@ -37,19 +37,27 @@ namespace TickerSqueak.TC2000Bridge.App
 		[DllImport("user32.dll")]
 		private static extern bool SetFocus(IntPtr hWnd);
 
-		[DllImport("user32.dll")]
-		private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+	[DllImport("user32.dll")]
+	private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
-		[StructLayout(LayoutKind.Sequential)]
-		public struct RECT
-		{
-			public int Left;
-			public int Top;
-			public int Right;
-			public int Bottom;
-		}
+	[DllImport("user32.dll")]
+	private static extern bool IsIconic(IntPtr hWnd);
 
-		public const int SW_RESTORE = 9;
+	[DllImport("user32.dll")]
+	private static extern bool IsZoomed(IntPtr hWnd);
+
+	[StructLayout(LayoutKind.Sequential)]
+	public struct RECT
+	{
+		public int Left;
+		public int Top;
+		public int Right;
+		public int Bottom;
+	}
+
+	public const int SW_RESTORE = 9;
+	public const int SW_SHOW = 5;
+	public const int SW_SHOWMAXIMIZED = 3;
 
 		[DllImport("user32.dll")]
 		public static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
@@ -124,23 +132,47 @@ namespace TickerSqueak.TC2000Bridge.App
 			SendInput(2, new[] { down, up }, Marshal.SizeOf<INPUT>());
 		}
 
-		// --- Window discovery and focusing ---
-		public static IntPtr FindMainWindowForProcess(int processId)
+	// --- Window discovery and focusing ---
+	public static IntPtr FindMainWindowForProcess(int processId)
+	{
+		IntPtr shellWindow = GetShellWindow();
+		IntPtr best = IntPtr.Zero;
+		EnumWindowsProc callback = (hWnd, lParam) =>
 		{
-			IntPtr shellWindow = GetShellWindow();
-			IntPtr best = IntPtr.Zero;
-			EnumWindowsProc callback = (hWnd, lParam) =>
-			{
-				if (hWnd == shellWindow) return true;
-				if (!IsWindowVisible(hWnd)) return true;
-				GetWindowThreadProcessId(hWnd, out uint pid);
-				if (pid != (uint)processId) return true;
-				best = hWnd;
-				return false;
-			};
-			EnumWindows(callback, IntPtr.Zero);
-			return best;
+			if (hWnd == shellWindow) return true;
+			if (!IsWindowVisible(hWnd)) return true;
+			GetWindowThreadProcessId(hWnd, out uint pid);
+			if (pid != (uint)processId) return true;
+			best = hWnd;
+			return false;
+		};
+		EnumWindows(callback, IntPtr.Zero);
+		return best;
+	}
+
+	/// <summary>
+	/// Gets the appropriate ShowWindow command based on current window state.
+	/// This preserves maximized state instead of forcing restore.
+	/// </summary>
+	public static int GetShowCommandForWindow(IntPtr hWnd)
+	{
+		if (IsIconic(hWnd))
+		{
+			// Window is minimized - check if it was maximized before minimizing
+			// We'll use SW_RESTORE which will restore to previous state
+			return SW_RESTORE;
 		}
+		else if (IsZoomed(hWnd))
+		{
+			// Window is maximized - keep it maximized
+			return SW_SHOWMAXIMIZED;
+		}
+		else
+		{
+			// Window is normal - just show it
+			return SW_SHOW;
+		}
+	}
 
 		public static bool BringWindowToFront(IntPtr hWnd)
 		{

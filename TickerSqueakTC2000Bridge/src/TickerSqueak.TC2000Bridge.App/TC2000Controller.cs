@@ -42,12 +42,14 @@ namespace TickerSqueak.TC2000Bridge.App
 				{
 					h = Win32.FindMainWindowForProcess(proc.Id);
 				}
-				if (h != IntPtr.Zero)
-				{
-					Win32.ShowWindowAsync(h, Win32.SW_RESTORE);
-					await Task.Delay(150);
-					return Win32.BringWindowToFront(h);
-				}
+		if (h != IntPtr.Zero)
+		{
+			// Use appropriate show command based on window state to preserve maximized state
+			int showCommand = Win32.GetShowCommandForWindow(h);
+			Win32.ShowWindowAsync(h, showCommand);
+			await Task.Delay(150);
+			return Win32.BringWindowToFront(h);
+		}
 				await Task.Delay(100);
 			}
 			return false;
