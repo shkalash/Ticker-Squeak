@@ -127,6 +127,14 @@ private struct TC2000SettingsForm: View {
                     Button("Test Connection", action: testConnection).disabled(settings.port == 0 || settings.host.isEmpty)
                 }
                 .disabled(!settings.isEnabled)
+                HStack {
+                    Text("VM App:")
+                    TextField("Parallels Desktop", text: $settings.vmAppName).frame(width: 200)
+                    Text("(e.g., Parallels Desktop, VMware Fusion, UTM)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                .disabled(!settings.isEnabled)
             }
         }
         .onChange(of: settings.isEnabled) { isEnabled in
