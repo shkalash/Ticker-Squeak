@@ -111,7 +111,14 @@ private struct TC2000SettingsForm: View {
                 Image("tc2000").resizable().scaledToFit().frame(width: 50)
             }
             VStack(alignment: .leading){
-                Toggle("Enable TC2000 Bridge", isOn: $settings.isEnabled)
+                HStack {
+                    Toggle("Enable TC2000 Bridge", isOn: $settings.isEnabled)
+                    .onChange(of: settings.isEnabled) { isEnabled in
+                        if isEnabled { preflightLocalNetwork() }
+                    }
+                    Button("Grant Local Network", action: preflightLocalNetwork)
+                        .disabled(!settings.isEnabled || settings.host.isEmpty || settings.port == 0)
+                }
                 HStack {
                     Text("Host:")
                     TextField("10.211.55.3", text: $settings.host).frame(width: 150)
@@ -122,9 +129,23 @@ private struct TC2000SettingsForm: View {
                 .disabled(!settings.isEnabled)
             }
         }
+        .onChange(of: settings.isEnabled) { isEnabled in
+            // When enabling at runtime, trigger a silent preflight to surface the Local Network prompt
+            if isEnabled { preflightLocalNetwork() }
+        }
         
     }
     
+    private func preflightLocalNetwork() {
+        guard settings.isEnabled else { return }
+        guard !settings.host.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, settings.port > 0 else { return }
+        let urlString = "http://\(settings.host):\(settings.port)/health"
+        guard let url = URL(string: urlString) else { return }
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 1.5)
+        request.httpMethod = "GET"
+        URLSession.shared.dataTask(with: request) { _, _, _ in }.resume()
+    }
+
     private func testConnection() {
         guard settings.isEnabled else { return }
         isTesting = true

@@ -32,7 +32,7 @@ struct TickerSqueakApp: App {
                 .onAppear{
                     // Server must be started on app run
                     dependencies.tickerProvider.start()
-                    DataMigrator.migrate(settingsManager: dependencies.settingsManager, ignoreManager: dependencies.ignoreManager)
+                    //DataMigrator.migrate(settingsManager: dependencies.settingsManager, ignoreManager: dependencies.ignoreManager)
                     pm.preventAllSleep()
                     // Set the notification delegate to enable click handling
                     (dependencies.notificationsHandler as? AppNotificationHandler)?.setNotificationDelegate(appDelegate)

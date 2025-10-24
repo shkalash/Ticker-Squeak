@@ -744,6 +744,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Ticker Squeak";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "TickerSqueak needs local network access to reach the TC2000 bridge running on your VM.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -774,6 +775,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Ticker Squeak";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "TickerSqueak needs local network access to reach the TC2000 bridge running on your VM.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
