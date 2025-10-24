@@ -63,3 +63,6 @@ The system consists of two main components , and a bridging utilty:
 * **Real-Time Mental State Monitoring:** Integration with the [Arctop SDK](https://github.com/arctop/iOS-SDK) to provide traders with insights into their focus and cognitive state during trading sessions.
 * **AI-Powered Analysis Assistant:** An integrated AI assistant to provide on-demand analysis, sentiment scoring, or relevant news for captured tickers.
 
+tc2000 alerts handling
+push notifications
+ios companion

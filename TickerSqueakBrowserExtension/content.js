@@ -20,18 +20,37 @@ function isFromCurrentDayInNY(messageDate) {
 
 let whitelist = [];
 let isPageActive = true;
+let cachedNotifyPort = "4113"; // Fallback default; kept in sync with popup/background via storage
 
 window.addEventListener("beforeunload", () => {
   isPageActive = false;
 });
 
 function notifyServer(ticker, highPriority = false) {
-  //console.log(`[Ticker Squeak] SUCCESS: Notifying server for ticker: ${ticker}, High Priority: ${highPriority}`);
-  chrome.runtime.sendMessage({
-    type: "notifyTicker",
-    ticker,
-    highPriority
-  });
+  // Primary path: extension messaging API
+  try {
+    if (typeof chrome !== 'undefined' && chrome.runtime && typeof chrome.runtime.sendMessage === 'function') {
+      chrome.runtime.sendMessage({ type: "notifyTicker", ticker, highPriority });
+      return;
+    }
+    if (typeof browser !== 'undefined' && browser.runtime && typeof browser.runtime.sendMessage === 'function') {
+      browser.runtime.sendMessage({ type: "notifyTicker", ticker, highPriority });
+      return;
+    }
+  } catch (e) {
+    // fall through to fetch fallback
+  }
+
+  // Fallback: direct fetch to local notifier (works on Discord if runtime is unavailable)
+  try {
+    fetch(`http://127.0.0.1:${cachedNotifyPort}/notify`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ticker, highPriority })
+    }).catch(() => {});
+  } catch (e) {
+    // Swallow to avoid noisy console in page
+  }
 }
 
 function parseTickers(text) {
@@ -192,8 +211,11 @@ function startOneOptionObserver() {
 function init() {
   //console.log("[Ticker Squeak] init() called.");
   try {
-    chrome.storage.local.get(["whitelistedChannels"], (result) => {
+    chrome.storage.local.get(["whitelistedChannels", "notifyPort"], (result) => {
       whitelist = result.whitelistedChannels || [];
+      if (result.notifyPort) {
+        cachedNotifyPort = String(result.notifyPort);
+      }
       //console.log(`[Ticker Squeak] Whitelist loaded with ${whitelist.length} channels.`);
 
       if (location.hostname.includes("discord.com")) {
