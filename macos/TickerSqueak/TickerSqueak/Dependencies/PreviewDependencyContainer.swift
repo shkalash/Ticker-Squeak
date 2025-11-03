@@ -4,8 +4,11 @@
 import Combine
 import UserNotifications
 import AppKit
+import SwiftData
 @MainActor
 class PreviewDependencyContainer: AppDependencies {
+    var modelContainer: ModelContainer
+    
     
     
     let persistenceHandler: PersistenceHandling
@@ -45,6 +48,7 @@ class PreviewDependencyContainer: AppDependencies {
         self.tradeIdeaManager = PlaceholderTradeIdeaManager()
         self.appCoordinator = PlaceholderAppCoordinator()
         self.pickerOptionsProvider = PlaceholderPickerOptionsProvider()
+         modelContainer = try! ModelContainer()
     }
 }
 
@@ -186,6 +190,7 @@ class PlaceholderChecklistStateManager: ChecklistStateManaging {
 
 import AppKit
 import Foundation
+import SwiftData
 
 /// An in-memory placeholder implementation of `ImagePersisting` for SwiftUI Previews.
 /// It simulates file storage using a dictionary and does not interact with the file system.

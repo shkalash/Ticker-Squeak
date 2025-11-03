@@ -6,12 +6,14 @@
 //
 
 import Combine
+import SwiftData
 
 /// Defines the contract for the application's dependency container.
 /// Any object conforming to this can be used as the central source for shared services.
 @MainActor
 protocol AppDependencies: ObservableObject {
-    var persistenceHandler: PersistenceHandling { get }
+    var modelContainer: ModelContainer { get }
+    var persistenceHandler: PersistenceHandling { get } // Deprecated: Only used for migration
     var settingsManager: SettingsManaging { get }
     var ignoreManager: IgnoreManaging { get }
     var snoozeManager: SnoozeManaging { get }

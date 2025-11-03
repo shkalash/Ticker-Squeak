@@ -6,7 +6,8 @@
 //
 
 import Foundation
-
+import SwiftData
+import CloudKit
 /// A container for all the major services and dependencies in the application.
 ///
 /// An instance of this class is created once when the app launches and is injected
@@ -16,7 +17,9 @@ import Foundation
 class DependencyContainer: AppDependencies {
     // MARK: - Public Properties (Services)
     
-    let persistenceHandler: PersistenceHandling
+    let persistenceHandler: PersistenceHandling // Kept temporarily for migration
+    let modelContainer: ModelContainer
+    let modelContext: ModelContext
     let settingsManager: SettingsManaging
     let ignoreManager: IgnoreManaging
     let snoozeManager: SnoozeManaging
@@ -38,15 +41,46 @@ class DependencyContainer: AppDependencies {
     init() {
         // Initialize all services in the correct order, using the specified concrete types.
         
-        // 1. Persistence is the foundation.
+        // 1. Set up SwiftData ModelContainer with CloudKit
+        let schema = Schema([
+            TickerItemModel.self,
+            AppSettingsModel.self,
+            IgnoredTickerModel.self,
+            SnoozedTickerModel.self,
+            SnoozeMetadataModel.self,
+            ChecklistStateModel.self,
+            TradeIdeaModel.self,
+            PreMarketLogModel.self
+        ])
+        
+        let configuration = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: false
+        )
+        
+        do {
+            self.modelContainer = try ModelContainer(for: schema,configurations: [configuration])
+            self.modelContext = modelContainer.mainContext
+        } catch {
+            fatalError("Failed to create ModelContainer: \(error)")
+        }
+        
+        // Keep UserDefaults handler temporarily for migration only
         self.persistenceHandler = UserDefaultsPersistenceHandler()
         
-        // 2. Settings depends on persistence.
-        self.settingsManager = AppSettingsManager(persistence: persistenceHandler)
+        // Run migration if needed
+        DataMigrator.migrateToSwiftData(
+            modelContext: modelContext,
+            persistenceHandler: persistenceHandler,
+            fileLocationProvider: LocalFileLocationProvider()
+        )
         
-        // 3. Independent managers that depend on persistence and/or settings.
-        self.ignoreManager = StandardIgnoreManager(persistence: persistenceHandler)
-        self.snoozeManager = TimerBasedSnoozeManager(persistence: persistenceHandler, settingsManager: settingsManager)
+        // 2. Settings depends on SwiftData.
+        self.settingsManager = AppSettingsManager(modelContext: modelContext)
+        
+        // 3. Independent managers that depend on SwiftData and/or settings.
+        self.ignoreManager = StandardIgnoreManager(modelContext: modelContext)
+        self.snoozeManager = TimerBasedSnoozeManager(modelContext: modelContext, settingsManager: settingsManager)
         
         // 4. Network and notification services.
         self.tickerProvider = NetworkTickerProvider(settingsManager: settingsManager)
@@ -64,7 +98,7 @@ class DependencyContainer: AppDependencies {
         fileLocationProvider = LocalFileLocationProvider()
         
         self.checklistTemplateProvider = LocalChecklistTemplateProvider(fileLocationProvider: fileLocationProvider)
-        self.preMarketLogManager = FileBasedPreMarketLogManager(fileLocationProvider: fileLocationProvider)
+        self.preMarketLogManager = SwiftDataPreMarketLogManager(modelContext: modelContext)
         self.imagePersister = FileSystemImagePersister(fileLocationProvider: fileLocationProvider)
         
         self.preMarketReportGenerator = MarkdownPreMarketReportGenerator(imagePersister: imagePersister)
@@ -78,10 +112,10 @@ class DependencyContainer: AppDependencies {
             snoozeManager: snoozeManager,
             settingsManager: settingsManager,
             notificationHandler: notificationsHandler,
-            persistence: persistenceHandler
+            modelContext: modelContext
         )
         
-        self.tradeIdeaManager = FileBasedTradeIdeaManager(fileLocationProvider: fileLocationProvider, imagePersister: imagePersister)
+        self.tradeIdeaManager = SwiftDataTradeIdeaManager(modelContext: modelContext, imagePersister: imagePersister)
         
         self.appCoordinator = AppCoordinator()
         

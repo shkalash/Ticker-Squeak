@@ -7,33 +7,52 @@
 
 
 import Foundation
+import SwiftData
 
 /// The default implementation for managing the state of a checklist.
-/// It uses a generic PersistenceHandling service to load and save the state data.
+/// It uses SwiftData to load and save the state data.
 class DefaultChecklistStateManager: ChecklistStateManaging {
 
-    /// A dependency on the persistence protocol, not a concrete type.
-    private let persistence: PersistenceHandling
+    /// A dependency on the ModelContext for SwiftData operations.
+    private let modelContext: ModelContext
 
-    /// Initializes the state manager with a persistence handler.
-    init(persistence: PersistenceHandling) {
-        self.persistence = persistence
+    /// Initializes the state manager with a ModelContext.
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
     }
 
-    /// Loads the saved state by creating the correct `PersistenceKey` and calling the persistence service.
+    /// Loads the saved state from SwiftData.
     func loadState(forChecklistName checklistName: String) async -> ChecklistState? {
-        // Create the specific, type-safe key for this checklist.
-        let key = PersistenceKey<ChecklistState>.checklistState(forName: checklistName)
+        let descriptor = FetchDescriptor<ChecklistStateModel>(
+            predicate: #Predicate { $0.checklistName == checklistName }
+        )
         
-        // Use the `load(object:)` method for Codable types from your protocol.
-        return persistence.loadCodable(for: key)
+        do {
+            let models = try modelContext.fetch(descriptor)
+            return models.first?.state
+        } catch {
+            print("[DefaultChecklistStateManager] Error loading state: \(error)")
+            return nil
+        }
     }
 
-    /// Saves the current state by creating the correct `PersistenceKey` and calling the persistence service.
+    /// Saves the current state to SwiftData.
     func saveState(_ state: ChecklistState, forChecklistName checklistName: String) async {
-        let key = PersistenceKey<ChecklistState>.checklistState(forName: checklistName)
+        let descriptor = FetchDescriptor<ChecklistStateModel>(
+            predicate: #Predicate { $0.checklistName == checklistName }
+        )
         
-        // Use the `save(object:)` method for Codable types from your protocol.
-        persistence.saveCodable(object: state, for: key)
+        do {
+            let models = try modelContext.fetch(descriptor)
+            if let existingModel = models.first {
+                existingModel.state = state
+            } else {
+                let newModel = ChecklistStateModel(checklistName: checklistName, state: state)
+                modelContext.insert(newModel)
+            }
+            try modelContext.save()
+        } catch {
+            print("[DefaultChecklistStateManager] Error saving state: \(error)")
+        }
     }
 }
