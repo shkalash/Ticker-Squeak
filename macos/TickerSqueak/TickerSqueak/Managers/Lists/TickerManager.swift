@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import SwiftData
 
 class TickerManager: TickerStoreManaging {
     
@@ -31,6 +32,9 @@ class TickerManager: TickerStoreManaging {
     /// A dictionary to hold cancellation tasks for tickers that have been temporarily hidden.
     private var pendingRemovals: [String: DispatchWorkItem] = [:]
     
+    /// Map of ticker symbols to their SwiftData models for efficient updates
+    private var tickerModels: [String: TickerItemModel] = [:]
+    
     // MARK: - Dependencies
     
     private let tickerReceiver: TickerProviding
@@ -38,7 +42,7 @@ class TickerManager: TickerStoreManaging {
     private let snoozeManager: SnoozeManaging
     private let settingsManager: SettingsManaging
     private let notificationHandler: NotificationHandling
-    private let persistence: PersistenceHandling
+    private let modelContext: ModelContext
     private var cancellables = Set<AnyCancellable>()
 
     init(
@@ -47,17 +51,17 @@ class TickerManager: TickerStoreManaging {
         snoozeManager: SnoozeManaging,
         settingsManager: SettingsManaging,
         notificationHandler: NotificationHandling,
-        persistence: PersistenceHandling
+        modelContext: ModelContext
     ) {
         self.tickerReceiver = tickerReceiver
         self.ignoreManager = ignoreManager
         self.snoozeManager = snoozeManager
         self.settingsManager = settingsManager
         self.notificationHandler = notificationHandler
-        self.persistence = persistence
+        self.modelContext = modelContext
         
-        // Load initial state from persistence
-        loadFromPersistence()
+        // Load initial state from SwiftData
+        loadFromSwiftData()
         
         // Setup subscriptions to automatically handle events
         setupSubscriptions()
@@ -71,12 +75,12 @@ class TickerManager: TickerStoreManaging {
             }
             .store(in: &cancellables)
             
-        // 2. Automatically save the ticker list to persistence when it changes
+        // 2. Automatically save the ticker list to SwiftData when it changes
         $tickerList
             .dropFirst() // Don't save on initial load
             .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
             .sink { [weak self] listToSave in
-                self?.persistence.saveCodable(object: listToSave, for: .tickerItems)
+                self?.saveToSwiftData(listToSave)
             }
             .store(in: &cancellables)
             
@@ -86,6 +90,14 @@ class TickerManager: TickerStoreManaging {
                 let ignoredSet = Set(ignoredTickers)
                 self?.tickerList.removeAll { ignoredSet.contains($0.ticker) }
                 self?.receivedTickers = self?.receivedTickers.subtracting(ignoredSet) ?? Set<String>()
+                // Remove from SwiftData
+                for ticker in ignoredSet {
+                    if let model = self?.tickerModels[ticker] {
+                        self?.modelContext.delete(model)
+                        self?.tickerModels.removeValue(forKey: ticker)
+                    }
+                }
+                try? self?.modelContext.save()
             }
             .store(in: &cancellables)
         
@@ -97,10 +109,57 @@ class TickerManager: TickerStoreManaging {
             .store(in: &cancellables)
     }
     
-    private func loadFromPersistence() {
-        let loadedTickers: [TickerItem] = persistence.loadCodable(for: .tickerItems) ?? []
-        self.tickerList = loadedTickers
-        self.receivedTickers = Set(loadedTickers.map { $0.ticker })
+    private func loadFromSwiftData() {
+        let descriptor = FetchDescriptor<TickerItemModel>(
+            sortBy: [SortDescriptor(\.receivedAt, order: .reverse)]
+        )
+        
+        do {
+            let models = try modelContext.fetch(descriptor)
+            self.tickerList = models.map { $0.toTickerItem() }
+            self.receivedTickers = Set(models.map { $0.ticker })
+            
+            // Build the map for efficient updates
+            for model in models {
+                self.tickerModels[model.ticker] = model
+            }
+        } catch {
+            print("[TickerManager] Error loading from SwiftData: \(error)")
+            self.tickerList = []
+            self.receivedTickers = []
+        }
+    }
+    
+    private func saveToSwiftData(_ items: [TickerItem]) {
+        let currentTickerSet = Set(items.map { $0.ticker })
+        
+        // Remove models that are no longer in the list
+        for (ticker, model) in tickerModels where !currentTickerSet.contains(ticker) {
+            modelContext.delete(model)
+            tickerModels.removeValue(forKey: ticker)
+        }
+        
+        // Update or create models
+        for item in items {
+            if let existingModel = tickerModels[item.ticker] {
+                // Update existing model
+                existingModel.isStarred = item.isStarred
+                existingModel.isUnread = item.isUnread
+                existingModel.direction = item.direction
+                // Note: receivedAt doesn't change after creation
+            } else {
+                // Create new model
+                let model = TickerItemModel.from(item)
+                modelContext.insert(model)
+                tickerModels[item.ticker] = model
+            }
+        }
+        
+        do {
+            try modelContext.save()
+        } catch {
+            print("[TickerManager] Error saving to SwiftData: \(error)")
+        }
     }
 
     // MARK: - Core Logic
@@ -130,6 +189,11 @@ class TickerManager: TickerStoreManaging {
                 // Ticker was hidden, create a new item
                 let newItem = TickerItem(ticker: ticker, receivedAt: Date(), isUnread: true)
                 tickerList.insert(newItem, at: 0)
+                // Also add to SwiftData immediately
+                let model = TickerItemModel.from(newItem)
+                modelContext.insert(model)
+                tickerModels[ticker] = model
+                try? modelContext.save()
             }
             
             // If it was snoozed, this high-priority alert unsnoozes it
@@ -145,13 +209,27 @@ class TickerManager: TickerStoreManaging {
         receivedTickers.insert(ticker)
         let newItem = TickerItem(ticker: ticker, receivedAt: Date())
         tickerList.insert(newItem, at: 0)
+        
+        // Add to SwiftData immediately
+        let model = TickerItemModel.from(newItem)
+        modelContext.insert(model)
+        tickerModels[ticker] = model
+        try? modelContext.save()
+        
         notificationHandler.showNotification(for: ticker, isHighPriority: payload.isHighPriority)
     }
 
     // MARK: - List & Item Management (from Protocol)
     
     func removeItem(id: String) {
+        if let item = tickerList.first(where: { $0.id == id }),
+           let model = tickerModels[item.ticker] {
+            modelContext.delete(model)
+            tickerModels.removeValue(forKey: item.ticker)
+            try? modelContext.save()
+        }
         tickerList.removeAll { $0.id == id }
+        receivedTickers.remove(id)
     }
     
     func hideTicker(id: String) {
@@ -194,6 +272,19 @@ class TickerManager: TickerStoreManaging {
         pendingRemovals.removeAll()
         receivedTickers.removeAll()
         tickerList.removeAll()
+        
+        // Delete all from SwiftData
+        let descriptor = FetchDescriptor<TickerItemModel>()
+        do {
+            let allModels = try modelContext.fetch(descriptor)
+            for model in allModels {
+                modelContext.delete(model)
+            }
+            try modelContext.save()
+            tickerModels.removeAll()
+        } catch {
+            print("[TickerManager] Error clearing SwiftData: \(error)")
+        }
     }
     
     func markAsRead(id: String) {

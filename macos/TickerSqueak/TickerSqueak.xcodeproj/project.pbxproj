@@ -13,6 +13,7 @@
 		F64A37E02E13DC7D006CED86 /* AlwaysOnTopModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */; };
 		F65322492E1A5A7500767E1E /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F65322482E1A5A7500767E1E /* CalendarView.swift */; };
 		F653224D2E1A688B00767E1E /* GoToTodayIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F653224C2E1A688B00767E1E /* GoToTodayIcon.swift */; };
+		F6801E172EB7F2E50014DDD2 /* AppPersistanceKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6801E0A2EB7F2E50014DDD2 /* AppPersistanceKeys.swift */; };
 		F68BC17E2E0D4B9A008D0D8C /* NotificationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */; };
 		F68BC1802E0D56F9008D0D8C /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC17F2E0D56F5008D0D8C /* Dialog.swift */; };
 		F68BC1842E0D598B008D0D8C /* DialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68BC1832E0D598B008D0D8C /* DialogView.swift */; };
@@ -111,6 +112,7 @@
 		F64A37DF2E13DC7D006CED86 /* AlwaysOnTopModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlwaysOnTopModifier.swift; sourceTree = "<group>"; };
 		F65322482E1A5A7500767E1E /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		F653224C2E1A688B00767E1E /* GoToTodayIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoToTodayIcon.swift; sourceTree = "<group>"; };
+		F6801E0A2EB7F2E50014DDD2 /* AppPersistanceKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPersistanceKeys.swift; sourceTree = "<group>"; };
 		F68BC17D2E0D4B9A008D0D8C /* NotificationMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMethod.swift; sourceTree = "<group>"; };
 		F68BC17F2E0D56F5008D0D8C /* Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
 		F68BC1832E0D598B008D0D8C /* DialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogView.swift; sourceTree = "<group>"; };
@@ -177,6 +179,11 @@
 		F67F90212E1062CE00186678 /* WebView */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = WebView;
+			sourceTree = "<group>";
+		};
+		F6801E132EB7F2E50014DDD2 /* SwiftData */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SwiftData;
 			sourceTree = "<group>";
 		};
 		F68BC18A2E0D65AD008D0D8C /* Dependencies */ = {
@@ -305,6 +312,8 @@
 		F6EEE8F42E0ACCAE00E46FE6 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				F6801E0A2EB7F2E50014DDD2 /* AppPersistanceKeys.swift */,
+				F6801E132EB7F2E50014DDD2 /* SwiftData */,
 				F6B508102E17FADA005953F2 /* TradeIdeas */,
 				F6B507F32E174851005953F2 /* Checklists */,
 				F68BC3F92E0F0C79008D0D8C /* Charting */,
@@ -467,6 +476,7 @@
 			fileSystemSynchronizedGroups = (
 				F60A56DC2E197FB700B7F252 /* PropertyWrappers */,
 				F67F90212E1062CE00186678 /* WebView */,
+				F6801E132EB7F2E50014DDD2 /* SwiftData */,
 				F68BC18A2E0D65AD008D0D8C /* Dependencies */,
 				F68BC1B72E0EA2DF008D0D8C /* Lists */,
 				F68BC2D32E0ECE56008D0D8C /* Debug */,
@@ -582,6 +592,7 @@
 				F6EEE9322E0ACCAE00E46FE6 /* IconTabPicker.swift in Sources */,
 				F68BC1AD2E0DD4A8008D0D8C /* DataMigrator.swift in Sources */,
 				F6B508912E180A3C005953F2 /* NSSavePanel+Extension.swift in Sources */,
+				F6801E172EB7F2E50014DDD2 /* AppPersistanceKeys.swift in Sources */,
 				F6B3AF3D2E1865A300F2DB91 /* ChecklistItemRowView.swift in Sources */,
 				F6EEE9342E0ACCAE00E46FE6 /* NSSound+Extensions.swift in Sources */,
 				F6EEE9352E0ACCAE00E46FE6 /* TickerSqueakApp.swift in Sources */,
@@ -735,17 +746,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = TickerSqueak/TickerSqueak.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C7F8MT3522;
+				DEVELOPMENT_TEAM = K37XRPRVK6;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Ticker Squeak";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "TickerSqueak needs local network access to reach the TC2000 bridge running on your VM.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "TickerSqueak needs local network access to reach the TC2000 bridge running on your VM.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -766,17 +777,17 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = TickerSqueak/TickerSqueak.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C7F8MT3522;
+				DEVELOPMENT_TEAM = K37XRPRVK6;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Ticker Squeak";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "TickerSqueak needs local network access to reach the TC2000 bridge running on your VM.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "TickerSqueak needs local network access to reach the TC2000 bridge running on your VM.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

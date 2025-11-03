@@ -8,6 +8,7 @@
 import SwiftUI
 import UserNotifications
 import AppKit
+import SwiftData
 @main
 struct TickerSqueakApp: App {
     let windowName = "io.shkalash.TickerSqueak"
@@ -27,12 +28,12 @@ struct TickerSqueakApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(dependencies)
+                .modelContainer(dependencies.modelContainer)
                 .persistentFrame(forKey: windowName, persistence: dependencies.persistenceHandler)
                 .environmentObject(dialogManager)
                 .onAppear{
                     // Server must be started on app run
                     dependencies.tickerProvider.start()
-                    //DataMigrator.migrate(settingsManager: dependencies.settingsManager, ignoreManager: dependencies.ignoreManager)
                     pm.preventAllSleep()
                     // Set the notification delegate to enable click handling
                     (dependencies.notificationsHandler as? AppNotificationHandler)?.setNotificationDelegate(appDelegate)
