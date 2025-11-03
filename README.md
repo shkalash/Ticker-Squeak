@@ -59,7 +59,6 @@ The system consists of two main components , and a bridging utilty:
 ### Roadmap
 
 * **Customizable Templates:** Allow users to create and edit their own templates for the pre-market routine and trade idea logs.
-* **Cloud Sync:** Optional cloud integration to sync settings, ignored tickers, and trade logs across multiple devices.
 * **Real-Time Mental State Monitoring:** Integration with the [Arctop SDK](https://github.com/arctop/iOS-SDK) to provide traders with insights into their focus and cognitive state during trading sessions.
 * **AI-Powered Analysis Assistant:** An integrated AI assistant to provide on-demand analysis, sentiment scoring, or relevant news for captured tickers.
 
